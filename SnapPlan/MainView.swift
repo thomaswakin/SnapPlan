@@ -14,8 +14,8 @@ struct MainView: View {
     @State private var selectedTask: SnapPlanTask?
     @State private var showSettings: Bool = false
     
-    init(context: NSManagedObjectContext) {
-        viewModel = TaskViewModel(context: context)
+    init() {
+        viewModel = TaskViewModel(context: viewContext)
     }
     
     var body: some View {

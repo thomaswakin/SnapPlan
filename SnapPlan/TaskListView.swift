@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct TaskListView: View {
-    var task: SnapTask
+    var task: SnapPlanTask
     
     var body: some View {
         HStack {
@@ -22,7 +23,7 @@ struct TaskListView: View {
             
             VStack(alignment: .leading) {
                 Text(task.state ?? "Todo")
-                Text(task.dueDate as Date?, format: .dateTime)
+                Text(task.dueDate != nil ? TaskFormatter.shared.dateFormatter.string(from: task.dueDate!) : "--")
                 Text(task.note ?? "")
             }
         }

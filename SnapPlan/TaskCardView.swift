@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TaskCardView: View {
-    var task: SnapTask
+    var task: SnapPlanTask
     
     var body: some View {
         VStack {
@@ -20,7 +20,7 @@ struct TaskCardView: View {
             }
             
             Text(task.state ?? "Todo")
-            Text(task.dueDate as Date?, format: .dateTime)
+            Text(task.dueDate != nil ? TaskFormatter.shared.dateFormatter.string(from: task.dueDate!) : "--")
             Text(task.note ?? "")
         }
         .padding()

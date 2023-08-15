@@ -10,8 +10,8 @@ import SwiftUI
 import CoreData
 
 class TaskViewModel: ObservableObject {
-    @Published var tasks: [SnapTask] = []
-    @Published var filteredTasks: [SnapTask] = []
+    @Published var tasks: [SnapPlanTask] = []
+    @Published var filteredTasks: [SnapPlanTask] = []
     @Published var searchText: String = ""
     @Published var selectedTab: Int = 0
     @Published var priorityFilter: Double = 0
@@ -25,7 +25,7 @@ class TaskViewModel: ObservableObject {
     }
     
     func fetchTasks() {
-        let request: NSFetchRequest<SnapTask> = SnapTask.fetchRequest()
+        let request: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
         do {
             tasks = try viewContext.fetch(request)
             applyFilters()
@@ -49,14 +49,14 @@ class TaskViewModel: ObservableObject {
             }
             
             // Apply priority filter
-            let matchesPriorityFilter = task.priorityScore >= priorityFilter
+            let matchesPriorityFilter = task.priorityScore >= Int16(priorityFilter)
             
             return matchesTextFilter && matchesStateFilter && matchesPriorityFilter
         }
     }
     
     func addTask() {
-        let newTask = SnapTask(context: viewContext)
+        let newTask = SnapPlanTask(context: viewContext)
         newTask.id = UUID()
         newTask.state = "Todo"
         newTask.dueDate = Date()

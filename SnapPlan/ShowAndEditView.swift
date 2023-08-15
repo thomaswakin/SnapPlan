@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ShowAndEditView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @Binding var task: SnapTask?
+    @Binding var task: SnapPlanTask?
     
     @State private var selectedState: String = "Todo"
     @State private var selectedDueDate: Date = Date()
