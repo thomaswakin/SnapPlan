@@ -13,8 +13,6 @@
 		114C65D52A8ABDDC00265BE6 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65D42A8ABDDC00265BE6 /* Persistence.swift */; };
 		114C65D82A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 114C65D62A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld */; };
 		114C65E42A8B029F00265BE6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E32A8B029F00265BE6 /* MainView.swift */; };
-		114C65E72A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E52A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift */; };
-		114C65E82A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E62A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift */; };
 		114C65EA2A8B046C00265BE6 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E92A8B046C00265BE6 /* TaskViewModel.swift */; };
 		114C65EC2A8B051F00265BE6 /* ShowAndEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65EB2A8B051F00265BE6 /* ShowAndEditView.swift */; };
 		114C65EE2A8B05F800265BE6 /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65ED2A8B05F800265BE6 /* TaskCardView.swift */; };
@@ -31,8 +29,6 @@
 		114C65D72A8ABDDC00265BE6 /* SnapPlan.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SnapPlan.xcdatamodel; sourceTree = "<group>"; };
 		114C65D92A8ABDDC00265BE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		114C65E32A8B029F00265BE6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		114C65E52A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapPlanTask+CoreDataClass.swift"; sourceTree = "<group>"; };
-		114C65E62A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapPlanTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		114C65E92A8B046C00265BE6 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		114C65EB2A8B051F00265BE6 /* ShowAndEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAndEditView.swift; sourceTree = "<group>"; };
 		114C65ED2A8B05F800265BE6 /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
@@ -54,8 +50,6 @@
 		114C65BF2A8ABDDA00265BE6 = {
 			isa = PBXGroup;
 			children = (
-				114C65E52A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift */,
-				114C65E62A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift */,
 				114C65CA2A8ABDDA00265BE6 /* SnapPlan */,
 				114C65C92A8ABDDA00265BE6 /* Products */,
 			);
@@ -170,10 +164,8 @@
 				114C65D52A8ABDDC00265BE6 /* Persistence.swift in Sources */,
 				114C65F02A8B069300265BE6 /* TaskListView.swift in Sources */,
 				114C65D82A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld in Sources */,
-				114C65E82A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift in Sources */,
 				114C65EE2A8B05F800265BE6 /* TaskCardView.swift in Sources */,
 				114C65EA2A8B046C00265BE6 /* TaskViewModel.swift in Sources */,
-				114C65E72A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift in Sources */,
 				114C65F22A8B071600265BE6 /* SettingsView.swift in Sources */,
 				114C65EC2A8B051F00265BE6 /* ShowAndEditView.swift in Sources */,
 				114C65CC2A8ABDDA00265BE6 /* SnapPlanApp.swift in Sources */,

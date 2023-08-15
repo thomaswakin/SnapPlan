@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct MainView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var viewModel: TaskViewModel
-    @State private var selectedTask: SnapTask?
+    @State private var selectedTask: SnapPlanTask?
     @State private var showSettings: Bool = false
     
     init(context: NSManagedObjectContext) {
