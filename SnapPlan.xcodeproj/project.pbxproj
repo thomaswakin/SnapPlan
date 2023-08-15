@@ -1,0 +1,395 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		114C65CC2A8ABDDA00265BE6 /* SnapPlanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65CB2A8ABDDA00265BE6 /* SnapPlanApp.swift */; };
+		114C65D02A8ABDDC00265BE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 114C65CF2A8ABDDC00265BE6 /* Assets.xcassets */; };
+		114C65D32A8ABDDC00265BE6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 114C65D22A8ABDDC00265BE6 /* Preview Assets.xcassets */; };
+		114C65D52A8ABDDC00265BE6 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65D42A8ABDDC00265BE6 /* Persistence.swift */; };
+		114C65D82A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 114C65D62A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld */; };
+		114C65E42A8B029F00265BE6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E32A8B029F00265BE6 /* MainView.swift */; };
+		114C65E72A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E52A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift */; };
+		114C65E82A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E62A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift */; };
+		114C65EA2A8B046C00265BE6 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65E92A8B046C00265BE6 /* TaskViewModel.swift */; };
+		114C65EC2A8B051F00265BE6 /* ShowAndEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65EB2A8B051F00265BE6 /* ShowAndEditView.swift */; };
+		114C65EE2A8B05F800265BE6 /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65ED2A8B05F800265BE6 /* TaskCardView.swift */; };
+		114C65F02A8B069300265BE6 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65EF2A8B069300265BE6 /* TaskListView.swift */; };
+		114C65F22A8B071600265BE6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F12A8B071600265BE6 /* SettingsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		114C65C82A8ABDDA00265BE6 /* SnapPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnapPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		114C65CB2A8ABDDA00265BE6 /* SnapPlanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapPlanApp.swift; sourceTree = "<group>"; };
+		114C65CF2A8ABDDC00265BE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		114C65D22A8ABDDC00265BE6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		114C65D42A8ABDDC00265BE6 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		114C65D72A8ABDDC00265BE6 /* SnapPlan.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SnapPlan.xcdatamodel; sourceTree = "<group>"; };
+		114C65D92A8ABDDC00265BE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		114C65E32A8B029F00265BE6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		114C65E52A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapPlanTask+CoreDataClass.swift"; sourceTree = "<group>"; };
+		114C65E62A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapPlanTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		114C65E92A8B046C00265BE6 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
+		114C65EB2A8B051F00265BE6 /* ShowAndEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAndEditView.swift; sourceTree = "<group>"; };
+		114C65ED2A8B05F800265BE6 /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
+		114C65EF2A8B069300265BE6 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
+		114C65F12A8B071600265BE6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		114C65C52A8ABDDA00265BE6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		114C65BF2A8ABDDA00265BE6 = {
+			isa = PBXGroup;
+			children = (
+				114C65E52A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift */,
+				114C65E62A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift */,
+				114C65CA2A8ABDDA00265BE6 /* SnapPlan */,
+				114C65C92A8ABDDA00265BE6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		114C65C92A8ABDDA00265BE6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				114C65C82A8ABDDA00265BE6 /* SnapPlan.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		114C65CA2A8ABDDA00265BE6 /* SnapPlan */ = {
+			isa = PBXGroup;
+			children = (
+				114C65CB2A8ABDDA00265BE6 /* SnapPlanApp.swift */,
+				114C65CF2A8ABDDC00265BE6 /* Assets.xcassets */,
+				114C65D42A8ABDDC00265BE6 /* Persistence.swift */,
+				114C65D92A8ABDDC00265BE6 /* Info.plist */,
+				114C65D62A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld */,
+				114C65D12A8ABDDC00265BE6 /* Preview Content */,
+				114C65E32A8B029F00265BE6 /* MainView.swift */,
+				114C65E92A8B046C00265BE6 /* TaskViewModel.swift */,
+				114C65EB2A8B051F00265BE6 /* ShowAndEditView.swift */,
+				114C65ED2A8B05F800265BE6 /* TaskCardView.swift */,
+				114C65EF2A8B069300265BE6 /* TaskListView.swift */,
+				114C65F12A8B071600265BE6 /* SettingsView.swift */,
+			);
+			path = SnapPlan;
+			sourceTree = "<group>";
+		};
+		114C65D12A8ABDDC00265BE6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				114C65D22A8ABDDC00265BE6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		114C65C72A8ABDDA00265BE6 /* SnapPlan */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 114C65DC2A8ABDDC00265BE6 /* Build configuration list for PBXNativeTarget "SnapPlan" */;
+			buildPhases = (
+				114C65C42A8ABDDA00265BE6 /* Sources */,
+				114C65C52A8ABDDA00265BE6 /* Frameworks */,
+				114C65C62A8ABDDA00265BE6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SnapPlan;
+			productName = SnapPlan;
+			productReference = 114C65C82A8ABDDA00265BE6 /* SnapPlan.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		114C65C02A8ABDDA00265BE6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					114C65C72A8ABDDA00265BE6 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 114C65C32A8ABDDA00265BE6 /* Build configuration list for PBXProject "SnapPlan" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 114C65BF2A8ABDDA00265BE6;
+			productRefGroup = 114C65C92A8ABDDA00265BE6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				114C65C72A8ABDDA00265BE6 /* SnapPlan */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		114C65C62A8ABDDA00265BE6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				114C65D32A8ABDDC00265BE6 /* Preview Assets.xcassets in Resources */,
+				114C65D02A8ABDDC00265BE6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		114C65C42A8ABDDA00265BE6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				114C65E42A8B029F00265BE6 /* MainView.swift in Sources */,
+				114C65D52A8ABDDC00265BE6 /* Persistence.swift in Sources */,
+				114C65F02A8B069300265BE6 /* TaskListView.swift in Sources */,
+				114C65D82A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld in Sources */,
+				114C65E82A8B03C200265BE6 /* SnapPlanTask+CoreDataProperties.swift in Sources */,
+				114C65EE2A8B05F800265BE6 /* TaskCardView.swift in Sources */,
+				114C65EA2A8B046C00265BE6 /* TaskViewModel.swift in Sources */,
+				114C65E72A8B03C200265BE6 /* SnapPlanTask+CoreDataClass.swift in Sources */,
+				114C65F22A8B071600265BE6 /* SettingsView.swift in Sources */,
+				114C65EC2A8B051F00265BE6 /* ShowAndEditView.swift in Sources */,
+				114C65CC2A8ABDDA00265BE6 /* SnapPlanApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		114C65DA2A8ABDDC00265BE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		114C65DB2A8ABDDC00265BE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		114C65DD2A8ABDDC00265BE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SnapPlan/Preview Content\"";
+				DEVELOPMENT_TEAM = W3B9ZVZD69;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.akin.thomas.SnapPlan;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		114C65DE2A8ABDDC00265BE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SnapPlan/Preview Content\"";
+				DEVELOPMENT_TEAM = W3B9ZVZD69;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.akin.thomas.SnapPlan;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		114C65C32A8ABDDA00265BE6 /* Build configuration list for PBXProject "SnapPlan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				114C65DA2A8ABDDC00265BE6 /* Debug */,
+				114C65DB2A8ABDDC00265BE6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		114C65DC2A8ABDDC00265BE6 /* Build configuration list for PBXNativeTarget "SnapPlan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				114C65DD2A8ABDDC00265BE6 /* Debug */,
+				114C65DE2A8ABDDC00265BE6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		114C65D62A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				114C65D72A8ABDDC00265BE6 /* SnapPlan.xcdatamodel */,
+			);
+			currentVersion = 114C65D72A8ABDDC00265BE6 /* SnapPlan.xcdatamodel */;
+			path = SnapPlan.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 114C65C02A8ABDDA00265BE6 /* Project object */;
+}

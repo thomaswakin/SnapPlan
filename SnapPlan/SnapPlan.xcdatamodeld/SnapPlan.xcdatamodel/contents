@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
-    <entity name="SnapTask" representedClassName="SnapTask" syncable="YES" codeGenerationType="class">
+    <entity name="SnapPlanTask" representedClassName="SnapPlanTask" syncable="YES" codeGenerationType="class">
         <attribute name="dueDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="note" optional="YES" attributeType="String"/>
-        <attribute name="priorityScore" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="priorityScore" optional="YES" attributeType="Integer 16" defaultValueString="50" usesScalarValueType="YES"/>
         <attribute name="rawPhotoData" optional="YES" attributeType="Binary"/>
-        <attribute name="state" optional="YES" attributeType="String"/>
+        <attribute name="state" optional="YES" attributeType="String" defaultValueString="Todo"/>
     </entity>
 </model>
