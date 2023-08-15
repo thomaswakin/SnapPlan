@@ -14,8 +14,8 @@ struct MainView: View {
     @State private var selectedTask: SnapPlanTask?
     @State private var showSettings: Bool = false
     
-    init() {
-        viewModel = TaskViewModel(context: viewContext)
+    init(viewModel: TaskViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -98,9 +98,3 @@ struct MainView: View {
 }
 
 
-@available(iOS 15.0, *)
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-    }
-}

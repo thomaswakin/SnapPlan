@@ -10,10 +10,12 @@ import SwiftUI
 @main
 struct SnapPlanApp: App {
     let persistenceController = PersistenceController.shared
+    
+    let viewModel = TaskViewModel(context: PersistenceController.shared.container.viewContext)
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainView(viewModel: viewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
