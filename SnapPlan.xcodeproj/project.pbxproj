@@ -19,6 +19,7 @@
 		114C65F02A8B069300265BE6 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65EF2A8B069300265BE6 /* TaskListView.swift */; };
 		114C65F22A8B071600265BE6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F12A8B071600265BE6 /* SettingsView.swift */; };
 		114C65F82A8BA83600265BE6 /* TaskFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F72A8BA83600265BE6 /* TaskFormatter.swift */; };
+		114C65FA2A8FD84400265BE6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F92A8FD84400265BE6 /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		114C65EF2A8B069300265BE6 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		114C65F12A8B071600265BE6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		114C65F72A8BA83600265BE6 /* TaskFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFormatter.swift; sourceTree = "<group>"; };
+		114C65F92A8FD84400265BE6 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				114C65EF2A8B069300265BE6 /* TaskListView.swift */,
 				114C65F12A8B071600265BE6 /* SettingsView.swift */,
 				114C65F72A8BA83600265BE6 /* TaskFormatter.swift */,
+				114C65F92A8FD84400265BE6 /* ImagePicker.swift */,
 			);
 			path = SnapPlan;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 				114C65EE2A8B05F800265BE6 /* TaskCardView.swift in Sources */,
 				114C65F82A8BA83600265BE6 /* TaskFormatter.swift in Sources */,
 				114C65EA2A8B046C00265BE6 /* TaskViewModel.swift in Sources */,
+				114C65FA2A8FD84400265BE6 /* ImagePicker.swift in Sources */,
 				114C65F22A8B071600265BE6 /* SettingsView.swift in Sources */,
 				114C65EC2A8B051F00265BE6 /* ShowAndEditView.swift in Sources */,
 				114C65CC2A8ABDDA00265BE6 /* SnapPlanApp.swift in Sources */,
@@ -229,6 +233,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "SnapPlan requires camera access to be able to add pictures to Tasks";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo Library is needed to be able too use photos as the image for Tasks";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -283,6 +289,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "SnapPlan requires camera access to be able to add pictures to Tasks";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo Library is needed to be able too use photos as the image for Tasks";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

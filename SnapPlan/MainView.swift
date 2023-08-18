@@ -7,6 +7,9 @@
 
 import SwiftUI
 import CoreData
+import AVFoundation
+import Photos
+
 
 struct MainView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -19,6 +22,13 @@ struct MainView: View {
     @State private var showTodo = true
     @State private var showDoing = false
     @State private var showDone = false
+    
+    @State private var isImagePickerPresented: Bool = false
+    @State private var selectedImage: UIImage?
+    @State private var sourceType: UIImagePickerController.SourceType = .camera
+    
+    @State private var isPermissionAlertPresented: Bool = false
+    @State private var permissionAlertMessage: String = ""
     
     init(viewModel: TaskViewModel) {
         self.viewModel = viewModel
@@ -33,6 +43,34 @@ struct MainView: View {
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
                 Button(action: {
+                    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                        requestCameraPermission { granted in
+                            if granted {
+                                sourceType = .camera
+                                isImagePickerPresented = true
+                            } else {
+                                permissionAlertMessage = "Camera permission is required to take photos."
+                                isPermissionAlertPresented = true
+                            }
+                        }
+                    } else if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                        requestPhotoLibraryPermission { granted in
+                            if granted {
+                                sourceType = .photoLibrary
+                                isImagePickerPresented = true
+                            } else {
+                                permissionAlertMessage = "Photo library permission is required to select photos."
+                                isPermissionAlertPresented = true
+                            }
+                        }
+                    } else {
+                        permissionAlertMessage = "Camera or Photo library permission is required to use images foro tasks "
+                        isPermissionAlertPresented = true
+                    }
+                }) {
+                    Image(systemName: "camera")
+                }
+                Button(action: {
                     viewModel.addTask()
                     // Set selectedTask to the newly added task
                     selectedTask = viewModel.tasks.last
@@ -41,9 +79,16 @@ struct MainView: View {
                 }
             }
             .padding()
+            .alert(isPresented: $isPermissionAlertPresented) {
+                Alert(title: Text("Permission Required"), message: Text(permissionAlertMessage), dismissButton: .default(Text("OK")))
+            }
             .sheet(item: $selectedTask) { task in
                 ShowAndEditView(task: $selectedTask)
             }
+            .sheet(isPresented: $isImagePickerPresented) {
+                ImagePicker(selectedImage: $selectedImage, sourceType: sourceType)
+            }
+            
             
             // Second Row: Navigation Tabs
             HStack(spacing: 10) { // Evenly space the buttons
@@ -143,3 +188,14 @@ struct ToggleButtonStyle: ButtonStyle {
     }
 }
 
+func requestCameraPermission(completion: @escaping (Bool) -> Void) {
+    AVCaptureDevice.requestAccess(for: .video) { granted in
+        completion(granted)
+    }
+}
+
+func requestPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
+    PHPhotoLibrary.requestAuthorization { status in
+        completion(status == .authorized)
+    }
+}
