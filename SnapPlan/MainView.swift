@@ -10,6 +10,7 @@ import CoreData
 
 struct MainView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var taskFormatter: TaskFormatter
     @ObservedObject var viewModel: TaskViewModel
     @State private var selectedTask: SnapPlanTask?
     @State private var showSettings: Bool = false

@@ -10,6 +10,7 @@ import Foundation
 
 struct TaskListView: View {
     var task: SnapPlanTask
+    @EnvironmentObject var taskFormatter: TaskFormatter
     
     var body: some View {
         HStack {

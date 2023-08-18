@@ -8,9 +8,9 @@
 import Foundation
 import SwiftUI
 
-class TaskFormatter {
+class TaskFormatter: ObservableObject {
     static let shared = TaskFormatter()
-    @EnvironmentObject var settings: Settings
+    @EnvironmentObject var settings: Settings // Access the Settings object
     @State private var selectedDate: Date = Date()
     
     public let dateFormatter: DateFormatter = {
@@ -20,7 +20,7 @@ class TaskFormatter {
     }()
     
     func formattedDueDate(for task: SnapPlanTask, showDueDates: Bool) -> String {
-        guard let dueDate = task.dueDate else { return "--" }
+        //guard let dueDate = task.dueDate else { return "--" }
         //if showDueDates {
         //    return dateFormatter.string(from: dueDate)
         //} else {

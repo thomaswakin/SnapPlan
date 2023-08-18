@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskCardView: View {
     @ObservedObject var task: SnapPlanTask
+    @EnvironmentObject var taskFormatter: TaskFormatter
     
     var body: some View {
         ZStack {

@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct SnapPlanApp: App {
+    @StateObject var settings = Settings()
+    @StateObject var taskFormatter = TaskFormatter()
+    
     let persistenceController = PersistenceController.shared
     
     let viewModel = TaskViewModel(context: PersistenceController.shared.container.viewContext)
@@ -17,6 +20,7 @@ struct SnapPlanApp: App {
         WindowGroup {
             MainView(viewModel: viewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(settings)
         }
     }
 }

@@ -17,6 +17,7 @@ class TaskViewModel: ObservableObject {
     @Published var priorityFilter: Double = 0
     @Published var isTaskCardView: Bool = true
     @Published var needsRefresh: Bool = false
+    @EnvironmentObject var settings: Settings
     
     private var taskObservers: [NSKeyValueObservation] = []
     
