@@ -8,24 +8,34 @@
 import SwiftUI
 
 struct TaskCardView: View {
-    var task: SnapPlanTask
+    @ObservedObject var task: SnapPlanTask
     
     var body: some View {
-        VStack {
+        ZStack {
             // Display task photo if available
             if let data = task.rawPhotoData, let image = UIImage(data: data) {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
+            } else {
+                StickyNoteView() // Default sticky note view
             }
-            
-            Text(task.state ?? "Todo")
-            Text(task.dueDate != nil ? TaskFormatter.shared.dateFormatter.string(from: task.dueDate!) : "--")
-            Text(task.note ?? "")
+            VStack(alignment: .leading) {
+                Text(task.state ?? "Todo")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                Text(task.dueDate != nil ? TaskFormatter.shared.dateFormatter.string(from: task.dueDate!) : "--")
+                    .font(.subheadline)
+                    .foregroundColor(.black)
+                Text(task.note ?? "")
+                    .font(.caption)
+                    .foregroundColor(.black)
+            }
+
         }
         .padding()
         .background(Color.white)
-        .cornerRadius(10)
-        .shadow(radius: 5)
+        //.cornerRadius(10)
+        //.shadow(radius: 5)
     }
 }

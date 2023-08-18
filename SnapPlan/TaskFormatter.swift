@@ -13,7 +13,7 @@ class TaskFormatter {
     
     public let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "YY/MM/DD"
+        formatter.dateFormat = "YYYY-MM-dd"
         return formatter
     }()
     
@@ -61,6 +61,18 @@ class TaskFormatter {
         }
     }
 }
+
+struct StickyNoteView: View {
+    var body: some View {
+        Rectangle()
+            .fill(LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange]), startPoint: .top, endPoint: .bottom))
+            .frame(width: 110, height: 110)
+            .cornerRadius(5)
+            .shadow(radius: 5)
+            .rotationEffect(.degrees(-2)) // Optional: Slight rotation for a more natural look
+    }
+}
+
 
 extension Color {
     static let todoColor = Color(hex: "#FEC601")

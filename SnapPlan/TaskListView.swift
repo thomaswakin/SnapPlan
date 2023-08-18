@@ -19,6 +19,8 @@ struct TaskListView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 50, height: 50)
+            } else {
+                StickyNoteView() // Default sticky note view
             }
             
             VStack(alignment: .leading) {

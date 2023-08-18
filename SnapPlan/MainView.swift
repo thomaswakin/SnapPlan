@@ -55,7 +55,8 @@ struct MainView: View {
             // Third Row: Task Display (Placeholder)
             ScrollView {
                 if viewModel.isTaskCardView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))]) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 120, maximum: 120), spacing: 0)]) {
+                    //LazyVGrid(columns: [GridItem(.fixed(125))]) {
                         ForEach(viewModel.filteredTasks, id: \.id) { task in
                             TaskCardView(task: task)
                                 .onTapGesture {

@@ -18,6 +18,8 @@ class TaskViewModel: ObservableObject {
     @Published var isTaskCardView: Bool = true
     @Published var needsRefresh: Bool = false
     
+    private var taskObservers: [NSKeyValueObservation] = []
+    
     private var viewContext: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -29,11 +31,24 @@ class TaskViewModel: ObservableObject {
         let request: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
         do {
             tasks = try viewContext.fetch(request)
+            
+            // Clear any existing observers
+            taskObservers.forEach { $0.invalidate() }
+            taskObservers.removeAll()
+            
+            // Observe changes to the tasks
+            taskObservers = tasks.map { task in
+                task.observe(\.state, options: [.new]) { [weak self] _, _ in
+                    self?.applyFilters()
+                }
+            }
+
             applyFilters()
         } catch {
             print("Failed to fetch tasks:", error)
         }
     }
+
     
     func applyFilters() {
         filteredTasks = tasks.filter { task in
