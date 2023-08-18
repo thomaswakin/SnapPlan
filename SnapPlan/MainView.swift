@@ -13,6 +13,7 @@ struct MainView: View {
     @ObservedObject var viewModel: TaskViewModel
     @State private var selectedTask: SnapPlanTask?
     @State private var showSettings: Bool = false
+    @State private var forceRedraw: Bool = false
     
     init(viewModel: TaskViewModel) {
         self.viewModel = viewModel
@@ -89,6 +90,9 @@ struct MainView: View {
         .padding()
         .sheet(item: $selectedTask) { task in
             ShowAndEditView(task: $selectedTask)
+                .onDisappear {
+                    forceRedraw.toggle()
+                }
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()

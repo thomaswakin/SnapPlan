@@ -55,6 +55,7 @@ struct ShowAndEditView: View {
                 
                 // Done Button
                 Button("Done") {
+                    saveContext()
                     self.task = nil // Dismiss the view
                 }
             }

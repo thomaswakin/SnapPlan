@@ -16,6 +16,7 @@ class TaskViewModel: ObservableObject {
     @Published var selectedTab: Int = 0
     @Published var priorityFilter: Double = 0
     @Published var isTaskCardView: Bool = true
+    @Published var needsRefresh: Bool = false
     
     private var viewContext: NSManagedObjectContext
     
@@ -69,6 +70,10 @@ class TaskViewModel: ObservableObject {
         } catch {
             print("Failed to save new task:", error)
         }
+    }
+    
+    func forceRefresh() {
+        needsRefresh.toggle()
     }
     
 }
