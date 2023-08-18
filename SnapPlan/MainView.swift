@@ -16,7 +16,7 @@ struct MainView: View {
     @State private var showSettings: Bool = false
     @State private var forceRedraw: Bool = false
     
-    @State private var showTodo = false
+    @State private var showTodo = true
     @State private var showDoing = false
     @State private var showDone = false
     
@@ -46,22 +46,26 @@ struct MainView: View {
             }
             
             // Second Row: Navigation Tabs
-            HStack {
+            HStack(spacing: 10) { // Evenly space the buttons
                 Button("Todo") {
                     showTodo.toggle()
+                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                 }
-                .background(showTodo ? Color.blue : Color.gray)
+                .buttonStyle(ToggleButtonStyle(isSelected: showTodo))
 
                 Button("Doing") {
                     showDoing.toggle()
+                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                 }
-                .background(showDoing ? Color.blue : Color.gray)
+                .buttonStyle(ToggleButtonStyle(isSelected: showDoing))
 
                 Button("Done") {
                     showDone.toggle()
+                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                 }
-                .background(showDone ? Color.blue : Color.gray)
+                .buttonStyle(ToggleButtonStyle(isSelected: showDone))
             }
+            .padding(.horizontal)
             //Picker("", selection: $viewModel.selectedTab) {
             //    Text("Todo").tag(0)
             //    Text("Doing").tag(1)
@@ -123,4 +127,19 @@ struct MainView: View {
     
 }
 
+struct ToggleButtonStyle: ButtonStyle {
+    var isSelected: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(isSelected ? Color.gray : Color.white)
+            .foregroundColor(isSelected ? Color.white : Color.black)
+            .cornerRadius(8)
+            .shadow(radius: 2)
+            .font(.system(size: isSelected ? 14 : 12)) // Scale font size based on selection
+
+    }
+}
 

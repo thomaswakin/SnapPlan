@@ -17,7 +17,7 @@ class TaskViewModel: ObservableObject {
     @Published var priorityFilter: Double = 0
     @Published var isTaskCardView: Bool = true
     @Published var needsRefresh: Bool = false
-    @Published var showTodo: Bool = false
+    @Published var showTodo: Bool = true
     @Published var showDoing: Bool = false
     @Published var showDone: Bool = false
     @EnvironmentObject var settings: Settings
