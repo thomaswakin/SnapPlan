@@ -64,8 +64,10 @@ struct MainView: View {
                             }
                         }
                     } else {
-                        permissionAlertMessage = "Camera or Photo library permission is required to use images foro tasks "
+                        permissionAlertMessage = "Camera and/or Photo Album access required to use images for tasks"
                         isPermissionAlertPresented = true
+                        viewModel.addTask()
+                        selectedTask = viewModel.tasks.last
                     }
                 }) {
                     Image(systemName: "camera")
