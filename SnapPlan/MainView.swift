@@ -16,6 +16,10 @@ struct MainView: View {
     @State private var showSettings: Bool = false
     @State private var forceRedraw: Bool = false
     
+    @State private var showTodo = false
+    @State private var showDoing = false
+    @State private var showDone = false
+    
     init(viewModel: TaskViewModel) {
         self.viewModel = viewModel
     }
@@ -42,16 +46,32 @@ struct MainView: View {
             }
             
             // Second Row: Navigation Tabs
-            Picker("", selection: $viewModel.selectedTab) {
-                Text("Todo").tag(0)
-                Text("Doing").tag(1)
-                Text("Done").tag(2)
-                Text("All").tag(3)
+            HStack {
+                Button("Todo") {
+                    showTodo.toggle()
+                }
+                .background(showTodo ? Color.blue : Color.gray)
+
+                Button("Doing") {
+                    showDoing.toggle()
+                }
+                .background(showDoing ? Color.blue : Color.gray)
+
+                Button("Done") {
+                    showDone.toggle()
+                }
+                .background(showDone ? Color.blue : Color.gray)
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .onChange(of: viewModel.selectedTab) { _ in
-                viewModel.applyFilters()
-            }
+            //Picker("", selection: $viewModel.selectedTab) {
+            //    Text("Todo").tag(0)
+            //    Text("Doing").tag(1)
+            //    Text("Done").tag(2)
+            //    Text("All").tag(3)
+            //}
+            //.pickerStyle(SegmentedPickerStyle())
+            //.onChange(of: viewModel.selectedTab) { _ in
+            //    viewModel.applyFilters()
+            //}
             
             // Third Row: Task Display (Placeholder)
             ScrollView {
