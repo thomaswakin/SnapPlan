@@ -43,22 +43,21 @@ struct TaskCardView: View {
             .edgesIgnoringSafeArea(.all)
             
             // Note Capsule at Bottom Right
-            VStack {
-                Spacer()
-                HStack {
+            // Note Capsule at Bottom Right
+            if let note = task.note, !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                VStack {
                     Spacer()
-                    Text(task.note ?? "")
-                        .padding()
-                        .background(Color.white.opacity(0.5))
-                        .lineLimit(3) // Limit to three lines
-                        .truncationMode(.tail) // Add ellipsis if the text is truncated
-                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 2))
-                        .background(
-                            Capsule()
-                                .fill(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))
-                                .cornerRadius(8)
-                                .padding(.horizontal, -10.0)
-                        )
+                    HStack {
+                        Spacer()
+                        Text(note)
+                            .lineLimit(3) // Limit to three lines
+                            .truncationMode(.tail) // Add ellipsis if the text is truncated
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 2))
+                            .padding(.bottom, 5)
+                            .background(Color.white.opacity(0.5))
+                            //.padding(.horizontal, -10.0)
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the bottom left
+                    }
                 }
             }
             //VStack(alignment: .leading) {

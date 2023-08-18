@@ -96,7 +96,7 @@ struct StickyNoteView: View {
             .frame(width: UIScreen.main.bounds.width / 3 - 15, height: UIScreen.main.bounds.width / 3 - 15)
             .cornerRadius(5)
             .shadow(radius: 5)
-            .rotationEffect(.degrees(-2)) // Optional: Slight rotation for a more natural look
+            //.rotationEffect(.degrees(-2)) // Optional: Slight rotation for a more natural look
     }
 }
 
