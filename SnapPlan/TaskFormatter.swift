@@ -87,10 +87,12 @@ class TaskFormatter: ObservableObject {
 }
 
 struct StickyNoteView: View {
+    var color: Color
     var body: some View {
         Rectangle()
-            .fill(LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange]), startPoint: .top, endPoint: .bottom))
+            //.fill(LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange]), startPoint: .top, endPoint: .bottom))
             //.frame(width: 110, height: 110)
+            .fill(color)
             .frame(width: UIScreen.main.bounds.width / 3 - 15, height: UIScreen.main.bounds.width / 3 - 15)
             .cornerRadius(5)
             .shadow(radius: 5)

@@ -21,7 +21,7 @@ struct TaskListView: View {
                     .scaledToFit()
                     .frame(width: 50, height: 50)
             } else {
-                StickyNoteView() // Default sticky note view
+                StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
             }
             
             VStack(alignment: .leading) {
