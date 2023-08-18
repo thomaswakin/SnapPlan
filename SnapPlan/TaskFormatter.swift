@@ -10,21 +10,41 @@ import SwiftUI
 
 class TaskFormatter {
     static let shared = TaskFormatter()
+    @EnvironmentObject var settings: Settings
+    @State private var selectedDate: Date = Date()
     
     public let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY-MM-dd"
+        formatter.dateFormat = "MM/dd"
         return formatter
     }()
     
     func formattedDueDate(for task: SnapPlanTask, showDueDates: Bool) -> String {
         guard let dueDate = task.dueDate else { return "--" }
-        
-        if showDueDates {
-            return dateFormatter.string(from: dueDate)
+        //if showDueDates {
+        //    return dateFormatter.string(from: dueDate)
+        //} else {
+        //    let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: dueDate).day ?? 0
+        //    return daysDifference < 0 ? "-\(daysDifference)" : "\(daysDifference)"
+        //}
+        if settings.dueDateDisplay == 1, let dueDate = task.dueDate {
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.day], from: Date(), to: dueDate)
+            return "\(components.day ?? 0)"
         } else {
-            let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: dueDate).day ?? 0
-            return daysDifference < 0 ? "-\(daysDifference)" : "\(daysDifference)"
+            let formatter = DateFormatter()
+            formatter.locale = Locale.current
+    
+            let currentYear = Calendar.current.component(.year, from: Date())
+            let targetYear = Calendar.current.component(.year, from: task.dueDate ?? Date())
+        
+            if currentYear == targetYear {
+                formatter.dateFormat = "MM/dd"
+            } else {
+                formatter.dateFormat = "MM/dd/yy"
+            }
+                        
+            return task.dueDate.map(formatter.string) ?? ""
         }
     }
         
@@ -60,13 +80,18 @@ class TaskFormatter {
             return Color.primary
         }
     }
+    
+    func getFontSize(for task: SnapPlanTask) -> CGFloat {
+        return (UIFont.preferredFont(forTextStyle: .body).pointSize + 8)
+    }
 }
 
 struct StickyNoteView: View {
     var body: some View {
         Rectangle()
             .fill(LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange]), startPoint: .top, endPoint: .bottom))
-            .frame(width: 110, height: 110)
+            //.frame(width: 110, height: 110)
+            .frame(width: UIScreen.main.bounds.width / 3 - 15, height: UIScreen.main.bounds.width / 3 - 15)
             .cornerRadius(5)
             .shadow(radius: 5)
             .rotationEffect(.degrees(-2)) // Optional: Slight rotation for a more natural look
