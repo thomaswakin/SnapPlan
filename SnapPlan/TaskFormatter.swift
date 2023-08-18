@@ -10,7 +10,6 @@ import SwiftUI
 
 class TaskFormatter: ObservableObject {
     static let shared = TaskFormatter()
-    @EnvironmentObject var settings: Settings // Access the Settings object
     @State private var selectedDate: Date = Date()
     
     public let dateFormatter: DateFormatter = {
@@ -27,6 +26,7 @@ class TaskFormatter: ObservableObject {
         //    let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: dueDate).day ?? 0
         //    return daysDifference < 0 ? "-\(daysDifference)" : "\(daysDifference)"
         //}
+        let settings = Settings.shared
         if settings.dueDateDisplay == 1, let dueDate = task.dueDate {
             let calendar = Calendar.current
             let components = calendar.dateComponents([.day], from: Date(), to: dueDate)

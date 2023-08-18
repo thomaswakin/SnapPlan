@@ -8,6 +8,7 @@
 import SwiftUI
 
 class Settings: ObservableObject {
+    static let shared = Settings()
     @Published var dueDateDisplay: Int {
         didSet {
             NSUbiquitousKeyValueStore.default.set(Int64(dueDateDisplay), forKey: "dueDateDisplay")

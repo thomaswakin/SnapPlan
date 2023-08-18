@@ -20,7 +20,7 @@ struct SnapPlanApp: App {
         WindowGroup {
             MainView(viewModel: viewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(settings)
+                .environmentObject(Settings.shared)
         }
     }
 }
