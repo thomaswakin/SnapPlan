@@ -43,7 +43,9 @@ class TaskViewModel: ObservableObject {
             // Observe changes to the tasks
             taskObservers = tasks.map { task in
                 task.observe(\.state, options: [.new]) { [weak self] _, _ in
-                    self?.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                    self?.applyFilters(showTodo: self?.showTodo ?? false,
+                                       showDoing: self?.showDoing ?? false,
+                                       showDone: self?.showDone ?? false)
                 }
             }
 

@@ -30,7 +30,7 @@ struct MainView: View {
             HStack {
                 TextField("Task Filter", text: $viewModel.searchText)
                     .onChange(of: viewModel.searchText) { _ in
-                        viewModel.applyFilters()
+                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
                 Button(action: {
                     viewModel.addTask()
@@ -99,7 +99,7 @@ struct MainView: View {
             HStack {
                 Slider(value: $viewModel.priorityFilter, in: 0...100)
                     .onChange(of: viewModel.priorityFilter) { _ in
-                        viewModel.applyFilters()
+                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
                 Toggle("", isOn: $viewModel.isTaskCardView)
                 Button(action: {
