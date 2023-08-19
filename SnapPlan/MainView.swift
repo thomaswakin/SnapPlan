@@ -110,13 +110,21 @@ struct MainView: View {
             }
             .sheet(item: $selectedTask) { task in
                 ShowAndEditView(task: $selectedTask)
+                    .onDisappear {
+                        // Reapply the filters based on the current toggles
+                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                    }
+                
             }
             .sheet(isPresented: $showStickyNoteView) {
                 ShowAndEditView(task: $selectedTask)
+                    .onDisappear {
+                        // Reapply the filters based on the current toggles
+                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                    }
             }
             .sheet(isPresented: $isImagePickerPresented) {
                 ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, sourceType: sourceType, viewContext: viewContext)
-
             }
             //if showStickyNoteView {
             //    addNewTaskShowView()
