@@ -9,17 +9,47 @@ import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
+    @Binding var showStickyNoteView: Bool // Add this binding
     @Environment(\.presentationMode) private var presentationMode
     var sourceType: UIImagePickerController.SourceType
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        picker.sourceType = sourceType
+        // Check if the sourceType is camera and if the camera is available
+        if sourceType == .camera && UIImagePickerController.isSourceTypeAvailable(.camera) {
+            picker.sourceType = .camera
+        } else if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            // If the camera is not available or the sourceType is not camera, attempt to use the photo library
+            picker.sourceType = .photoLibrary
+        } else {
+            print("Error: Camera and Photo library are not available.")
+            showStickyNoteView = true // Show the sticky note view
+            presentationMode.wrappedValue.dismiss() // Dismiss the picker
+            return picker
+        }
         return picker
     }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            let imageData = image.pngData() // Convert the image to data
+            selectedImage = image
+            // Create a new task with the image data
+            let newTask = SnapPlanTask(context: viewContext)
+            newTask.rawPhotoData = imageData // Set the rawPhotoData attribute
+            // Set the selected task to the new task
+            selectedTask = newTask
+            // Save the context
+            do {
+                try viewContext.save()
+            } catch {
+                print("Failed to save new task:", error)
+            }
+        }
+        presentationMode.wrappedValue.dismiss()
+    }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {print("ImagePicker:updateUIViewController")}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -33,6 +63,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            print("ImagePicker:imagePickerController")
             if let image = info[.originalImage] as? UIImage {
                 parent.selectedImage = image
             }

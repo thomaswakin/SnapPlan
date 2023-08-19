@@ -18,6 +18,7 @@ struct MainView: View {
     @State private var selectedTask: SnapPlanTask?
     @State private var showSettings: Bool = false
     @State private var forceRedraw: Bool = false
+    @State private var showStickyNoteView = false
     
     @State private var showTodo = true
     @State private var showDoing = false
@@ -34,6 +35,13 @@ struct MainView: View {
         self.viewModel = viewModel
     }
     
+    func addNewTaskShowView() {
+        viewModel.addTask()
+        // Set selectedTask to the newly added task
+        selectedTask = viewModel.tasks.last
+        ShowAndEditView(task: $selectedTask)
+    }
+    
     var body: some View {
         VStack {
             // Top Row: Task Filter and Add Task Button
@@ -46,9 +54,11 @@ struct MainView: View {
                     if UIImagePickerController.isSourceTypeAvailable(.camera) {
                         requestCameraPermission { granted in
                             if granted {
+                                print("Button:CameraGranted:", sourceType.rawValue)
                                 sourceType = .camera
                                 isImagePickerPresented = true
                             } else {
+                                print("Button:CameraNotGranted:", sourceType.rawValue)
                                 permissionAlertMessage = "Camera permission is required to take photos."
                                 isPermissionAlertPresented = true
                             }
@@ -56,19 +66,22 @@ struct MainView: View {
                     } else if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
                         requestPhotoLibraryPermission { granted in
                             if granted {
+                                print("Button:PhotoGranted:", sourceType.rawValue)
                                 sourceType = .photoLibrary
+                                print("Button:PhotoGranted:setSourceType", sourceType.rawValue)
                                 isImagePickerPresented = true
                             } else {
+                                print("Button:PhotoNotGranted:", sourceType.rawValue)
                                 permissionAlertMessage = "Photo library permission is required to select photos."
                                 isPermissionAlertPresented = true
                             }
                         }
                     } else {
+                        print("Buttton:NotCameraOrPhoto:", sourceType.rawValue)
                         permissionAlertMessage = "Camera and/or Photo Album access required to use images for tasks"
                         isPermissionAlertPresented = true
-                        viewModel.addTask()
-                        selectedTask = viewModel.tasks.last
                     }
+                    
                 }) {
                     Image(systemName: "camera")
                 }
@@ -87,9 +100,15 @@ struct MainView: View {
             .sheet(item: $selectedTask) { task in
                 ShowAndEditView(task: $selectedTask)
             }
-            .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $selectedImage, sourceType: sourceType)
+            .sheet(isPresented: $showStickyNoteView) {
+                ShowAndEditView(task: $selectedTask)
             }
+            .sheet(isPresented: $isImagePickerPresented) {
+                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, sourceType: sourceType)
+            }
+            //if showStickyNoteView {
+            //    addNewTaskShowView()
+            //}
             
             
             // Second Row: Navigation Tabs
@@ -201,3 +220,5 @@ func requestPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
         completion(status == .authorized)
     }
 }
+
+
