@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
     @Binding var showStickyNoteView: Bool // Add this binding
+    @Binding var selectedTask: SnapPlanTask?
     @Environment(\.presentationMode) private var presentationMode
     var sourceType: UIImagePickerController.SourceType
+    var viewContext: NSManagedObjectContext // Add this line
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()

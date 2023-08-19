@@ -42,6 +42,17 @@ struct MainView: View {
         ShowAndEditView(task: $selectedTask)
     }
     
+    func createTask(withImage image: UIImage) {
+        let newTask = SnapPlanTask(context: viewContext)
+        newTask.rawPhotoData = image.pngData()
+        selectedTask = newTask
+        do {
+            try viewContext.save()
+        } catch {
+            print("Failed to save new task:", error)
+        }
+    }
+    
     var body: some View {
         VStack {
             // Top Row: Task Filter and Add Task Button
@@ -104,7 +115,8 @@ struct MainView: View {
                 ShowAndEditView(task: $selectedTask)
             }
             .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, sourceType: sourceType)
+                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, sourceType: sourceType, viewContext: viewContext)
+
             }
             //if showStickyNoteView {
             //    addNewTaskShowView()
