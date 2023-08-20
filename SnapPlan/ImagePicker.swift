@@ -81,10 +81,24 @@ struct ImagePicker: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage {
-                createTaskClosure(image) // Call the closure with the selected image
+                let imageData = image.pngData() // Convert the image to data
+                // Create a new task with the image data
+                let newTask = SnapPlanTask(context: parent.viewContext)
+                newTask.rawPhotoData = imageData // Set the rawPhotoData attribute
+                newTask.state = "Todo" // Set the default state
+                newTask.dueDate = Date() // Set the default due date
+                // Set the selected task to the new task
+                parent.selectedTask = newTask
+                // Save the context
+                do {
+                    try parent.viewContext.save()
+                } catch {
+                    print("Failed to save new task:", error)
+                }
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
+
     }
 
 }
