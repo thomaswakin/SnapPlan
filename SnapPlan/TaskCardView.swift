@@ -10,7 +10,7 @@ import SwiftUI
 struct TaskCardView: View {
     @ObservedObject var task: SnapPlanTask
     @EnvironmentObject var taskFormatter: TaskFormatter
-    let taskCardWidth = (UIScreen.main.bounds.width / 3)
+    let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
     
     var body: some View {
         ZStack {
@@ -40,7 +40,7 @@ struct TaskCardView: View {
             .background(TaskFormatter.shared.stateColor(task: task).opacity(0.7))
             .clipShape(Capsule())
             .padding(.top, -55) // Adjust as needed
-            .frame(width: taskCardWidth - 5, height: taskCardWidth - 5)
+            .frame(width: taskCardWidth - 5)
             .edgesIgnoringSafeArea(.all)
             
             // Note Capsule at Bottom Right
@@ -74,7 +74,7 @@ struct TaskCardView: View {
             //}
 
         }
-        .padding(.top)
+        //.padding(.top)
         .frame(width: taskCardWidth, height: taskCardWidth)
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)

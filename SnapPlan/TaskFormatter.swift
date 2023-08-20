@@ -89,7 +89,7 @@ class TaskFormatter: ObservableObject {
 
 struct StickyNoteView: View {
     var color: Color
-    let taskCardWidth = (UIScreen.main.bounds.width / 3)
+    let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
     var body: some View {
         Rectangle()
             .fill(color)
