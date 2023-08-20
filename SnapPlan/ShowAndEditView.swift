@@ -16,6 +16,7 @@ struct ShowAndEditView: View {
     @State private var selectedDueDate: Date = Date()
     @State private var editedNote: String = ""
     
+    
     var body: some View {
         if let task = task {
             let imageData = task.rawPhotoData
@@ -51,25 +52,32 @@ struct ShowAndEditView: View {
                     }
                 
                 // Note Editor
-                TextField("Note", text: $editedNote)
+                TextEditor(text: $editedNote)
+                    .frame(height: UIScreen.main.bounds.height / 5)
+                    .padding()
+                    .border(Color.gray, width: 1)
                     .onChange(of: editedNote) { newValue in
                         task.note = newValue
                         saveContext()
                     }
-                
-                // Delete Button
-                Button("Delete") {
-                    viewContext.delete(task)
-                    saveContext()
-                    self.task = nil // Dismiss the view
+
+                HStack {
+                    // Delete Button
+                    Button("Delete") {
+                        viewContext.delete(task)
+                        saveContext()
+                        self.task = nil // Dismiss the view
+                    }
+                    .foregroundColor(.red)
+
+                    
+                    // Done Button
+                    Button("Done") {
+                        saveContext()
+                        self.task = nil // Dismiss the view
+                    }
                 }
-                .foregroundColor(.red)
-                
-                // Done Button
-                Button("Done") {
-                    saveContext()
-                    self.task = nil // Dismiss the view
-                }
+                .padding(.bottom)
             }
             .onAppear {
                 // Initialize the state

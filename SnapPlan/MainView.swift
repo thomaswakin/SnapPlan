@@ -10,11 +10,19 @@ import CoreData
 import AVFoundation
 import Photos
 
+enum ActiveSheet: Identifiable {
+    case showAndEditTask, showStickyNoteView, imagePicker
+
+    var id: Int {
+        hashValue
+    }
+}
 
 struct MainView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskFormatter: TaskFormatter
     @ObservedObject var viewModel: TaskViewModel
+    @State private var activeSheet: ActiveSheet?
     @State private var selectedTask: SnapPlanTask?
     @State private var showSettings: Bool = false
     @State private var forceRedraw: Bool = false
@@ -70,6 +78,7 @@ struct MainView: View {
                                 print("Button:CameraGranted:", sourceType.rawValue)
                                 sourceType = .camera
                                 isImagePickerPresented = true
+                                activeSheet = .imagePicker
                             } else {
                                 print("Button:CameraNotGranted:", sourceType.rawValue)
                                 permissionAlertMessage = "Camera permission is required to take photos."
@@ -83,6 +92,7 @@ struct MainView: View {
                                 sourceType = .photoLibrary
                                 print("Button:PhotoGranted:setSourceType", sourceType.rawValue)
                                 isImagePickerPresented = true
+                                activeSheet = .imagePicker
                             } else {
                                 print("Button:PhotoNotGranted:", sourceType.rawValue)
                                 permissionAlertMessage = "Photo library permission is required to select photos."
@@ -110,31 +120,53 @@ struct MainView: View {
             .alert(isPresented: $isPermissionAlertPresented) {
                 Alert(title: Text("Permission Required"), message: Text(permissionAlertMessage), dismissButton: .default(Text("OK")))
             }
-            .sheet(item: $selectedTask) { task in
-                ShowAndEditView(task: $selectedTask)
-                    .onDisappear {
-                        // Reapply the filters based on the current toggles
-                        viewModel.fetchTasks()
-                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                    }
-                
+            .sheet(item: $activeSheet) { item in
+                switch item {
+                case .showAndEditTask:
+                        ShowAndEditView(task: $selectedTask)
+                            .onDisappear {
+                                viewModel.fetchTasks()
+                                viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                            }
+                case .showStickyNoteView:
+                    ShowAndEditView(task: $selectedTask)
+                        .onDisappear {
+                            viewModel.fetchTasks()
+                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                        }
+                case .imagePicker:
+                    ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
+//                        .onDisappear {
+//                            viewModel.fetchTasks()
+//                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+//                        }
+                }
             }
-            .sheet(isPresented: $showStickyNoteView) {
-                ShowAndEditView(task: $selectedTask)
-                    .onDisappear {
-                        // Reapply the filters based on the current toggles
-                        viewModel.fetchTasks()
-                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                    }
-            }
-            .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
-                    .onDisappear {
-                        // Reapply the filters based on the current toggles
-                        viewModel.fetchTasks()
-                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                    }
-            }
+//            .sheet(item: $selectedTask) { task in
+//                ShowAndEditView(task: $selectedTask)
+//                    .onDisappear {
+//                        // Reapply the filters based on the current toggles
+//                        viewModel.fetchTasks()
+//                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+//                    }
+//
+//            }
+//            .sheet(isPresented: $showStickyNoteView) {
+//                ShowAndEditView(task: $selectedTask)
+//                    .onDisappear {
+//                        // Reapply the filters based on the current toggles
+//                        viewModel.fetchTasks()
+//                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+//                    }
+//            }
+//            .sheet(isPresented: $isImagePickerPresented) {
+//                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
+//                    .onDisappear {
+//                        // Reapply the filters based on the current toggles
+//                        viewModel.fetchTasks()
+//                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+//                    }
+//            }
 
                         
             // Second Row: Navigation Tabs
@@ -226,6 +258,8 @@ struct MainView: View {
             ShowAndEditView(task: $selectedTask)
                 .onDisappear {
                     forceRedraw.toggle()
+                    viewModel.fetchTasks()
+                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                 }
         }
         .sheet(isPresented: $showSettings) {
