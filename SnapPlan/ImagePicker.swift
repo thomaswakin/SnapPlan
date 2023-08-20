@@ -13,8 +13,13 @@ struct ImagePicker: UIViewControllerRepresentable {
     @Binding var showStickyNoteView: Bool // Add this binding
     @Binding var selectedTask: SnapPlanTask?
     @Environment(\.presentationMode) private var presentationMode
+    var createTaskClosure: (UIImage) -> Void
     var sourceType: UIImagePickerController.SourceType
     var viewContext: NSManagedObjectContext // Add this line
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self, createTaskClosure: createTaskClosure) // Pass the closure to the Coordinator
+    }
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
@@ -54,23 +59,28 @@ struct ImagePicker: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {print("ImagePicker:updateUIViewController")}
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        var createTaskClosure: (UIImage) -> Void // Add this property
         let parent: ImagePicker
 
-        init(_ parent: ImagePicker) {
+        init(_ parent: ImagePicker, createTaskClosure: @escaping (UIImage) -> Void) { // Modify the initializer
             self.parent = parent
+            self.createTaskClosure = createTaskClosure
         }
-
+        
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            print("ImagePicker:imagePickerController")
             if let image = info[.originalImage] as? UIImage {
-                parent.selectedImage = image
+                createTaskClosure(image) // Call the closure with the selected image
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
+
+        //func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        //    print("ImagePicker:imagePickerController")
+        //    if let image = info[.originalImage] as? UIImage {
+        //        parent.selectedImage = image
+        //    }
+        //    parent.presentationMode.wrappedValue.dismiss()
+        //}
     }
 }

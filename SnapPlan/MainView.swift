@@ -53,6 +53,13 @@ struct MainView: View {
         }
     }
     
+    // Add this closure property to MainView
+    var createTaskClosure: (UIImage) -> Void {
+        return { image in
+            createTask(withImage: image)
+        }
+    }
+    
     var body: some View {
         VStack {
             // Top Row: Task Filter and Add Task Button
@@ -124,7 +131,7 @@ struct MainView: View {
                     }
             }
             .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, sourceType: sourceType, viewContext: viewContext)
+                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
             }
             //if showStickyNoteView {
             //    addNewTaskShowView()
@@ -210,7 +217,6 @@ struct MainView: View {
             SettingsView()
         }
     }
-    
 }
 
 struct ToggleButtonStyle: ButtonStyle {
