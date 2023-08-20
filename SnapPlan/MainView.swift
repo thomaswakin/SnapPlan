@@ -211,7 +211,7 @@ struct MainView: View {
             // Third Row: Task Display (Placeholder)
             ScrollView {
                     if viewModel.isTaskCardView {
-                        LazyVGrid(columns: [GridItem(.fixed(taskCardWidth), spacing: 0)]) {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: taskCardWidth - 6), spacing: 0)]) {
                             ForEach(viewModel.filteredTasks, id: \.id) { task in
                                 TaskCardView(task: task)
                                     .frame(width: taskCardWidth) // Set the width for each task card
