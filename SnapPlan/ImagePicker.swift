@@ -39,31 +39,6 @@ struct ImagePicker: UIViewControllerRepresentable {
         picker.delegate = context.coordinator // Set the delegate to the Coordinator
         return picker
     }
-    
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        print("IP:imagePickerController:")
-//        if let image = info[.originalImage] as? UIImage {
-//            print("IP:imagePickerController:image to png")
-//            let imageData = image.pngData() // Convert the image to data
-//            selectedImage = image
-//            // Create a new task with the image data
-//            print("IP:imagePickerController:newTask with Image")
-//            let newTask = SnapPlanTask(context: viewContext)
-//            newTask.rawPhotoData = imageData // Set the rawPhotoData attribute
-//            // Set the selected task to the new task
-//            print("IP:imagePickerController:Net newTask as selectedTask")
-//            selectedTask = newTask
-//            // Save the context
-//            do {
-//                print("IP:imagePickerController:viewContext.save()")
-//                try viewContext.save()
-//            } catch {
-//                print("Failed to save new task:", error)
-//            }
-//        }
-//        print("IP:imagePickerController:dismiss presentationMode")
-//        presentationMode.wrappedValue.dismiss()
-//    }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
         print("ImagePicker:updateUIViewController")
@@ -84,6 +59,7 @@ struct ImagePicker: UIViewControllerRepresentable {
                 let imageData = image.pngData() // Convert the image to data
                 // Create a new task with the image data
                 let newTask = SnapPlanTask(context: parent.viewContext)
+                newTask.id = UUID()
                 newTask.rawPhotoData = imageData // Set the rawPhotoData attribute
                 newTask.state = "Todo" // Set the default state
                 newTask.dueDate = Date() // Set the default due date

@@ -35,15 +35,9 @@ struct MainView: View {
         self.viewModel = viewModel
     }
     
-    func addNewTaskShowView() {
-        viewModel.addTask()
-        // Set selectedTask to the newly added task
-        selectedTask = viewModel.tasks.last
-        ShowAndEditView(task: $selectedTask)
-    }
-    
     func createTask(withImage image: UIImage) {
         let newTask = SnapPlanTask(context: viewContext)
+        newTask.id = UUID()
         newTask.rawPhotoData = image.pngData()
         selectedTask = newTask
         do {
@@ -132,12 +126,13 @@ struct MainView: View {
             }
             .sheet(isPresented: $isImagePickerPresented) {
                 ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
+                    .onDisappear {
+                        // Reapply the filters based on the current toggles
+                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                    }
             }
-            //if showStickyNoteView {
-            //    addNewTaskShowView()
-            //}
-            
-            
+
+                        
             // Second Row: Navigation Tabs
             HStack(spacing: 10) { // Evenly space the buttons
                 Button("Todo") {
@@ -172,25 +167,30 @@ struct MainView: View {
             
             // Third Row: Task Display (Placeholder)
             ScrollView {
-                if viewModel.isTaskCardView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 120, maximum: 120), spacing: 0)]) {
-                    //LazyVGrid(columns: [GridItem(.fixed(125))]) {
-                        ForEach(viewModel.filteredTasks, id: \.id) { task in
-                            TaskCardView(task: task)
+                    if viewModel.isTaskCardView {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120, maximum: 120), spacing: 0)]) {
+                            ForEach(viewModel.filteredTasks, id: \.id) { task in
+                                TaskCardView(task: task)
+                                    .onTapGesture {
+                                        selectedTask = task
+                                    }
+                                    .onChange(of: task) { _ in
+                                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                    }
+                            }
+                        }
+                    } else {
+                        List(viewModel.filteredTasks, id: \.id) { task in
+                            TaskListView(task: task)
                                 .onTapGesture {
                                     selectedTask = task
                                 }
+                                .onChange(of: task) { _ in
+                                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                }
                         }
                     }
-                } else {
-                    List(viewModel.filteredTasks, id: \.id) { task in
-                        TaskListView(task: task)
-                            .onTapGesture {
-                                selectedTask = task
-                            }
-                    }
                 }
-            }
             
             // Fourth Row: Priority Slider, Display Toggle, and Settings Gear
             HStack {
