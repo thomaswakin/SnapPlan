@@ -60,6 +60,7 @@ struct MainView: View {
             HStack {
                 TextField("Task Filter", text: $viewModel.searchText)
                     .onChange(of: viewModel.searchText) { _ in
+                        viewModel.fetchTasks()
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
                 Button(action: {
@@ -113,6 +114,7 @@ struct MainView: View {
                 ShowAndEditView(task: $selectedTask)
                     .onDisappear {
                         // Reapply the filters based on the current toggles
+                        viewModel.fetchTasks()
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
                 
@@ -121,6 +123,7 @@ struct MainView: View {
                 ShowAndEditView(task: $selectedTask)
                     .onDisappear {
                         // Reapply the filters based on the current toggles
+                        viewModel.fetchTasks()
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
             }
@@ -128,6 +131,7 @@ struct MainView: View {
                 ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
                     .onDisappear {
                         // Reapply the filters based on the current toggles
+                        viewModel.fetchTasks()
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
             }
@@ -137,18 +141,23 @@ struct MainView: View {
             HStack(spacing: 10) { // Evenly space the buttons
                 Button("Todo") {
                     showTodo.toggle()
+                    viewModel.fetchTasks()
                     viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                   
                 }
                 .buttonStyle(ToggleButtonStyle(isSelected: showTodo))
 
                 Button("Doing") {
                     showDoing.toggle()
+                    viewModel.fetchTasks()
                     viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                   
                 }
                 .buttonStyle(ToggleButtonStyle(isSelected: showDoing))
 
                 Button("Done") {
                     showDone.toggle()
+                    viewModel.fetchTasks()
                     viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                 }
                 .buttonStyle(ToggleButtonStyle(isSelected: showDone))
@@ -175,7 +184,9 @@ struct MainView: View {
                                         selectedTask = task
                                     }
                                     .onChange(of: task) { _ in
+                                        viewModel.fetchTasks()
                                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+
                                     }
                             }
                         }
@@ -186,7 +197,9 @@ struct MainView: View {
                                     selectedTask = task
                                 }
                                 .onChange(of: task) { _ in
+                                    viewModel.fetchTasks()
                                     viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                    
                                 }
                         }
                     }
@@ -196,7 +209,9 @@ struct MainView: View {
             HStack {
                 Slider(value: $viewModel.priorityFilter, in: 0...100)
                     .onChange(of: viewModel.priorityFilter) { _ in
+                        viewModel.fetchTasks()
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                        
                     }
                 Toggle("", isOn: $viewModel.isTaskCardView)
                 Button(action: {

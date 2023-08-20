@@ -70,14 +70,7 @@ class TaskViewModel: ObservableObject {
             let matchesStateFilter = (showTodo && task.state == "Todo") ||
                                      (showDoing && task.state == "Doing") ||
                                      (showDone && task.state == "Done")
-            //let matchesStateFilter: Bool
-            //switch selectedTab {
-            //case 0: matchesStateFilter = task.state == "Todo"
-            //case 1: matchesStateFilter = task.state == "Doing"
-            //case 2: matchesStateFilter = task.state == "Done"
-            //default: matchesStateFilter = true
-            //}
-            
+
             // Apply priority filter
             let matchesPriorityFilter = task.priorityScore >= Int16(priorityFilter)
             
