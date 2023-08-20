@@ -22,6 +22,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
+        print("IP:makeUIViewController:")
         let picker = UIImagePickerController()
         // Check if the sourceType is camera and if the camera is available
         if sourceType == .camera && UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -35,29 +36,39 @@ struct ImagePicker: UIViewControllerRepresentable {
             presentationMode.wrappedValue.dismiss() // Dismiss the picker
             return picker
         }
+        picker.delegate = context.coordinator // Set the delegate to the Coordinator
         return picker
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.originalImage] as? UIImage {
-            let imageData = image.pngData() // Convert the image to data
-            selectedImage = image
-            // Create a new task with the image data
-            let newTask = SnapPlanTask(context: viewContext)
-            newTask.rawPhotoData = imageData // Set the rawPhotoData attribute
-            // Set the selected task to the new task
-            selectedTask = newTask
-            // Save the context
-            do {
-                try viewContext.save()
-            } catch {
-                print("Failed to save new task:", error)
-            }
-        }
-        presentationMode.wrappedValue.dismiss()
-    }
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        print("IP:imagePickerController:")
+//        if let image = info[.originalImage] as? UIImage {
+//            print("IP:imagePickerController:image to png")
+//            let imageData = image.pngData() // Convert the image to data
+//            selectedImage = image
+//            // Create a new task with the image data
+//            print("IP:imagePickerController:newTask with Image")
+//            let newTask = SnapPlanTask(context: viewContext)
+//            newTask.rawPhotoData = imageData // Set the rawPhotoData attribute
+//            // Set the selected task to the new task
+//            print("IP:imagePickerController:Net newTask as selectedTask")
+//            selectedTask = newTask
+//            // Save the context
+//            do {
+//                print("IP:imagePickerController:viewContext.save()")
+//                try viewContext.save()
+//            } catch {
+//                print("Failed to save new task:", error)
+//            }
+//        }
+//        print("IP:imagePickerController:dismiss presentationMode")
+//        presentationMode.wrappedValue.dismiss()
+//    }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {print("ImagePicker:updateUIViewController")}
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
+        print("ImagePicker:updateUIViewController")
+        
+    }
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         var createTaskClosure: (UIImage) -> Void // Add this property
@@ -67,20 +78,13 @@ struct ImagePicker: UIViewControllerRepresentable {
             self.parent = parent
             self.createTaskClosure = createTaskClosure
         }
-        
+
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage {
                 createTaskClosure(image) // Call the closure with the selected image
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
-
-        //func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        //    print("ImagePicker:imagePickerController")
-        //    if let image = info[.originalImage] as? UIImage {
-        //        parent.selectedImage = image
-        //    }
-        //    parent.presentationMode.wrappedValue.dismiss()
-        //}
     }
+
 }
