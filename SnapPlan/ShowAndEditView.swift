@@ -24,8 +24,12 @@ struct ShowAndEditView: View {
                 // Display the task's image
                 if let uiImage = uiImage {
                     Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: UIScreen.main.bounds.height / 2)
                 } else {
                     StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
+                        .frame(height: UIScreen.main.bounds.height / 2)
                 }
                 // State Picker
                 Picker("State", selection: $selectedState) {
