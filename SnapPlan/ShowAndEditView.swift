@@ -83,6 +83,7 @@ struct ShowAndEditView: View {
     }
     
     private func saveContext() {
+        print("ShowAndEditView:saveContext")
         do {
             try viewContext.save()
         } catch {

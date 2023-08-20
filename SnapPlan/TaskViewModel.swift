@@ -33,6 +33,8 @@ class TaskViewModel: ObservableObject {
     
     func fetchTasks() {
         let request: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
+        
+        print("TaskViewModel:fetchTasks")
         do {
             tasks = try viewContext.fetch(request)
             
@@ -59,6 +61,7 @@ class TaskViewModel: ObservableObject {
     func applyFilters(showTodo: Bool, showDoing: Bool, showDone: Bool) {
         filteredTasks = tasks.filter { task in
             // Apply text filter
+            print("TaskViewModel:applyFilters")
             let matchesTextFilter = searchText.isEmpty ||
                                     task.note?.lowercased().contains(searchText.lowercased()) == true ||
                                     (task.dueDate as Date?)?.description.lowercased().contains(searchText.lowercased()) == true
@@ -85,6 +88,7 @@ class TaskViewModel: ObservableObject {
     
     func addTask() {
         let newTask = SnapPlanTask(context: viewContext)
+        print("TaskViewModel:addTask")
         newTask.id = UUID()
         newTask.state = "Todo"
         newTask.dueDate = Date()
@@ -100,6 +104,7 @@ class TaskViewModel: ObservableObject {
     }
     
     func forceRefresh() {
+        print("TaskViewModel:forceRefresh")
         needsRefresh.toggle()
     }
     

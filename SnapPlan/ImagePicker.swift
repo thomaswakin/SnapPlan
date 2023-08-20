@@ -36,6 +36,7 @@ struct ImagePicker: UIViewControllerRepresentable {
             presentationMode.wrappedValue.dismiss() // Dismiss the picker
             return picker
         }
+        print("MakeUIViewController:return:", picker.sourceType)
         picker.delegate = context.coordinator // Set the delegate to the Coordinator
         return picker
     }
@@ -55,7 +56,9 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            print("imagePickerController")
             if let image = info[.originalImage] as? UIImage {
+                print("imagePickerController:let image")
                 let imageData = image.pngData() // Convert the image to data
                 // Create a new task with the image data
                 let newTask = SnapPlanTask(context: parent.viewContext)
@@ -67,11 +70,13 @@ struct ImagePicker: UIViewControllerRepresentable {
                 parent.selectedTask = newTask
                 // Save the context
                 do {
+                    print("imagePickerController:parent.viewContext.save")
                     try parent.viewContext.save()
                 } catch {
                     print("Failed to save new task:", error)
                 }
             }
+            print("imagePIckerController:presentationmode.dismiss")
             parent.presentationMode.wrappedValue.dismiss()
         }
 
