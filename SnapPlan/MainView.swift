@@ -39,6 +39,8 @@ struct MainView: View {
     @State private var isPermissionAlertPresented: Bool = false
     @State private var permissionAlertMessage: String = ""
     
+    let taskCardWidth = (UIScreen.main.bounds.width / 3)
+    
     init(viewModel: TaskViewModel) {
         self.viewModel = viewModel
     }
@@ -209,16 +211,16 @@ struct MainView: View {
             // Third Row: Task Display (Placeholder)
             ScrollView {
                     if viewModel.isTaskCardView {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120, maximum: 120), spacing: 0)]) {
+                        LazyVGrid(columns: [GridItem(.fixed(taskCardWidth), spacing: 0)]) {
                             ForEach(viewModel.filteredTasks, id: \.id) { task in
                                 TaskCardView(task: task)
+                                    .frame(width: taskCardWidth) // Set the width for each task card
                                     .onTapGesture {
                                         selectedTask = task
                                     }
                                     .onChange(of: task) { _ in
                                         viewModel.fetchTasks()
                                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-
                                     }
                             }
                         }

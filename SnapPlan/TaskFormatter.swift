@@ -11,6 +11,7 @@ import SwiftUI
 class TaskFormatter: ObservableObject {
     static let shared = TaskFormatter()
     @State private var selectedDate: Date = Date()
+   
     
     public let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -88,15 +89,13 @@ class TaskFormatter: ObservableObject {
 
 struct StickyNoteView: View {
     var color: Color
+    let taskCardWidth = (UIScreen.main.bounds.width / 3)
     var body: some View {
         Rectangle()
-            //.fill(LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange]), startPoint: .top, endPoint: .bottom))
-            //.frame(width: 110, height: 110)
             .fill(color)
-            .frame(width: UIScreen.main.bounds.width / 3 - 15, height: UIScreen.main.bounds.width / 3 - 15)
+            .frame(width: taskCardWidth, height: taskCardWidth)
             .cornerRadius(5)
             .shadow(radius: 5)
-            //.rotationEffect(.degrees(-2)) // Optional: Slight rotation for a more natural look
     }
 }
 
