@@ -23,7 +23,7 @@ struct ImagePicker: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         print("IP:makeUIViewController:")
-        let picker = UIImagePickerController()
+        let picker = CustomImagePickerController()
         // Check if the sourceType is camera and if the camera is available
         if sourceType == .camera && UIImagePickerController.isSourceTypeAvailable(.camera) {
             picker.sourceType = .camera
@@ -59,7 +59,8 @@ struct ImagePicker: UIViewControllerRepresentable {
             print("imagePickerController")
             if let image = info[.originalImage] as? UIImage {
                 print("imagePickerController:let image")
-                let imageData = image.pngData() // Convert the image to data
+                let fixedImage = image.fixOrientation()
+                let imageData = fixedImage.pngData() // Convert the image to data
                 // Create a new task with the image data
                 let newTask = SnapPlanTask(context: parent.viewContext)
                 newTask.id = UUID()
@@ -82,4 +83,20 @@ struct ImagePicker: UIViewControllerRepresentable {
 
     }
 
+}
+
+
+extension UIImage {
+    func fixOrientation() -> UIImage {
+        if imageOrientation == .up {
+            return self
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(in: CGRect(origin: .zero, size: size))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        return normalizedImage
+    }
 }

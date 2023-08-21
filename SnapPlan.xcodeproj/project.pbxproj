@@ -20,6 +20,7 @@
 		114C65F22A8B071600265BE6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F12A8B071600265BE6 /* SettingsView.swift */; };
 		114C65F82A8BA83600265BE6 /* TaskFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F72A8BA83600265BE6 /* TaskFormatter.swift */; };
 		114C65FA2A8FD84400265BE6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F92A8FD84400265BE6 /* ImagePicker.swift */; };
+		11D11EC72A92F3660088E75B /* CustomImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		114C65F12A8B071600265BE6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		114C65F72A8BA83600265BE6 /* TaskFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFormatter.swift; sourceTree = "<group>"; };
 		114C65F92A8FD84400265BE6 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePickerController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				114C65F12A8B071600265BE6 /* SettingsView.swift */,
 				114C65F72A8BA83600265BE6 /* TaskFormatter.swift */,
 				114C65F92A8FD84400265BE6 /* ImagePicker.swift */,
+				11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */,
 			);
 			path = SnapPlan;
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11D11EC72A92F3660088E75B /* CustomImagePickerController.swift in Sources */,
 				114C65E42A8B029F00265BE6 /* MainView.swift in Sources */,
 				114C65D52A8ABDDC00265BE6 /* Persistence.swift in Sources */,
 				114C65F02A8B069300265BE6 /* TaskListView.swift in Sources */,

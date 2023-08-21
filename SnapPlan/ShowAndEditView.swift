@@ -16,6 +16,10 @@ struct ShowAndEditView: View {
     @State private var selectedDueDate: Date = Date()
     @State private var editedNote: String = ""
     
+    @State private var rotationAngle: Angle = .degrees(0)
+    @State private var isImagePickerPresented: Bool = false
+    @State private var forceRedraw: Bool = false
+    
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width - 10
         if let task = task {
@@ -28,10 +32,30 @@ struct ShowAndEditView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(height: UIScreen.main.bounds.height / 2)
+                        .rotationEffect(rotationAngle)
+                        .gesture(RotationGesture().onChanged { angle in
+                            rotationAngle = angle
+                        })
+                        .onTapGesture {
+                            isImagePickerPresented = true
+                        }
                 } else {
                     StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
                         .frame(height: UIScreen.main.bounds.height / 2)
+                        .onTapGesture {
+                            isImagePickerPresented = true
+                        }
                 }
+                HStack {
+                    Button("Rotate Left") {
+                        rotationAngle += .degrees(-90)
+                    }
+                    Spacer()
+                    Button("Rotate Right") {
+                        rotationAngle += .degrees(90)
+                    }
+                }
+                Spacer()
                 // State Picker
                 Picker("State", selection: $selectedState) {
                     Text("Todo").tag("Todo")
@@ -89,6 +113,14 @@ struct ShowAndEditView: View {
                 editedNote = task.note ?? ""
             }
             .frame(width: screenWidth)
+            .sheet(item: $task) { task in
+                ShowAndEditView(task: $task)
+                    .onDisappear {
+                        forceRedraw.toggle()
+                        //viewModel.fetchTasks()
+                        //viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                    }
+            }
         } else {
             Text("No Task Selected")
         }
