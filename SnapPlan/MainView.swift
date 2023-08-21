@@ -197,6 +197,7 @@ struct MainView: View {
                 .buttonStyle(ToggleButtonStyle(isSelected: showDone))
             }
             .padding(.horizontal)
+            //.frame(width: UIScreen.main.bounds.width * 2/3)
             //Picker("", selection: $viewModel.selectedTab) {
             //    Text("Todo").tag(0)
             //    Text("Doing").tag(1)
@@ -211,10 +212,10 @@ struct MainView: View {
             // Third Row: Task Display (Placeholder)
             ScrollView {
                     if viewModel.isTaskCardView {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: taskCardWidth), spacing: 0)]) {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: taskCardWidth - 1), spacing: 0)]) {
                             ForEach(viewModel.filteredTasks, id: \.id) { task in
                                 TaskCardView(task: task)
-                                    .frame(width: taskCardWidth) // Set the width for each task card
+                                    .frame(width: taskCardWidth - 2) // Set the width for each task card
                                     .onTapGesture {
                                         selectedTask = task
                                     }
@@ -277,8 +278,8 @@ struct ToggleButtonStyle: ButtonStyle {
         configuration.label
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .background(isSelected ? Color.gray : Color.white)
-            .foregroundColor(isSelected ? Color.white : Color.black)
+            .foregroundColor(isSelected ? Color.gray : Color.white)
+            .background(isSelected ? Color.white : Color.black)
             .cornerRadius(8)
             .shadow(radius: 2)
             .font(.system(size: isSelected ? 14 : 12)) // Scale font size based on selection

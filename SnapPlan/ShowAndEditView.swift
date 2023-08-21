@@ -16,8 +16,8 @@ struct ShowAndEditView: View {
     @State private var selectedDueDate: Date = Date()
     @State private var editedNote: String = ""
     
-    
     var body: some View {
+        let screenWidth = UIScreen.main.bounds.width - 10
         if let task = task {
             let imageData = task.rawPhotoData
             let uiImage = imageData.flatMap { UIImage(data: $0) }
@@ -79,15 +79,23 @@ struct ShowAndEditView: View {
                 }
                 .padding(.bottom)
             }
+            .onTapGesture {
+                hideKeyboard()
+            }
             .onAppear {
                 // Initialize the state
                 selectedState = task.state ?? "Todo"
                 selectedDueDate = task.dueDate as Date? ?? Date()
                 editedNote = task.note ?? ""
             }
+            .frame(width: screenWidth)
         } else {
             Text("No Task Selected")
         }
+    }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     private func saveContext() {

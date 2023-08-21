@@ -44,7 +44,6 @@ struct TaskCardView: View {
             .edgesIgnoringSafeArea(.all)
             
             // Note Capsule at Bottom Right
-            // Note Capsule at Bottom Right
             if let note = task.note, !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 VStack {
                     Spacer()
@@ -55,7 +54,7 @@ struct TaskCardView: View {
                             .truncationMode(.tail) // Add ellipsis if the text is truncated
                             .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 2))
                             .padding(.bottom, 5)
-                            .background(Color.white.opacity(0.5))
+                            .background(Color.black.opacity(0.5))
                             //.padding(.horizontal, -10.0)
                             .frame(maxWidth: .infinity, alignment: .leading) // Align to the bottom left
                     }
