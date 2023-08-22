@@ -52,26 +52,15 @@ struct TaskCardView: View {
                         Text(note)
                             .lineLimit(3) // Limit to three lines
                             .truncationMode(.tail) // Add ellipsis if the text is truncated
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 2))
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
                             .padding(.bottom, 5)
                             .background(Color.black.opacity(0.5))
+                            .foregroundColor(Color.white)
                             //.padding(.horizontal, -10.0)
                             .frame(maxWidth: .infinity, alignment: .leading) // Align to the bottom left
                     }
                 }
             }
-            //VStack(alignment: .leading) {
-            //    Text(task.state ?? "Todo")
-            //        .font(.headline)
-            //        .foregroundColor(.black)
-            //    Text(task.dueDate != nil ? TaskFormatter.shared.dateFormatter.string(from: task.dueDate!) : "--")
-            //        .font(.subheadline)
-            //        .foregroundColor(.black)
-            //    Text(task.note ?? "")
-            //        .font(.caption)
-            //        .foregroundColor(.black)
-            //}
-
         }
         //.padding(.top)
         .frame(width: taskCardWidth, height: taskCardWidth)

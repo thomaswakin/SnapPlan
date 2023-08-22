@@ -19,6 +19,7 @@ struct ShowAndEditView: View {
     @State private var rotationAngle: Angle = .degrees(0)
     @State private var isImagePickerPresented: Bool = false
     @State private var forceRedraw: Bool = false
+    @State private var showingStickyNote: Bool = true
     
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width - 10
@@ -46,16 +47,20 @@ struct ShowAndEditView: View {
                             isImagePickerPresented = true
                         }
                 }
-                HStack {
-                    Button("Rotate Left") {
+                HStack(alignment: .top) {
+                    Button(action: {
                         rotationAngle += .degrees(-90)
+                    }) {
+                        Image(systemName: "arrow.counterclockwise")
                     }
-                    Spacer()
-                    Button("Rotate Right") {
+                    Button(action: {
                         rotationAngle += .degrees(90)
+                    }) {
+                        Image(systemName: "arrow.clockwise")
                     }
                 }
-                Spacer()
+                .padding(.top, 10)
+               
                 // State Picker
                 Picker("State", selection: $selectedState) {
                     Text("Todo").tag("Todo")
@@ -97,15 +102,19 @@ struct ShowAndEditView: View {
                     
                     // Done Button
                     Button("Done") {
+                        if let uiImage = uiImage {
+                            let rotatedImage = uiImage.rotate(radians: rotationAngle.radians)
+                            task.rawPhotoData = rotatedImage?.jpegData(compressionQuality: 1.0)
+                        }
                         saveContext()
                         self.task = nil // Dismiss the view
                     }
                 }
                 .padding(.bottom)
             }
-            .onTapGesture {
-                hideKeyboard()
-            }
+            //.onTapGesture {
+            //    hideKeyboard()
+            //}
             .onAppear {
                 // Initialize the state
                 selectedState = task.state ?? "Todo"
@@ -113,13 +122,8 @@ struct ShowAndEditView: View {
                 editedNote = task.note ?? ""
             }
             .frame(width: screenWidth)
-            .sheet(item: $task) { task in
-                ShowAndEditView(task: $task)
-                    .onDisappear {
-                        forceRedraw.toggle()
-                        //viewModel.fetchTasks()
-                        //viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                    }
+            .onDisappear {
+                forceRedraw.toggle()
             }
         } else {
             Text("No Task Selected")
@@ -139,3 +143,5 @@ struct ShowAndEditView: View {
         }
     }
 }
+
+

@@ -17,6 +17,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     var sourceType: UIImagePickerController.SourceType
     var viewContext: NSManagedObjectContext // Add this line
     
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self, createTaskClosure: createTaskClosure) // Pass the closure to the Coordinator
     }
@@ -86,6 +87,7 @@ struct ImagePicker: UIViewControllerRepresentable {
 }
 
 
+
 extension UIImage {
     func fixOrientation() -> UIImage {
         if imageOrientation == .up {
@@ -98,5 +100,16 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return normalizedImage
+    }
+    
+    func rotate(radians: CGFloat) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        let context = UIGraphicsGetCurrentContext()!
+        context.translateBy(x: size.width / 2, y: size.height / 2)
+        context.rotate(by: radians)
+        draw(in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height))
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return result
     }
 }
