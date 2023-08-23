@@ -15,8 +15,6 @@ class CustomImagePickerController: UIImagePickerController {
         
         if sourceType == .camera {
             showsCameraControls = true
-            let overlayView = createCameraOverlay()
-            cameraOverlayView = overlayView
         }
     }
     
