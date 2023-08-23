@@ -12,10 +12,12 @@ struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
     @Binding var showStickyNoteView: Bool // Add this binding
     @Binding var selectedTask: SnapPlanTask?
+    @Binding var isEditing: Bool
     @Environment(\.presentationMode) private var presentationMode
     //var createTaskClosure: (UIImage) -> Void
     var sourceType: UIImagePickerController.SourceType
-    var viewContext: NSManagedObjectContext // Add this line
+    var viewContext: NSManagedObjectContext 
+
     
     
     func makeCoordinator() -> Coordinator {
@@ -62,13 +64,20 @@ struct ImagePicker: UIViewControllerRepresentable {
                 let fixedImage = image.fixOrientation()
                 let imageData = fixedImage.pngData() // Convert the image to data
                 // Create a new task with the image data
-                let newTask = SnapPlanTask(context: parent.viewContext)
-                newTask.id = UUID()
-                newTask.rawPhotoData = imageData // Set the rawPhotoData attribute
-                newTask.state = "Todo" // Set the default state
-                newTask.dueDate = Date() // Set the default due date
-                // Set the selected task to the new task
-                parent.selectedTask = newTask
+                
+                if parent.isEditing {
+                    // Update the existing task
+                    parent.selectedTask?.rawPhotoData = imageData
+                } else {
+                    // Create a new task
+                    let newTask = SnapPlanTask(context: parent.viewContext)
+                    newTask.id = UUID()
+                    newTask.rawPhotoData = imageData
+                    newTask.state = "Todo"
+                    newTask.dueDate = Date()
+                    parent.selectedTask = newTask
+                }
+                
                 // Save the context
                 do {
                     print("imagePickerController:parent.viewContext.save")

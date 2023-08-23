@@ -21,6 +21,7 @@ struct ShowAndEditView: View {
     @State private var forceRedraw: Bool = false
     @State private var showingStickyNote: Bool = true
     @State private var uiImage: UIImage? = nil
+   
     
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
@@ -137,7 +138,7 @@ struct ShowAndEditView: View {
                 forceRedraw.toggle()
             }
             .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showingStickyNote, selectedTask: $task, sourceType: sourceType, viewContext: viewContext)
+                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showingStickyNote, selectedTask: $task, isEditing: true, sourceType: sourceType, viewContext: viewContext)
             }
         } else {
             Text("No Task Selected")
