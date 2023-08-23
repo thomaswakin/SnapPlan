@@ -31,7 +31,9 @@ struct MainView: View {
     @State private var showTodo = true
     @State private var showDoing = false
     @State private var showDone = false
-    
+    @State private var isTaskCardView = false
+    @State private var textOpacity: Double = 1
+
     @State private var isImagePickerPresented: Bool = false
     @State private var selectedImage: UIImage?
     @State private var sourceType: UIImagePickerController.SourceType = .camera
@@ -242,19 +244,67 @@ struct MainView: View {
             
             // Fourth Row: Priority Slider, Display Toggle, and Settings Gear
             HStack {
-                Slider(value: $viewModel.priorityFilter, in: 0...100)
-                    .onChange(of: viewModel.priorityFilter) { _ in
-                        viewModel.fetchTasks()
-                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                        
+                VStack {
+                    Slider(value: $viewModel.priorityFilter, in: 0...100)
+                        .onChange(of: viewModel.priorityFilter) { _ in
+                            viewModel.fetchTasks()
+                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                            
+                        }
+                        .scaleEffect(0.7)
+                        .frame(alignment: .leading)
+                    Text("Priority Filter")
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                        .frame(alignment: .leading)
+                }
+                Spacer()
+                VStack {
+                    if isTaskCardView {
+                        Text("TaskCards")
+                            .opacity(textOpacity)
+                            .transition(.opacity)
+                        viewModel.isTaskCardView = true
+                    } else {
+                        Text("TaskList")
+                            .opacity(textOpacity)
+                            .transition(.opacity)
+                        viewModel.isTaskCardView = false
                     }
-                Toggle("", isOn: $viewModel.isTaskCardView)
+
+                    Toggle("", isOn: $isTaskCardView)
+                        .labelsHidden() // Hides the default label
+                        .onChange(of: isTaskCardView) { newValue in
+                            withAnimation {
+                                textOpacity = 1
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                withAnimation {
+                                    textOpacity = 0
+                                }
+                            }
+                        }
+                }
+                .frame(alignment: .trailing)
+                VStack {
+                    Toggle("", isOn: $viewModel.sortByDueDate)
+                        .scaleEffect(0.7)
+                        .frame(alignment: .trailing)
+                        .onChange(of: viewModel.sortByDueDate) { _ in
+                            viewModel.fetchTasks()
+                        }
+                    Text("Sort by")
+                    Text(viewModel.sortByDueDate ? "Date" : "Priority")
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                        .frame(alignment: .trailing)
+                }
+
                 Button(action: {
                     showSettings = true
                 }) {
                     Image(systemName: "gear")
                 }
             }
+            
         }
         .padding()
         .sheet(item: $selectedTask) { task in

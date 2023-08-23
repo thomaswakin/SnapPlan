@@ -20,7 +20,9 @@ class TaskViewModel: ObservableObject {
     @Published var showTodo: Bool = true
     @Published var showDoing: Bool = false
     @Published var showDone: Bool = false
+    @Published var sortByDueDate: Bool = true
     @EnvironmentObject var settings: Settings
+    
     
     private var taskObservers: [NSKeyValueObservation] = []
     
@@ -34,6 +36,12 @@ class TaskViewModel: ObservableObject {
     func fetchTasks() {
         let request: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
         
+        // Add sorting descriptors based on sortByDueDate
+        if sortByDueDate {
+            request.sortDescriptors = [NSSortDescriptor(key: "dueDate", ascending: true)]
+        } else {
+            request.sortDescriptors = [NSSortDescriptor(key: "priorityScore", ascending: false)]
+        }
         print("TaskViewModel:fetchTasks")
         do {
             tasks = try viewContext.fetch(request)
@@ -57,6 +65,10 @@ class TaskViewModel: ObservableObject {
         }
     }
 
+    func toggleSortingMode() {
+        sortByDueDate.toggle()
+        fetchTasks()
+    }
     
     func applyFilters(showTodo: Bool, showDoing: Bool, showDone: Bool) {
         filteredTasks = tasks.filter { task in
