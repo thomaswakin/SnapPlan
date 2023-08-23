@@ -34,6 +34,7 @@ struct MainView: View {
     @State private var textOpacity: Double = 1
     @State private var sortTextOpacity: Double = 1
     @State private var showTaskCard: Bool = true
+    @State private var isEditing: Bool = false
 
     @State private var isImagePickerPresented: Bool = false
     @State private var selectedImage: UIImage?
@@ -140,7 +141,7 @@ struct MainView: View {
                             viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                         }
                 case .imagePicker:
-                    ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, sourceType: sourceType, viewContext: viewContext)
+                    ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, isEditing: $isEditing, sourceType: sourceType, viewContext: viewContext)
 //                        .onDisappear {
 //                            viewModel.fetchTasks()
 //                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)

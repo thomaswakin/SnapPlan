@@ -15,6 +15,7 @@ struct ShowAndEditView: View {
     @State private var selectedState: String = "Todo"
     @State private var selectedDueDate: Date = Date()
     @State private var editedNote: String = ""
+    @State private var isEditing: Bool = false
     
     @State private var rotationAngle: Angle = .degrees(0)
     @State private var isImagePickerPresented: Bool = false
@@ -138,7 +139,7 @@ struct ShowAndEditView: View {
                 forceRedraw.toggle()
             }
             .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showingStickyNote, selectedTask: $task, isEditing: true, sourceType: sourceType, viewContext: viewContext)
+                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showingStickyNote, selectedTask: $task, isEditing: $isEditing, sourceType: sourceType, viewContext: viewContext)
             }
         } else {
             Text("No Task Selected")
