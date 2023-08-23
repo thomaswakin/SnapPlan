@@ -21,6 +21,8 @@ struct ShowAndEditView: View {
     @State private var forceRedraw: Bool = false
     @State private var showingStickyNote: Bool = true
     
+    @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
+    
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width - 10
         if let task = task {
@@ -37,15 +39,9 @@ struct ShowAndEditView: View {
                         .gesture(RotationGesture().onChanged { angle in
                             rotationAngle = angle
                         })
-                        .onTapGesture {
-                            isImagePickerPresented = true
-                        }
                 } else {
                     StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
                         .frame(height: UIScreen.main.bounds.height / 2)
-                        .onTapGesture {
-                            isImagePickerPresented = true
-                        }
                 }
                 HStack(alignment: .top) {
                     Button(action: {
@@ -58,7 +54,19 @@ struct ShowAndEditView: View {
                     }) {
                         Image(systemName: "arrow.clockwise")
                     }
-                }
+                    Spacer()
+                    Button(action: {
+                        sourceType = .camera
+                        isImagePickerPresented = true
+                    }) {
+                        Image(systemName: "camera")
+                    }
+                    Button(action: {
+                        sourceType = .photoLibrary
+                        isImagePickerPresented = true
+                    }) {
+                        Image(systemName: "photo")
+                    }                }
                 .padding(.top, 10)
                
                 // State Picker
@@ -124,6 +132,9 @@ struct ShowAndEditView: View {
             .frame(width: screenWidth)
             .onDisappear {
                 forceRedraw.toggle()
+            }
+            .sheet(isPresented: $isImagePickerPresented) {
+                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, sourceType: sourceType, viewContext: viewContext, createTaskClosure: createTaskClosure)
             }
         } else {
             Text("No Task Selected")
