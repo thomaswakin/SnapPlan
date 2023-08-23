@@ -133,6 +133,7 @@ struct ShowAndEditView: View {
                 selectedState = task.state ?? "Todo"
                 selectedDueDate = task.dueDate as Date? ?? Date()
                 editedNote = task.note ?? ""
+                isEditing = true
             }
             .frame(width: screenWidth)
             .onDisappear {
