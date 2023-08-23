@@ -31,8 +31,9 @@ struct MainView: View {
     @State private var showTodo = true
     @State private var showDoing = false
     @State private var showDone = false
-    @State private var isTaskCardView = false
     @State private var textOpacity: Double = 1
+    @State private var sortTextOpacity: Double = 1
+    @State private var showTaskCard: Bool = true
 
     @State private var isImagePickerPresented: Bool = false
     @State private var selectedImage: UIImage?
@@ -258,45 +259,72 @@ struct MainView: View {
                         .frame(alignment: .leading)
                 }
                 Spacer()
+                
                 VStack {
-                    if isTaskCardView {
+                    if viewModel.isTaskCardView {
                         Text("TaskCards")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
                             .opacity(textOpacity)
-                            .transition(.opacity)
-                        viewModel.isTaskCardView = true
-                    } else {
-                        Text("TaskList")
-                            .opacity(textOpacity)
-                            .transition(.opacity)
-                        viewModel.isTaskCardView = false
-                    }
-
-                    Toggle("", isOn: $isTaskCardView)
-                        .labelsHidden() // Hides the default label
-                        .onChange(of: isTaskCardView) { newValue in
-                            withAnimation {
-                                textOpacity = 1
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                withAnimation {
-                                    textOpacity = 0
+                            .onAppear {
+                                withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                    textOpacity = 0 // Fade out the text after 1 second
                                 }
                             }
+                    } else {
+                        Text("TaskList")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                            .opacity(textOpacity)
+                            .onAppear {
+                                withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                    textOpacity = 0 // Fade out the text after 1 second
+                                }
+                            }
+                    }
+                    Toggle("", isOn: $viewModel.isTaskCardView)
+                        .scaleEffect(0.7)
+                        .onChange(of: viewModel.isTaskCardView) { _ in
+                            textOpacity = 1 // Reset text opacity when toggle changes
                         }
                 }
                 .frame(alignment: .trailing)
                 VStack {
+                    if viewModel.sortByDueDate {
+                        Text("Date Sort")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                            .opacity(sortTextOpacity)
+                            .onAppear {
+                                withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                    sortTextOpacity = 0 // Fade out the text after 1 second
+                                }
+                            }
+                    } else {
+                        Text("Priority Sort")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                            .opacity(sortTextOpacity)
+                            .onAppear {
+                                withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                    sortTextOpacity = 0 // Fade out the text after 1 second
+                                }
+                            }
+                    }
                     Toggle("", isOn: $viewModel.sortByDueDate)
                         .scaleEffect(0.7)
-                        .frame(alignment: .trailing)
                         .onChange(of: viewModel.sortByDueDate) { _ in
-                            viewModel.fetchTasks()
+                            sortTextOpacity = 1 // Reset text opacity when toggle changes
                         }
-                    Text("Sort by")
-                    Text(viewModel.sortByDueDate ? "Date" : "Priority")
-                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
-                        .frame(alignment: .trailing)
                 }
+//                VStack {
+//                    Toggle("", isOn: $viewModel.sortByDueDate)
+//                        .scaleEffect(0.7)
+//                        .frame(alignment: .trailing)
+//                        .onChange(of: viewModel.sortByDueDate) { _ in
+//                            viewModel.fetchTasks()
+//                        }
+//                    Text("Sort by")
+//                    Text(viewModel.sortByDueDate ? "Date" : "Priority")
+//                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+//                        .frame(alignment: .trailing)
+//                }
 
                 Button(action: {
                     showSettings = true
