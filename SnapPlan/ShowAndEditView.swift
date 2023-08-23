@@ -20,14 +20,16 @@ struct ShowAndEditView: View {
     @State private var isImagePickerPresented: Bool = false
     @State private var forceRedraw: Bool = false
     @State private var showingStickyNote: Bool = true
+    @State private var uiImage: UIImage? = nil
     
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
+    
     
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width - 10
         if let task = task {
             let imageData = task.rawPhotoData
-            let uiImage = imageData.flatMap { UIImage(data: $0) }
+            //let uiImage = imageData.flatMap { UIImage(data: $0) }
             VStack {
                 // Display the task's image
                 if let uiImage = uiImage {
@@ -125,6 +127,7 @@ struct ShowAndEditView: View {
             //}
             .onAppear {
                 // Initialize the state
+                uiImage = task.rawPhotoData.flatMap { UIImage(data: $0) }
                 selectedState = task.state ?? "Todo"
                 selectedDueDate = task.dueDate as Date? ?? Date()
                 editedNote = task.note ?? ""
@@ -134,7 +137,7 @@ struct ShowAndEditView: View {
                 forceRedraw.toggle()
             }
             .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, sourceType: sourceType, viewContext: viewContext, createTaskClosure: createTaskClosure)
+                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showingStickyNote, selectedTask: $task, sourceType: sourceType, viewContext: viewContext)
             }
         } else {
             Text("No Task Selected")

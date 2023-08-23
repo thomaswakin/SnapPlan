@@ -61,11 +61,11 @@ struct MainView: View {
     }
     
     // Add this closure property to MainView
-    var createTaskClosure: (UIImage) -> Void {
-        return { image in
-            createTask(withImage: image)
-        }
-    }
+    //var createTaskClosure: (UIImage) -> Void {
+    //    return { image in
+    //        createTask(withImage: image)
+    //    }
+    //}
     
     var body: some View {
         VStack {
@@ -140,7 +140,7 @@ struct MainView: View {
                             viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                         }
                 case .imagePicker:
-                    ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
+                    ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, sourceType: sourceType, viewContext: viewContext)
 //                        .onDisappear {
 //                            viewModel.fetchTasks()
 //                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
