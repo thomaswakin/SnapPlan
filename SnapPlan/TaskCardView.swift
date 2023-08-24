@@ -37,38 +37,42 @@ struct TaskCardView: View {
             }
             .padding(.horizontal, 8) // Adjust the horizontal padding as needed
             .frame(height: 20) // Set the height of the capsule
-            .background(TaskFormatter.shared.stateColor(task: task).opacity(0.7))
+            //.background(TaskFormatter.shared.stateColor(task: task).opacity(0.7))
+            .background(TaskFormatter.shared.stateColor(task: task))
             .clipShape(Capsule())
             .padding(.top, -55) // Adjust as needed
             .frame(width: taskCardWidth - 5)
             .edgesIgnoringSafeArea(.all)
             
             // Note Capsule at Bottom Right
-            HStack {
-                if let note = task.note, !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    VStack {
+            if let note = task.note, !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                VStack {
+                    Spacer()
+                    HStack {
                         Spacer()
-                        HStack {
-                            Spacer()
-                            Text(note)
-                                .lineLimit(3) // Limit to three lines
-                                .truncationMode(.tail) // Add ellipsis if the text is truncated
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
-                                .padding(.bottom, 5)
-                                .background(Color.black.opacity(0.5))
-                                .foregroundColor(Color.white)
-                            //.padding(.horizontal, -10.0)
-                                .frame(maxWidth: .infinity, alignment: .leading) // Align to the bottom left
-                        }
+                        Text(note)
+                            .lineLimit(3) // Limit to three lines
+                            .truncationMode(.tail) // Add ellipsis if the text is truncated
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                            .padding(.bottom, 5)
+                            .background(Color.black.opacity(0.5))
+                            .foregroundColor(Color.white)
+                        //.padding(.horizontal, -10.0)
+                            .frame(maxWidth: .infinity, alignment: .leading) // Align to the bottom left
                     }
                 }
-                Text(task.priorityScore)
-                    .frame(alignment: .trailing)
-                    .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
-                    .foregroundColor(.white)
-                    .padding(5)
-                    .background(Color.black.opacity(0.5))
             }
+            ZStack {
+                Circle()
+                    .fill(Color.gray)
+                    .frame(width: 25, height: 25) // Adjust the size of the circle as needed
+
+                Text("\(task.priorityScore)") // Converts Int16 to String
+                    .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
+                    .foregroundColor(.white)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+            .padding(2)
         }
         //.padding(.top)
         .frame(width: taskCardWidth, height: taskCardWidth)

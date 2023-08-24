@@ -101,15 +101,27 @@ struct StickyNoteView: View {
 
 
 extension Color {
-    static let todoColor = Color(hex: "#FEC601")
-    static let doingColor = Color(hex: "#3DA5D9")
-    static let doneColor = Color(hex: "#73BFB8")
-    static let pastDueFontColor = Color(hex: "#af0808")
-    static let todoDueTodayFontColor = Color(hex: "#EA7317")
-    static let doingDueTodayFontColor = Color(hex: "#A85413")
-    static let todoFutureDueFontColor = Color(hex: "#F4F4EC")
-    static let doingFutureDueFontColor = Color(hex: "#E5E4E2")
-    static let doneFontColor = Color(hex: "#4F5933")
+//    static let todoColor = Color(hex: "#FEC601")
+//    static let doingColor = Color(hex: "#3DA5D9")
+//    static let doneColor = Color(hex: "#73BFB8")
+//    static let pastDueFontColor = Color(hex: "#af0808")
+//    static let todoDueTodayFontColor = Color(hex: "#EA7317")
+//    static let doingDueTodayFontColor = Color(hex: "#A85413")
+//    static let todoFutureDueFontColor = Color(hex: "#F4F4EC")
+//    static let doingFutureDueFontColor = Color(hex: "#E5E4E2")
+//    static let doneFontColor = Color(hex: "#4F5933")
+    // Background Colors
+    static let todoColor = Color(hex: "#FFD700") // Bright Yellow
+    static let doingColor = Color(hex: "#007BFF") // Bright Blue
+    static let doneColor = Color(hex: "#28A745") // Bright Green
+
+    // Font Colors (High Contrast)
+    static let pastDueFontColor = Color(hex: "#FF0000") // Bright Red
+    static let todoDueTodayFontColor = Color(hex: "#FFFFFF") // White
+    static let doingDueTodayFontColor = Color(hex: "#FFFFFF") // White
+    static let todoFutureDueFontColor = Color(hex: "#000000") // Black
+    static let doingFutureDueFontColor = Color(hex: "#000000") // Black
+    static let doneFontColor = Color(hex: "#FFFFFF") // White
 }
 
 extension Color {
