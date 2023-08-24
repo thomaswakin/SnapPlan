@@ -25,11 +25,12 @@ struct ShowAndEditView: View {
    
     
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
-    
+    @State private var selectedPriorityScore: Int16 = 50
     
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width - 10
         if let task = task {
+            let selectedPriorityScore = task.priorityScore
             let imageData = task.rawPhotoData
             //let uiImage = imageData.flatMap { UIImage(data: $0) }
             VStack {
@@ -38,14 +39,14 @@ struct ShowAndEditView: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: UIScreen.main.bounds.height / 2)
+                        .frame(height: UIScreen.main.bounds.height / 3)
                         .rotationEffect(rotationAngle)
                         .gesture(RotationGesture().onChanged { angle in
                             rotationAngle = angle
                         })
                 } else {
                     StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
-                        .frame(height: UIScreen.main.bounds.height / 2)
+                        .frame(height: UIScreen.main.bounds.height / 3)
                 }
                 HStack(alignment: .top) {
                     Button(action: {
@@ -93,15 +94,29 @@ struct ShowAndEditView: View {
                     }
                 
                 // Note Editor
-                TextEditor(text: $editedNote)
-                    .frame(height: UIScreen.main.bounds.height / 5)
-                    .padding()
-                    .border(Color.gray, width: 1)
-                    .onChange(of: editedNote) { newValue in
-                        task.note = newValue
+                HStack {
+                    TextEditor(text: $editedNote)
+                        .frame(height: UIScreen.main.bounds.height / 5)
+                        .padding()
+                        .border(Color.gray, width: 1)
+                        .onChange(of: editedNote) { newValue in
+                            task.note = newValue
+                            saveContext()
+                        }
+                    // Priority Score Wheel Picker
+                    Picker("Priority Score", selection: $selectedPriorityScore) {
+                        ForEach(1..<101) { value in
+                            Text("\(value)").tag(value)
+                        }
+                    }
+                    .pickerStyle(WheelPickerStyle())
+                    .frame(height: UIScreen.main.bounds.height / 5) // Adjust the height as needed
+                    .onChange(of: selectedPriorityScore) { newValue in
+                        task.priorityScore = newValue
                         saveContext()
                     }
-
+                }
+                Spacer()
                 HStack {
                     // Delete Button
                     Button("Delete") {

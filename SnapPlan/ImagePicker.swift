@@ -62,6 +62,7 @@ struct ImagePicker: UIViewControllerRepresentable {
             if let image = info[.originalImage] as? UIImage {
                 print("imagePickerController:let image")
                 let fixedImage = image.fixOrientation()
+                parent.selectedImage = fixedImage // Update the selectedImage binding
                 let imageData = fixedImage.pngData() // Convert the image to data
                 // Create a new task with the image data
                 
