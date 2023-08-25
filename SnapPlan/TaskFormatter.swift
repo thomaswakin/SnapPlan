@@ -61,14 +61,28 @@ class TaskFormatter: ObservableObject {
         }
     }
     
+    func stateFontColor(task: SnapPlanTask) -> Color {
+        if task.state == "Done"{
+            return Color.gray
+        } else if task.state == "Todo" {
+            return Color.black
+        } else if task.state == "Doing" {
+            return Color.white
+        } else {
+            return Color.primary
+        }
+    }
+    
     func dueDateColor(for date: Date, task: SnapPlanTask) -> Color {
         let today = Calendar.current.startOfDay(for: Date())
         let dueDate = Calendar.current.startOfDay(for: date)
 
         if task.state == "Done" {
             return Color.doneFontColor
-        } else if dueDate < today {
-            return Color.pastDueFontColor
+        } else if task.state == "Todo" && dueDate < today {
+            return Color.todoPastDueFontColor
+        } else if task.state == "Doing" && dueDate < today {
+            return Color.doingPastDueFontColor
         } else if task.state == "Todo" && Calendar.current.isDateInToday(dueDate) {
             return Color.todoDueTodayFontColor
         } else if task.state == "Doing" && Calendar.current.isDateInToday(dueDate) {
@@ -112,16 +126,17 @@ extension Color {
 //    static let doneFontColor = Color(hex: "#4F5933")
     // Background Colors
     static let todoColor = Color(hex: "#FFD700") // Bright Yellow
-    static let doingColor = Color(hex: "#007BFF") // Bright Blue
+    static let doingColor = Color(hex: "#5ce1e6") // Bright Blue
     static let doneColor = Color(hex: "#28A745") // Bright Green
 
     // Font Colors (High Contrast)
-    static let pastDueFontColor = Color(hex: "#FF0000") // Bright Red
-    static let todoDueTodayFontColor = Color(hex: "#FFFFFF") // White
-    static let doingDueTodayFontColor = Color(hex: "#FFFFFF") // White
+    static let todoPastDueFontColor = Color(hex: "#af0808") // Dark Red
+    static let todoDueTodayFontColor = Color(hex: "#af0808") // Dark Red
+    static let doingDueTodayFontColor = Color(hex: "#af0808") // White
+    static let doingPastDueFontColor = Color(hex: "#af0808")
     static let todoFutureDueFontColor = Color(hex: "#000000") // Black
     static let doingFutureDueFontColor = Color(hex: "#000000") // Black
-    static let doneFontColor = Color(hex: "#FFFFFF") // White
+    static let doneFontColor = Color(hex: "#4f5933") // White
 }
 
 extension Color {

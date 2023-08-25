@@ -110,7 +110,8 @@ struct ShowAndEditView: View {
                         }
                     }
                     .pickerStyle(WheelPickerStyle())
-                    .frame(height: UIScreen.main.bounds.height / 5) // Adjust the height as needed
+                    //.frame(height: UIScreen.main.bounds.height / 5) // Adjust the height as needed
+                    .frame(width: UIScreen.main.bounds.width / 5)
                     .onChange(of: selectedPriorityScore) { newValue in
                         task.priorityScore = newValue
                         saveContext()
