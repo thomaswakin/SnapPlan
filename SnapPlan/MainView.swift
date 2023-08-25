@@ -248,9 +248,14 @@ struct MainView: View {
                     } else {
                         List(viewModel.filteredTasks, id: \.id) { task in
                             TaskListView(task: task)
-                                .onTapGesture {
-                                    selectedTask = task
-                                }
+                                .gesture(
+                                    TapGesture(count: 2).onEnded {
+                                        selectedNote = task.note ?? ""
+                                        showNotePopup = true
+                                    }.exclusively(before: TapGesture(count: 1).onEnded {
+                                        selectedTask = task
+                                    })
+                                )
                                 .onChange(of: task) { _ in
                                     viewModel.fetchTasks()
                                     viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)

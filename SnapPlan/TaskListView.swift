@@ -9,9 +9,11 @@ import SwiftUI
 import Foundation
 
 struct TaskListView: View {
-    var task: SnapPlanTask
+    @ObservedObject var task: SnapPlanTask
     @EnvironmentObject var taskFormatter: TaskFormatter
-    
+    @State private var showStickyNoteView: Bool = false
+    let taskListHeight = (UIScreen.main.bounds.width / 10) - 5
+
     var body: some View {
         HStack {
             // Display task photo if available
@@ -19,7 +21,7 @@ struct TaskListView: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 50, height: 50)
+                    .frame(width: taskListHeight, height: taskListHeight)
             } else {
                 StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
             }

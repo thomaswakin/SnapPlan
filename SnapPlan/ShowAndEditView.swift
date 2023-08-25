@@ -25,139 +25,142 @@ struct ShowAndEditView: View {
    
     
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
-    @State private var selectedPriorityScore: Int16 = 50
+    @State private var selectedPriorityScore: Int16 = 0
     
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width - 10
         if let task = task {
-            let selectedPriorityScore = task.priorityScore
             let imageData = task.rawPhotoData
-            //let uiImage = imageData.flatMap { UIImage(data: $0) }
-            VStack {
-                // Display the task's image
-                if let uiImage = uiImage {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: UIScreen.main.bounds.height / 3)
-                        .rotationEffect(rotationAngle)
-                        .gesture(RotationGesture().onChanged { angle in
-                            rotationAngle = angle
-                        })
-                } else {
-                    StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
-                        .frame(height: UIScreen.main.bounds.height / 3)
-                }
-                HStack(alignment: .top) {
-                    Button(action: {
-                        rotationAngle += .degrees(-90)
-                    }) {
-                        Image(systemName: "arrow.counterclockwise")
+                //let uiImage = imageData.flatMap { UIImage(data: $0) }
+            ScrollView {
+                VStack {
+                    // Display the task's image
+                    if let uiImage = uiImage {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: UIScreen.main.bounds.height / 3)
+                            .rotationEffect(rotationAngle)
+                            .gesture(RotationGesture().onChanged { angle in
+                                rotationAngle = angle
+                            })
+                    } else {
+                        StickyNoteView(color: TaskFormatter.shared.stateColor(task: task))
+                            .frame(height: UIScreen.main.bounds.height / 3)
                     }
-                    Button(action: {
-                        rotationAngle += .degrees(90)
-                    }) {
-                        Image(systemName: "arrow.clockwise")
+                    HStack(alignment: .top) {
+                        Button(action: {
+                            rotationAngle += .degrees(-90)
+                        }) {
+                            Image(systemName: "arrow.counterclockwise")
+                        }
+                        Button(action: {
+                            rotationAngle += .degrees(90)
+                        }) {
+                            Image(systemName: "arrow.clockwise")
+                        }
+                        Spacer()
+                        Button(action: {
+                            sourceType = .camera
+                            isImagePickerPresented = true
+                        }) {
+                            Image(systemName: "camera")
+                        }
+                        Button(action: {
+                            sourceType = .photoLibrary
+                            isImagePickerPresented = true
+                        }) {
+                            Image(systemName: "photo")
+                        }                }
+                    .padding(.top, 10)
+                    
+                    // State Picker
+                    Picker("State", selection: $selectedState) {
+                        Text("Todo").tag("Todo")
+                        Text("Doing").tag("Doing")
+                        Text("Done").tag("Done")
                     }
-                    Spacer()
-                    Button(action: {
-                        sourceType = .camera
-                        isImagePickerPresented = true
-                    }) {
-                        Image(systemName: "camera")
-                    }
-                    Button(action: {
-                        sourceType = .photoLibrary
-                        isImagePickerPresented = true
-                    }) {
-                        Image(systemName: "photo")
-                    }                }
-                .padding(.top, 10)
-               
-                // State Picker
-                Picker("State", selection: $selectedState) {
-                    Text("Todo").tag("Todo")
-                    Text("Doing").tag("Doing")
-                    Text("Done").tag("Done")
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .onChange(of: selectedState) { newValue in
-                    task.state = newValue
-                    saveContext()
-                }
-                
-                // Due Date Picker
-                DatePicker("Due Date", selection: $selectedDueDate, displayedComponents: .date)
-                    .onChange(of: selectedDueDate) { newValue in
-                        task.dueDate = newValue
+                    .pickerStyle(SegmentedPickerStyle())
+                    .onChange(of: selectedState) { newValue in
+                        task.state = newValue
                         saveContext()
                     }
-                
-                // Note Editor
-                HStack {
-                    TextEditor(text: $editedNote)
-                        .frame(height: UIScreen.main.bounds.height / 5)
-                        .padding()
-                        .border(Color.gray, width: 1)
-                        .onChange(of: editedNote) { newValue in
-                            task.note = newValue
+                    
+                    // Due Date Picker
+                    DatePicker("Due Date", selection: $selectedDueDate, displayedComponents: .date)
+                        .onChange(of: selectedDueDate) { newValue in
+                            task.dueDate = newValue
                             saveContext()
                         }
-                    // Priority Score Wheel Picker
-                    Picker("Priority Score", selection: $selectedPriorityScore) {
-                        ForEach(1..<101) { value in
-                            Text("\(value)").tag(value)
-                        }
-                    }
-                    .pickerStyle(WheelPickerStyle())
-                    //.frame(height: UIScreen.main.bounds.height / 5) // Adjust the height as needed
-                    .frame(width: UIScreen.main.bounds.width / 5)
-                    .onChange(of: selectedPriorityScore) { newValue in
-                        task.priorityScore = newValue
-                        saveContext()
-                    }
-                }
-                Spacer()
-                HStack {
-                    // Delete Button
-                    Button("Delete") {
-                        viewContext.delete(task)
-                        saveContext()
-                        self.task = nil // Dismiss the view
-                    }
-                    .foregroundColor(.red)
-
                     
-                    // Done Button
-                    Button("Done") {
-                        if let uiImage = uiImage {
-                            let rotatedImage = uiImage.rotate(radians: rotationAngle.radians)
-                            task.rawPhotoData = rotatedImage?.jpegData(compressionQuality: 1.0)
+                    // Note Editor
+                    HStack {
+                        TextEditor(text: $editedNote)
+                            .frame(height: UIScreen.main.bounds.height / 5)
+                            .padding()
+                            .border(Color.gray, width: 1)
+                            .onChange(of: editedNote) { newValue in
+                                task.note = newValue
+                                saveContext()
+                            }
+                        // Priority Score Wheel Picker
+                        Picker("Priority Score", selection: $selectedPriorityScore) {
+                            ForEach(1..<101) { value in
+                                Text("\(value)").tag(value)
+                            }
                         }
-                        saveContext()
-                        self.task = nil // Dismiss the view
+                        .pickerStyle(WheelPickerStyle())
+                        //.frame(height: UIScreen.main.bounds.height / 5) // Adjust the height as needed
+                        .frame(width: UIScreen.main.bounds.width / 5)
+                        .onChange(of: selectedPriorityScore) { newValue in
+                            task.priorityScore = newValue
+                            saveContext()
+                        }
                     }
+                    Spacer()
+                    HStack {
+                        // Delete Button
+                        Button("Delete") {
+                            viewContext.delete(task)
+                            saveContext()
+                            self.task = nil // Dismiss the view
+                        }
+                        .foregroundColor(.red)
+                        
+                        
+                        // Done Button
+                        Button("Done") {
+                            if let uiImage = uiImage {
+                                let rotatedImage = uiImage.rotate(radians: rotationAngle.radians)
+                                task.rawPhotoData = rotatedImage?.jpegData(compressionQuality: 1.0)
+                            }
+                            saveContext()
+                            self.task = nil // Dismiss the view
+                        }
+                    }
+                    .padding(.bottom)
                 }
-                .padding(.bottom)
+                //.onTapGesture {
+                //    hideKeyboard()
+                //}
+                .onAppear {
+                    // Initialize the state
+                    uiImage = task.rawPhotoData.flatMap { UIImage(data: $0) }
+                    selectedState = task.state ?? "Todo"
+                    selectedDueDate = task.dueDate as Date? ?? Date()
+                    selectedPriorityScore = task.priorityScore
+                    editedNote = task.note ?? ""
+                    isEditing = true
+                }
+                .frame(width: screenWidth)
+                .onDisappear {
+                    forceRedraw.toggle()
+                }
+                .sheet(isPresented: $isImagePickerPresented) {
+                    ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showingStickyNote, selectedTask: $task, isEditing: $isEditing, sourceType: sourceType, viewContext: viewContext)
+                }
             }
-            //.onTapGesture {
-            //    hideKeyboard()
-            //}
-            .onAppear {
-                // Initialize the state
-                uiImage = task.rawPhotoData.flatMap { UIImage(data: $0) }
-                selectedState = task.state ?? "Todo"
-                selectedDueDate = task.dueDate as Date? ?? Date()
-                editedNote = task.note ?? ""
-                isEditing = true
-            }
-            .frame(width: screenWidth)
-            .onDisappear {
-                forceRedraw.toggle()
-            }
-            .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $uiImage, showStickyNoteView: $showingStickyNote, selectedTask: $task, isEditing: $isEditing, sourceType: sourceType, viewContext: viewContext)
-            }
+            .scrollDismissesKeyboard(.interactively)
         } else {
             Text("No Task Selected")
         }
