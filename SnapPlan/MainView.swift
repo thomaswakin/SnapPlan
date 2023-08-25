@@ -46,6 +46,7 @@ struct MainView: View {
     @State private var permissionAlertMessage: String = ""
     
     let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
+    let taskListHeight = (UIScreen.main.bounds.height / 10)
     
     init(viewModel: TaskViewModel) {
         self.viewModel = viewModel
@@ -231,13 +232,6 @@ struct MainView: View {
                                             selectedTask = task
                                         })
                                     )
-//                                    .onTapGesture {
-//                                        selectedTask = task
-//                                    }
-//                                    .onTapGesture(count: 2) {
-//                                        selectedNote = task.note ?? ""
-//                                        showNotePopup = true
-//                                    }
                                     .onChange(of: task) { _ in
                                         viewModel.fetchTasks()
                                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
@@ -246,21 +240,23 @@ struct MainView: View {
                             
                         }
                     } else {
-                        List(viewModel.filteredTasks, id: \.id) { task in
-                            TaskListView(task: task)
-                                .gesture(
-                                    TapGesture(count: 2).onEnded {
-                                        selectedNote = task.note ?? ""
-                                        showNotePopup = true
-                                    }.exclusively(before: TapGesture(count: 1).onEnded {
-                                        selectedTask = task
-                                    })
-                                )
-                                .onChange(of: task) { _ in
-                                    viewModel.fetchTasks()
-                                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                                    
-                                }
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: UIScreen.main.bounds.width - 2), spacing: 0)]) {
+                            ForEach(viewModel.filteredTasks, id: \.id) { task in
+                                TaskListView(task: task)
+                                    .frame(width: taskCardWidth - 2) // Set the width for each task card
+                                    .gesture(
+                                        TapGesture(count: 2).onEnded {
+                                            selectedNote = task.note ?? ""
+                                            showNotePopup = true
+                                        }.exclusively(before: TapGesture(count: 1).onEnded {
+                                            selectedTask = task
+                                        })
+                                    )
+                            }
+                            .onChange(of: task) { _ in
+                                viewModel.fetchTasks()
+                                viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                            }
                         }
                     }
                 }
