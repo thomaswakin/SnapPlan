@@ -73,7 +73,7 @@ struct ShowAndEditView: View {
                             Image(systemName: "photo")
                         }                }
                     .padding(.top, 10)
-                    
+                    Spacer()
                     // State Picker
                     Picker("State", selection: $selectedState) {
                         Text("Todo").tag("Todo")
@@ -110,11 +110,15 @@ struct ShowAndEditView: View {
                             }
                         }
                         .pickerStyle(WheelPickerStyle())
-                        //.frame(height: UIScreen.main.bounds.height / 5) // Adjust the height as needed
                         .frame(width: UIScreen.main.bounds.width / 5)
                         .onChange(of: selectedPriorityScore) { newValue in
-                            task.priorityScore = newValue
-                            saveContext()
+                            task.priorityScore = Int16(newValue)  // Make sure the type matches
+                            do {
+                                print("SavePriorityScore", task.priorityScore)
+                                try viewContext.save()
+                            } catch {
+                                print("Failed to save priority score context: \(error)")
+                            }
                         }
                     }
                     Spacer()
@@ -129,11 +133,12 @@ struct ShowAndEditView: View {
                         
                         
                         // Done Button
-                        Button("Done") {
+                        Button("Save") {
                             if let uiImage = uiImage {
                                 let rotatedImage = uiImage.rotate(radians: rotationAngle.radians)
                                 task.rawPhotoData = rotatedImage?.jpegData(compressionQuality: 1.0)
                             }
+                            print("Save Button: Saving Priority Score: ", task.priorityScore)
                             saveContext()
                             self.task = nil // Dismiss the view
                         }
@@ -148,7 +153,9 @@ struct ShowAndEditView: View {
                     uiImage = task.rawPhotoData.flatMap { UIImage(data: $0) }
                     selectedState = task.state ?? "Todo"
                     selectedDueDate = task.dueDate as Date? ?? Date()
+                    print("task priority score", task.priorityScore)
                     selectedPriorityScore = task.priorityScore
+                    print("selectedPriorityScore", selectedPriorityScore)
                     editedNote = task.note ?? ""
                     isEditing = true
                 }

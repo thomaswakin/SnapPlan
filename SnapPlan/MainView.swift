@@ -26,7 +26,6 @@ struct MainView: View {
     @State private var selectedTask: SnapPlanTask?
     @State private var showNotePopup: Bool = false
     @State private var selectedNote: String?
-    @State private var editedNote: String = ""
     @State private var showSettings: Bool = false
     @State private var forceRedraw: Bool = false
     @State private var showStickyNoteView = false
@@ -228,9 +227,8 @@ struct MainView: View {
                                     .frame(width: taskCardWidth - 2) // Set the width for each task card
                                     .gesture(
                                         TapGesture(count: 2).onEnded {
-                                            showNotePopup.toggle()
-                                            editedNote = task.note ?? ""
-                                            selectedNote = task.note
+                                            selectedNote = task.note ?? ""
+                                            showNotePopup = true
                                         }.exclusively(before: TapGesture(count: 1).onEnded {
                                             selectedTask = task
                                         })
@@ -367,44 +365,33 @@ struct MainView: View {
                 SettingsView()
             }
             if showNotePopup {
-                NotePopupView(note: $editedNote, onSave: {
-                    // Update the task's note with the edited note
-                    selectedTask?.note = editedNote
-                    try? viewContext.save()
-                    showNotePopup = false
-                }, onDismiss: {
-                    // Dismiss without saving
-                    showNotePopup = false
-                })
+                ZStack {
+                    // Background dimmer
+                    Color.black.opacity(0.4)
+                        .edgesIgnoringSafeArea(.all)
+                        .onTapGesture { showNotePopup = false }
+
+                    // Note Pop-Up
+                    VStack(alignment: .leading) {
+                        ScrollView {
+                            Text(selectedNote ?? "")
+                        }
+                        .padding()
+                        .frame(maxWidth: UIScreen.main.bounds.width * 2 / 3, maxHeight: UIScreen.main.bounds.height / 3)
+                        .background(Color.white)
+                        .foregroundColor(Color.black)
+                        .cornerRadius(10)
+                        .overlay(
+                            Button("Dismiss") {
+                                showNotePopup = false
+                                selectedNote = ""
+                            }
+                            .padding(),
+                            alignment: .bottomTrailing
+                        )
+                    }
+                }
             }
-//            if showNotePopup {
-//                ZStack {
-//                    // Background dimmer
-//                    Color.black.opacity(0.4)
-//                        .edgesIgnoringSafeArea(.all)
-//                        .onTapGesture { showNotePopup = false }
-//
-//                    // Note Pop-Up
-//                    VStack(alignment: .leading) {
-//                        ScrollView {
-//                            Text(selectedNote ?? "")
-//                        }
-//                        .padding()
-//                        .frame(maxWidth: UIScreen.main.bounds.width * 2 / 3, maxHeight: UIScreen.main.bounds.height / 3)
-//                        .background(Color.white)
-//                        .foregroundColor(Color.black)
-//                        .cornerRadius(10)
-//                        .overlay(
-//                            Button("Dismiss") {
-//                                showNotePopup = false
-//                                selectedNote = ""
-//                            }
-//                            .padding(),
-//                            alignment: .bottomTrailing
-//                        )
-//                    }
-//                }
-//            }
         }
     }
 }
