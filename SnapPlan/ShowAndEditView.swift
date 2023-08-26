@@ -13,6 +13,7 @@ struct ShowAndEditView: View {
     @Binding var task: SnapPlanTask?
     
     @State private var selectedState: String = "Todo"
+    @State private var selectedPriorityScore: Int16 = Int16(50)
     @State private var selectedDueDate: Date = Date()
     @State private var editedNote: String = ""
     @State private var isEditing: Bool = false
@@ -25,7 +26,6 @@ struct ShowAndEditView: View {
    
     
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
-    @State private var selectedPriorityScore: Int16 = 0
     
     var body: some View {
         let screenWidth = UIScreen.main.bounds.width - 10
@@ -104,22 +104,21 @@ struct ShowAndEditView: View {
                                 saveContext()
                             }
                         // Priority Score Wheel Picker
+                        
                         Picker("Priority Score", selection: $selectedPriorityScore) {
-                            ForEach(1..<101) { value in
+                            ForEach(Int16(0)..<Int16(11), id: \.self) { value in
                                 Text("\(value)").tag(value)
                             }
                         }
-                        .pickerStyle(WheelPickerStyle())
-                        .frame(width: UIScreen.main.bounds.width / 5)
+                        .pickerStyle(.wheel)
                         .onChange(of: selectedPriorityScore) { newValue in
-                            task.priorityScore = Int16(newValue)  // Make sure the type matches
-                            do {
-                                print("SavePriorityScore", task.priorityScore)
-                                try viewContext.save()
-                            } catch {
-                                print("Failed to save priority score context: \(error)")
-                            }
+                            print(type(of: newValue), newValue)
+                            print(type(of: selectedPriorityScore), selectedPriorityScore)
+                            print(type(of: task.priorityScore), task.priorityScore)
+                            task.priorityScore = newValue  // Update task's priority score
+                            saveContext()
                         }
+                        .frame(width: UIScreen.main.bounds.width / 5)
                     }
                     Spacer()
                     HStack {
@@ -133,7 +132,7 @@ struct ShowAndEditView: View {
                         
                         
                         // Done Button
-                        Button("Save") {
+                        Button("Done") {
                             if let uiImage = uiImage {
                                 let rotatedImage = uiImage.rotate(radians: rotationAngle.radians)
                                 task.rawPhotoData = rotatedImage?.jpegData(compressionQuality: 1.0)
@@ -154,7 +153,7 @@ struct ShowAndEditView: View {
                     selectedState = task.state ?? "Todo"
                     selectedDueDate = task.dueDate as Date? ?? Date()
                     print("task priority score", task.priorityScore)
-                    selectedPriorityScore = task.priorityScore
+                    selectedPriorityScore = Int16(task.priorityScore)
                     print("selectedPriorityScore", selectedPriorityScore)
                     editedNote = task.note ?? ""
                     isEditing = true

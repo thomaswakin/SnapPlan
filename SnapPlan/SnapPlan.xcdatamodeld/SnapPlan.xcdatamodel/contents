@@ -4,7 +4,7 @@
         <attribute name="dueDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" defaultValueString="12345678-1234-5678-1234-567812345678" usesScalarValueType="NO"/>
         <attribute name="note" optional="YES" attributeType="String"/>
-        <attribute name="priorityScore" attributeType="Integer 16" defaultValueString="50" usesScalarValueType="YES"/>
+        <attribute name="priorityScore" attributeType="Integer 16" defaultValueString="5" usesScalarValueType="YES"/>
         <attribute name="rawPhotoData" optional="YES" attributeType="Binary"/>
         <attribute name="state" optional="YES" attributeType="String" defaultValueString="Todo"/>
     </entity>

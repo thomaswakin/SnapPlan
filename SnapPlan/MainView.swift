@@ -29,6 +29,8 @@ struct MainView: View {
     @State private var showSettings: Bool = false
     @State private var forceRedraw: Bool = false
     @State private var showStickyNoteView = false
+    @State private var showCircle = false
+    @State private var timer: Timer? = nil
     
     @State private var showTodo = true
     @State private var showDoing = false
@@ -264,21 +266,33 @@ struct MainView: View {
                 
                 // Fourth Row: Priority Slider, Display Toggle, and Settings Gear
                 HStack {
-                    VStack {
-                        Slider(value: $viewModel.priorityFilter, in: 0...100)
+                    ZStack {
+                        Slider(value: $viewModel.priorityFilter, in: 1...10)
+                            .scaleEffect(x: 0.7, y: 0.7, anchor: .center) // Reduce the size of the slider circle
                             .onChange(of: viewModel.priorityFilter) { _ in
                                 viewModel.fetchTasks()
                                 viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                                
+                                showCircle = true
+                                timer?.invalidate() // Invalidate the previous timer
+                                timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
+                                    showCircle = false
+                                }
                             }
-                            .scaleEffect(0.7)
                             .frame(alignment: .leading)
-                        Text("Priority Filter")
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
-                            .frame(alignment: .leading)
+                        
+                        if showCircle {
+                            Circle()
+                                .fill(Color(hex: "#af0808")).opacity(0.9)
+                                .frame(width: 20, height: 20)
+                                .overlay(
+                                    Text("\(Int(viewModel.priorityFilter))")
+                                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
+                                        .foregroundColor(.white)
+                                )
+                                .offset(y: -40) // Adjust this value to position the circle above the slider
+                        }
                     }
                     Spacer()
-                    
                     VStack {
                         if viewModel.isTaskCardView {
                             Text("TaskCards")
@@ -286,7 +300,7 @@ struct MainView: View {
                                 .opacity(textOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
-                                        textOpacity = 0 // Fade out the text after 1 second
+                                       // Make
                                     }
                                 }
                         } else {
