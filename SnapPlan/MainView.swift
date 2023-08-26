@@ -289,7 +289,7 @@ struct MainView: View {
                                         .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
                                         .foregroundColor(.white)
                                 )
-                                .offset(y: -40) // Adjust this value to position the circle above the slider
+                                .offset(y: -20) // Adjust this value to position the circle above the slider
                         }
                     }
                     Spacer()
@@ -300,7 +300,7 @@ struct MainView: View {
                                 .opacity(textOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
-                                       // Make
+                                        textOpacity = 0
                                     }
                                 }
                         } else {
