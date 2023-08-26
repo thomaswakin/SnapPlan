@@ -263,8 +263,12 @@ struct MainView: View {
                         }
                     }
                 }
+                // Fourth Row to have predefined filters
+                HStack {
+                    // FILTERS
+                }
                 
-                // Fourth Row: Priority Slider, Display Toggle, and Settings Gear
+                // Fifth Row: Priority Slider, Display Toggle, and Settings Gear
                 HStack {
                     ZStack {
                         Slider(value: $viewModel.priorityFilter, in: 1...10)
