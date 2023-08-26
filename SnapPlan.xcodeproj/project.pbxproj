@@ -21,6 +21,7 @@
 		114C65F82A8BA83600265BE6 /* TaskFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F72A8BA83600265BE6 /* TaskFormatter.swift */; };
 		114C65FA2A8FD84400265BE6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F92A8FD84400265BE6 /* ImagePicker.swift */; };
 		11D11EC72A92F3660088E75B /* CustomImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */; };
+		11D11EC92A9A416F0088E75B /* NotePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D11EC82A9A416E0088E75B /* NotePopupView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		114C65F72A8BA83600265BE6 /* TaskFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFormatter.swift; sourceTree = "<group>"; };
 		114C65F92A8FD84400265BE6 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePickerController.swift; sourceTree = "<group>"; };
+		11D11EC82A9A416E0088E75B /* NotePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotePopupView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				114C65F72A8BA83600265BE6 /* TaskFormatter.swift */,
 				114C65F92A8FD84400265BE6 /* ImagePicker.swift */,
 				11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */,
+				11D11EC82A9A416E0088E75B /* NotePopupView.swift */,
 			);
 			path = SnapPlan;
 			sourceTree = "<group>";
@@ -181,6 +184,7 @@
 				114C65F22A8B071600265BE6 /* SettingsView.swift in Sources */,
 				114C65EC2A8B051F00265BE6 /* ShowAndEditView.swift in Sources */,
 				114C65CC2A8ABDDA00265BE6 /* SnapPlanApp.swift in Sources */,
+				11D11EC92A9A416F0088E75B /* NotePopupView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
