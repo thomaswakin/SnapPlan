@@ -113,6 +113,17 @@ struct StickyNoteView: View {
     }
 }
 
+struct StickyNoteViewList: View {
+    var color: Color
+    let taskCardWidth =  (UIScreen.main.bounds.height / 13)
+    var body: some View {
+        Rectangle()
+            .fill(color)
+            .frame(width: taskCardWidth, height: taskCardWidth)
+            .cornerRadius(5)
+            .shadow(radius: 5)
+    }
+}
 
 extension Color {
 //    static let todoColor = Color(hex: "#FEC601")

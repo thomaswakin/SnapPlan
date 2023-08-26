@@ -11,6 +11,7 @@ struct TaskCardView: View {
     @ObservedObject var task: SnapPlanTask
     @EnvironmentObject var taskFormatter: TaskFormatter
     @State private var showStickyNoteView: Bool = false
+    @State private var forceRedraw: Bool = false
     let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
     
     
@@ -68,8 +69,8 @@ struct TaskCardView: View {
 
             ZStack {
                 Circle()
-                    .fill(Color(hex: "#af0808")).opacity(0.5)
-                    .frame(width: 25, height: 25) // Adjust the size of the circle as needed
+                    .fill(Color(hex: "#af0808")).opacity(0.9)
+                    .frame(width: 20, height: 20) // Adjust the size of the circle as needed
 
                 Text("\(task.priorityScore)") // Converts Int16 to String
                     .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))

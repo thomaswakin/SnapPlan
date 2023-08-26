@@ -46,7 +46,8 @@ struct MainView: View {
     @State private var permissionAlertMessage: String = ""
     
     let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
-    let taskListHeight = (UIScreen.main.bounds.height / 10)
+    let taskListHeight = (UIScreen.main.bounds.height / 13)
+    let taskListWidth = UIScreen.main.bounds.width - 2
     
     init(viewModel: TaskViewModel) {
         self.viewModel = viewModel
@@ -240,10 +241,10 @@ struct MainView: View {
                             
                         }
                     } else {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: UIScreen.main.bounds.width - 2), spacing: 0)]) {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: taskListWidth), spacing: 1)]) {
                             ForEach(viewModel.filteredTasks, id: \.id) { task in
                                 TaskListView(task: task)
-                                    .frame(width: taskCardWidth - 2) // Set the width for each task card
+                                    .frame(maxWidth: .infinity)
                                     .gesture(
                                         TapGesture(count: 2).onEnded {
                                             selectedNote = task.note ?? ""
@@ -252,10 +253,10 @@ struct MainView: View {
                                             selectedTask = task
                                         })
                                     )
-                            }
-                            .onChange(of: task) { _ in
-                                viewModel.fetchTasks()
-                                viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                    .onChange(of: task) { _ in
+                                        viewModel.fetchTasks()
+                                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                    }
                             }
                         }
                     }
