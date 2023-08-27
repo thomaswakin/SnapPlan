@@ -97,7 +97,7 @@ class TaskViewModel: ObservableObject {
         newTask.id = UUID()
         newTask.state = "Todo"
         newTask.dueDate = Date()
-        newTask.priorityScore = 50
+        newTask.priorityScore = 5
         newTask.note = ""
         
         do {

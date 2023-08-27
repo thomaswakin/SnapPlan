@@ -51,8 +51,8 @@ struct SettingsView: View {
                         ForEach(filterEntities, id: \.self) { filterEntity in
                             Text(filterEntity.name ?? "")
                         }
+                        .onMove(perform: moveFilter)
                         .onDelete(perform: deleteFilter)
-                        .onMove(perform: moveFilter) 
                     } else {
                         ForEach(filterEntities, id: \.self) { filterEntity in
                             Text(filterEntity.name ?? "")
@@ -83,7 +83,7 @@ struct SettingsView: View {
     }
     
     private func moveFilter(from source: IndexSet, to destination: Int) {
-        var revisedItems: [FilterEntity] = filterEntities.map{$0}
+        var revisedItems: [FilterEntity] = filterEntities.map { $0 }
         revisedItems.move(fromOffsets: source, toOffset: destination)
         for reverseIndex in stride(from: revisedItems.count - 1, through: 0, by: -1) {
             revisedItems[reverseIndex].order = Int16(reverseIndex)
