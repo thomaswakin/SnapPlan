@@ -30,6 +30,7 @@ struct SettingsView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @State private var newFilter: String = ""
+    @State private var isEditingFilters: Bool = false
     let dueDateDisplayOptions = ["Show Due Dates", "Show Days Until Due"]
     
     var body: some View {
@@ -46,20 +47,31 @@ struct SettingsView: View {
                 
                 // Moved this section inside the Form
                 Section(header: Text("Filters")) {
-                    ForEach(filterEntities, id: \.self) { filterEntity in
-                        Text(filterEntity.name ?? "")
+                    if isEditingFilters {
+                        ForEach(filterEntities, id: \.self) { filterEntity in
+                            Text(filterEntity.name ?? "")
+                        }
+                        .onDelete(perform: deleteFilter)
+                        .onMove(perform: moveFilter) 
+                    } else {
+                        ForEach(filterEntities, id: \.self) { filterEntity in
+                            Text(filterEntity.name ?? "")
+                        }
                     }
-                    .onDelete(perform: deleteFilter)
-                    .onMove(perform: moveFilter)
-                    
-                    HStack {
-                        TextField("New Filter", text: $newFilter)
-                        Button("Add") {
-                            addFilter()
+
+                    if isEditingFilters {
+                        HStack {
+                            TextField("New Filter", text: $newFilter)
+                            Button("Add") {
+                                addFilter()
+                            }
                         }
                     }
                 }
-                .navigationBarItems(trailing: EditButton())
+                // Manually create an "Edit" button
+                Button(isEditingFilters ? "Done" : "Edit Filters") {
+                    isEditingFilters.toggle()
+                }
             }
             .navigationBarTitle("Settings")
             .navigationBarItems(trailing: Button(action: {
