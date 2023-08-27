@@ -42,8 +42,7 @@ struct MainView: View {
     @State private var focusOpacity: Double = 1
     @State private var showTaskCard: Bool = true
     @State private var isEditing: Bool = false
-    //@State private var isFocusMode: Bool = false
-
+    @State private var longPressedTask: SnapPlanTask?
 
     @State private var isImagePickerPresented: Bool = false
     @State private var selectedImage: UIImage?
@@ -58,6 +57,9 @@ struct MainView: View {
     
     init(viewModel: TaskViewModel) {
         self.viewModel = viewModel
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("refreshTasks"), object: nil, queue: .main) { _ in
+            viewModel.fetchTasks()
+        }
     }
     
     func applyFilter(_ filterName: String) {
@@ -81,6 +83,10 @@ struct MainView: View {
             print("Failed to save new task:", error)
             return nil
         }
+    }
+    
+    func onLongPress(_ task: SnapPlanTask) {
+        self.longPressedTask = task
     }
     
     // Add this closure property to MainView
@@ -285,6 +291,11 @@ struct MainView: View {
                                             selectedTask = task
                                         })
                                     )
+                                    .simultaneousGesture(
+                                        LongPressGesture().onEnded { _ in
+                                            self.onLongPress(task)
+                                        }
+                                    )
                                     .onChange(of: task) { _ in
                                         viewModel.fetchTasks()
                                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
@@ -308,6 +319,11 @@ struct MainView: View {
                                         }.exclusively(before: TapGesture(count: 1).onEnded {
                                             selectedTask = task
                                         })
+                                    )
+                                    .simultaneousGesture(
+                                        LongPressGesture().onEnded { _ in
+                                            self.onLongPress(task)
+                                        }
                                     )
                                     .onChange(of: task) { _ in
                                         viewModel.fetchTasks()
@@ -475,6 +491,45 @@ struct MainView: View {
             .sheet(isPresented: $showSettings) {
                 SettingsView()
             }
+            if let task = longPressedTask {
+                VStack {
+                    Text("Change State")
+                    Picker("State", selection: Binding(
+                        get: { longPressedTask?.state ?? "Todo" },
+                        set: { newValue in
+                            longPressedTask?.state = newValue
+                            do {
+                                try viewContext.save()
+                            } catch {
+                                print("Failed to save task status:", error)
+                            }
+                        }
+                    )) {
+                        Text("Todo").tag("Todo")
+                        Text("Doing").tag("Doing")
+                        Text("Done").tag("Done")
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    Button("Done") {
+                        longPressedTask = nil
+                        do {
+                            try viewContext.save()
+                            viewModel.fetchTasks()
+                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+
+                        } catch {
+                            print("Failed to save task status:", error)
+                        }
+                    }
+                }
+                .padding()
+                .background(Color.white)
+                .cornerRadius(8)
+                .shadow(radius: 10)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .background(Color.black.opacity(0.4).edgesIgnoringSafeArea(.all))
+            }
+
             if showNotePopup {
                 ZStack {
                     // Background dimmer

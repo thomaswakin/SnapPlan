@@ -31,6 +31,8 @@ struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var newFilter: String = ""
     @State private var isEditingFilters: Bool = false
+    @State private var showingDeleteAlert = false  // New State variable
+    
     let dueDateDisplayOptions = ["Show Due Dates", "Show Days Until Due"]
     
     var body: some View {
@@ -72,6 +74,22 @@ struct SettingsView: View {
                 Button(isEditingFilters ? "Done" : "Edit Filters") {
                     isEditingFilters.toggle()
                 }
+                
+                //Section to delete tasks
+                Section {
+                    Button("Delete Done Tasks") {
+                        showingDeleteAlert = true
+                    }
+                    .alert(isPresented: $showingDeleteAlert) {
+                        Alert(title: Text("Are you sure you want to delete all Done Tasks?"),
+                              primaryButton: .destructive(Text("Yes")) {
+                                  // Logic to delete all Done tasks
+                                  deleteDoneTasks()
+                              },
+                              secondaryButton: .cancel())
+                    }
+                }
+
             }
             .navigationBarTitle("Settings")
             .navigationBarItems(trailing: Button(action: {
@@ -108,4 +126,21 @@ struct SettingsView: View {
         }
         try? viewContext.save()
     }
+    
+    private func deleteDoneTasks() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "SnapPlanTask")
+        fetchRequest.predicate = NSPredicate(format: "state == %@", "Done")
+        
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try viewContext.execute(batchDeleteRequest)
+            try viewContext.save()
+            NotificationCenter.default.post(name: NSNotification.Name("refreshTasks"), object: nil)
+        } catch {
+            print("Failed to delete Done tasks: \(error)")
+        }
+    }
+
+    
 }
