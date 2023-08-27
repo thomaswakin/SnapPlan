@@ -39,8 +39,11 @@ struct MainView: View {
     @State private var showDone = false
     @State private var textOpacity: Double = 1
     @State private var sortTextOpacity: Double = 1
+    @State private var focusOpacity: Double = 1
     @State private var showTaskCard: Bool = true
     @State private var isEditing: Bool = false
+    //@State private var isFocusMode: Bool = false
+
 
     @State private var isImagePickerPresented: Bool = false
     @State private var selectedImage: UIImage?
@@ -63,15 +66,20 @@ struct MainView: View {
         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
     }
     
-    func createTask(withImage image: UIImage) {
+    func createTask(withImage image: UIImage) -> SnapPlanTask? {
         let newTask = SnapPlanTask(context: viewContext)
         newTask.id = UUID()
         newTask.rawPhotoData = image.pngData()
-        selectedTask = newTask
+        newTask.note = ""  // Initialize to empty
+        newTask.dueDate = nil  // Initialize to nil
+        newTask.priorityScore = Int16(5)
+        // Initialize other properties...
         do {
             try viewContext.save()
+            return newTask
         } catch {
             print("Failed to save new task:", error)
+            return nil
         }
     }
     
@@ -140,9 +148,29 @@ struct MainView: View {
                         Image(systemName: "camera")
                     }
                     Button(action: {
-                        viewModel.addTask()
+                        // Photo Library action
+                        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                            requestPhotoLibraryPermission { granted in
+                                if granted {
+                                    sourceType = .photoLibrary
+                                    isImagePickerPresented = true
+                                    activeSheet = .imagePicker
+                                } else {
+                                    permissionAlertMessage = "Photo library permission is required to select photos."
+                                    isPermissionAlertPresented = true
+                                }
+                            }
+                        } else {
+                            permissionAlertMessage = "Photo Album access required to use images for tasks"
+                            isPermissionAlertPresented = true
+                        }
+                    }) {
+                        Image(systemName: "photo")
+                    }
+                    Button(action: {
+                        let thisNewTask = viewModel.addTask()
                         // Set selectedTask to the newly added task
-                        selectedTask = viewModel.tasks.last
+                        selectedTask = thisNewTask
                     }) {
                         Image(systemName: "plus")
                     }
@@ -208,7 +236,7 @@ struct MainView: View {
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                         
                     }
-                    .buttonStyle(ToggleButtonStyle(isSelected: showTodo))
+                    .buttonStyle(ToggleButtonStyle(isSelected: viewModel.isFocusMode ? true : showTodo))
                     
                     Button("Doing") {
                         showDoing.toggle()
@@ -216,14 +244,14 @@ struct MainView: View {
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                         
                     }
-                    .buttonStyle(ToggleButtonStyle(isSelected: showDoing))
+                    .buttonStyle(ToggleButtonStyle(isSelected: viewModel.isFocusMode ? true : showDoing))
                     
                     Button("Done") {
                         showDone.toggle()
                         viewModel.fetchTasks()
                         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                     }
-                    .buttonStyle(ToggleButtonStyle(isSelected: showDone))
+                    .buttonStyle(ToggleButtonStyle(isSelected: viewModel.isFocusMode ? false : showDone))
                 }
                 .padding(.horizontal)
                 //.frame(width: UIScreen.main.bounds.width * 2/3)
@@ -241,8 +269,12 @@ struct MainView: View {
                 // Third Row: Task Display (Placeholder)
                 ScrollView {
                     if viewModel.isTaskCardView {
+                        let todoTasks = Array(viewModel.filteredTasks.filter { $0.state == "Todo" }.prefix(3))
+                        let doingTasks = Array(viewModel.filteredTasks.filter { $0.state == "Doing" }.prefix(3))
+                        let focusTasks = todoTasks + doingTasks
+                        
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: taskCardWidth - 1), spacing: 0)]) {
-                            ForEach(viewModel.filteredTasks, id: \.id) { task in
+                            ForEach(viewModel.isFocusMode ? focusTasks : viewModel.filteredTasks, id: \.id) { task in
                                 TaskCardView(task: task)
                                     .frame(width: taskCardWidth - 2) // Set the width for each task card
                                     .gesture(
@@ -261,8 +293,12 @@ struct MainView: View {
                             
                         }
                     } else {
+                        let todoTasks = Array(viewModel.filteredTasks.filter { $0.state == "Todo" }.prefix(3))
+                        let doingTasks = Array(viewModel.filteredTasks.filter { $0.state == "Doing" }.prefix(3))
+                        let focusTasks = todoTasks + doingTasks
+                        
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: taskListWidth), spacing: 1)]) {
-                            ForEach(viewModel.filteredTasks, id: \.id) { task in
+                            ForEach(viewModel.isFocusMode ? focusTasks : viewModel.filteredTasks, id: \.id) { task in
                                 TaskListView(task: task)
                                     .frame(maxWidth: .infinity)
                                     .gesture(
@@ -379,22 +415,47 @@ struct MainView: View {
                         Toggle("", isOn: $viewModel.sortByDueDate)
                             .scaleEffect(0.7)
                             .onChange(of: viewModel.sortByDueDate) { _ in
-                                sortTextOpacity = 1 // Reset text opacity when toggle changes
+                                viewModel.fetchTasks()
+                                viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                sortTextOpacity = 1
                             }
                     }
-                    //                VStack {
-                    //                    Toggle("", isOn: $viewModel.sortByDueDate)
-                    //                        .scaleEffect(0.7)
-                    //                        .frame(alignment: .trailing)
-                    //                        .onChange(of: viewModel.sortByDueDate) { _ in
-                    //                            viewModel.fetchTasks()
-                    //                        }
-                    //                    Text("Sort by")
-                    //                    Text(viewModel.sortByDueDate ? "Date" : "Priority")
-                    //                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
-                    //                        .frame(alignment: .trailing)
-                    //                }
                     
+                    // Add the Focus toggle button next to the gear button
+                    VStack {
+                        if viewModel.isFocusMode {
+                            Text("Focus On")
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .opacity(focusOpacity)
+                                .onAppear {
+                                    withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                        focusOpacity = 0 // Fade out the text after 1 second
+                                    }
+                                }
+                        } else {
+                            Text("Focus Off")
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .opacity(focusOpacity)
+                                .onAppear {
+                                    withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                        focusOpacity = 0 // Fade out the text after 1 second
+                                    }
+                                }
+                        }
+                        Toggle("", isOn: $viewModel.isFocusMode)
+                            .scaleEffect(0.7)
+                            .onChange(of: viewModel.isFocusMode) { newValue in
+                                if newValue {
+                                    showTodo = true
+                                    showDoing = true
+                                    showDone = false
+                                }
+                                focusOpacity = 1
+                                viewModel.fetchTasks()
+                                viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                            }
+                    }
+
                     Button(action: {
                         showSettings = true
                     }) {

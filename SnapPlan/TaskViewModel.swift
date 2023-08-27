@@ -21,6 +21,7 @@ class TaskViewModel: ObservableObject {
     @Published var showDoing: Bool = false
     @Published var showDone: Bool = false
     @Published var sortByDueDate: Bool = true
+    @Published var isFocusMode: Bool = false
     @EnvironmentObject var settings: Settings
     
     
@@ -34,14 +35,21 @@ class TaskViewModel: ObservableObject {
     }
     
     func fetchTasks() {
-        let request: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
-        
+        //let request: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
+        var sortDescriptors: [NSSortDescriptor] = []
+
         // Add sorting descriptors based on sortByDueDate
         if sortByDueDate {
-            request.sortDescriptors = [NSSortDescriptor(key: "dueDate", ascending: true)]
+            sortDescriptors.append(NSSortDescriptor(key: "dueDate", ascending: true))
+            sortDescriptors.append(NSSortDescriptor(key: "priorityScore", ascending: false))
         } else {
-            request.sortDescriptors = [NSSortDescriptor(key: "priorityScore", ascending: false)]
+            sortDescriptors.append(NSSortDescriptor(key: "priorityScore", ascending: false))
+            sortDescriptors.append(NSSortDescriptor(key: "dueDate", ascending: true))
         }
+        
+        let request: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
+        request.sortDescriptors = sortDescriptors
+        
         print("TaskViewModel:fetchTasks")
         do {
             tasks = try viewContext.fetch(request)
@@ -91,7 +99,7 @@ class TaskViewModel: ObservableObject {
     }
 
     
-    func addTask() {
+    func addTask()  -> SnapPlanTask? {
         let newTask = SnapPlanTask(context: viewContext)
         print("TaskViewModel:addTask")
         newTask.id = UUID()
@@ -102,9 +110,11 @@ class TaskViewModel: ObservableObject {
         
         do {
             try viewContext.save()
-            fetchTasks()
+            fetchTasks()  // Refresh the task list
+            return newTask
         } catch {
             print("Failed to save new task:", error)
+            return nil
         }
     }
     

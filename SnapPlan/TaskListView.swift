@@ -75,6 +75,7 @@ struct TaskListView: View {
                 // Show Note
 
             }
+
             HStack(alignment: .top) {
                 if let note = task.note, !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     VStack {
@@ -94,9 +95,11 @@ struct TaskListView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: taskListHeight, alignment: .leading)
+            .background(Color.white)
         }
         .border(Color.gray.opacity(0.5))
         .contentShape(Rectangle())
+        .background(TaskFormatter.shared.stateColor(task: task))
     }
 }
     
