@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 class Settings: ObservableObject {
     static let shared = Settings()
@@ -23,9 +24,14 @@ class Settings: ObservableObject {
 
 struct SettingsView: View {
     @EnvironmentObject var settings: Settings
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(entity: FilterEntity.entity(), sortDescriptors: [])
+    private var filterEntities: FetchedResults<FilterEntity>
+    
     @Environment(\.presentationMode) var presentationMode
+    @State private var newFilter: String = ""
     let dueDateDisplayOptions = ["Show Due Dates", "Show Days Until Due"]
-
+    
     var body: some View {
         NavigationView {
             Form {
@@ -37,6 +43,23 @@ struct SettingsView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
+                
+                // Moved this section inside the Form
+                Section(header: Text("Filters")) {
+                    ForEach(filterEntities, id: \.self) { filterEntity in
+                        Text(filterEntity.name ?? "")
+                    }
+                    .onDelete(perform: deleteFilter)
+                    .onMove(perform: moveFilter)
+                    
+                    HStack {
+                        TextField("New Filter", text: $newFilter)
+                        Button("Add") {
+                            addFilter()
+                        }
+                    }
+                }
+                .navigationBarItems(trailing: EditButton())
             }
             .navigationBarTitle("Settings")
             .navigationBarItems(trailing: Button(action: {
@@ -45,5 +68,32 @@ struct SettingsView: View {
                 Image(systemName: "xmark")
             })
         }
+    }
+    
+    private func moveFilter(from source: IndexSet, to destination: Int) {
+        var revisedItems: [FilterEntity] = filterEntities.map{$0}
+        revisedItems.move(fromOffsets: source, toOffset: destination)
+        for reverseIndex in stride(from: revisedItems.count - 1, through: 0, by: -1) {
+            revisedItems[reverseIndex].order = Int16(reverseIndex)
+        }
+        try? viewContext.save()
+    }
+    
+    private func addFilter() {
+        if !newFilter.isEmpty {
+            let newFilterEntity = FilterEntity(context: viewContext)
+            newFilterEntity.name = newFilter
+            newFilterEntity.order = Int16(filterEntities.count)
+            newFilter = ""
+            try? viewContext.save()
+        }
+    }
+
+    private func deleteFilter(at offsets: IndexSet) {
+        for index in offsets {
+            let filterEntity = filterEntities[index]
+            viewContext.delete(filterEntity)
+        }
+        try? viewContext.save()
     }
 }

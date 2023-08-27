@@ -20,6 +20,8 @@ enum ActiveSheet: Identifiable {
 
 struct MainView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(entity: FilterEntity.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FilterEntity.order, ascending: true)])
+    private var filterEntities: FetchedResults<FilterEntity>
     @EnvironmentObject var taskFormatter: TaskFormatter
     @ObservedObject var viewModel: TaskViewModel
     @State private var activeSheet: ActiveSheet?
@@ -55,6 +57,12 @@ struct MainView: View {
         self.viewModel = viewModel
     }
     
+    func applyFilter(_ filterName: String) {
+        viewModel.searchText = filterName
+        viewModel.fetchTasks()
+        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+    }
+    
     func createTask(withImage image: UIImage) {
         let newTask = SnapPlanTask(context: viewContext)
         newTask.id = UUID()
@@ -84,6 +92,16 @@ struct MainView: View {
                             viewModel.fetchTasks()
                             viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                         }
+                    if !viewModel.searchText.isEmpty {
+                        Button(action: {
+                            viewModel.searchText = ""
+                            viewModel.fetchTasks()
+                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                        }
+                    }
                     Button(action: {
                         if UIImagePickerController.isSourceTypeAvailable(.camera) {
                             requestCameraPermission { granted in
@@ -265,7 +283,21 @@ struct MainView: View {
                 }
                 // Fourth Row to have predefined filters
                 HStack {
-                    // FILTERS
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(filterEntities, id: \.self) { filterEntity in
+                                if let filterName = filterEntity.name {
+                                    Button(filterName) {
+                                        applyFilter(filterName)
+                                    }
+                                    .padding(5) // Smaller padding to make it thin
+                                    .font(.system(size: 12)) // Smaller font size
+                                    .foregroundColor(.blue) // Blue font color
+                                    .background(Color.clear) // Clear background
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 // Fifth Row: Priority Slider, Display Toggle, and Settings Gear
