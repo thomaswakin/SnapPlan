@@ -384,7 +384,7 @@ struct MainView: View {
                     VStack {
                         if viewModel.isTaskCardView {
                             Text("TaskCards")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(textOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
@@ -393,7 +393,7 @@ struct MainView: View {
                                 }
                         } else {
                             Text("TaskList")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(textOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
@@ -411,7 +411,7 @@ struct MainView: View {
                     VStack {
                         if viewModel.sortByDueDate {
                             Text("Date Sort")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(sortTextOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
@@ -420,7 +420,7 @@ struct MainView: View {
                                 }
                         } else {
                             Text("Priority Sort")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(sortTextOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
@@ -441,7 +441,7 @@ struct MainView: View {
                     VStack {
                         if viewModel.isFocusMode {
                             Text("Focus On")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(focusOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
@@ -450,7 +450,7 @@ struct MainView: View {
                                 }
                         } else {
                             Text("Focus Off")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 4))
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(focusOpacity)
                                 .onAppear {
                                     withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
