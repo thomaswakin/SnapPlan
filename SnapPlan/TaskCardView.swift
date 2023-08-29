@@ -10,6 +10,7 @@ import SwiftUI
 struct TaskCardView: View {
     @ObservedObject var task: SnapPlanTask
     @EnvironmentObject var taskFormatter: TaskFormatter
+    @EnvironmentObject var settings: Settings
     @State private var showStickyNoteView: Bool = false
     @State private var forceRedraw: Bool = false
     let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
@@ -53,10 +54,17 @@ struct TaskCardView: View {
                     .font(.system(size: 16)) // Adjust the font size as needed
                     .bold()
                 Spacer()
-                Text(TaskFormatter.shared.formattedDueDate(for: task, showDueDates: true))
+                if settings.dueDateDisplay == 0 { // Show Due Dates
+                    Text(TaskFormatter.shared.formattedDueDate(for: task, showDueDates: true)) // Assuming this function exists
                     .foregroundColor(TaskFormatter.shared.dueDateColor(for: task.dueDate ?? Date(), task: task))
                     .font(.system(size: 16)) // Adjust the font size as needed
                     .bold()
+                } else { // Show Days Until Due
+                    Text(TaskFormatter.shared.daysUntilDue(for: task))
+                        .foregroundColor(TaskFormatter.shared.dueDateColor(for: task.dueDate ?? Date(), task: task))
+                        .font(.system(size: 16)) // Adjust the font size as needed
+                        .bold()
+                }
             }
             .padding(.horizontal, 8) // Adjust the horizontal padding as needed
             .frame(height: 20) // Set the height of the capsule

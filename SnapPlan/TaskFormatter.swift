@@ -48,6 +48,26 @@ class TaskFormatter: ObservableObject {
             return task.dueDate.map(formatter.string) ?? ""
         }
     }
+    
+    func daysUntilDue(for task: SnapPlanTask) -> String {
+        guard let dueDate = task.dueDate else { return "N/A" }
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let due = calendar.startOfDay(for: dueDate)
+        
+        let components = calendar.dateComponents([.day], from: today, to: due)
+        
+        if let days = components.day {
+            if days < 0 {
+                return "\(days)"
+            } else if days == 0 {
+                return "Today"
+            } else {
+                return "+\(days)"
+            }
+        }
+        return "N/A"
+    }
         
     func stateColor(task: SnapPlanTask) -> Color {
         if task.state == "Done"{

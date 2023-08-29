@@ -2,14 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSCameraUsageDescription</key>
-    <string>Use the Camera to be able to take Photos or Videos to create your Tasks</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Use Voice to Text to record the Notes for your Tasks</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Use the Photo Library to be able to use Photos and Videos to create your Tasks</string>
-    <key>NSSpeechRecognitionUsageDescription</key>
-    <string>Use Speech to text to transcribe your voice into task notes</string><key>UIBackgroundModes</key>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Use the Camera to be able to take Photos or Videos to create your Tasks</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Use Voice to Text to record the Notes for your Tasks</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Use the Photo Library to be able to use Photos and Videos to create your Tasks</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Use Speech to text to transcribe your voice into task notes</string>
+	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 	</array>

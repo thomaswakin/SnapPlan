@@ -51,6 +51,10 @@ struct MainView: View {
     @State private var isPermissionAlertPresented: Bool = false
     @State private var permissionAlertMessage: String = ""
     
+    @State private var showCelebration = false
+    @State private var celebrationPhrase = ""
+    @State private var celebrationSymbol = "" 
+    
     let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
     let taskListHeight = (UIScreen.main.bounds.height / 13)
     let taskListWidth = UIScreen.main.bounds.width - 2
@@ -61,6 +65,7 @@ struct MainView: View {
             viewModel.fetchTasks()
         }
     }
+    
     
     func applyFilter(_ filterName: String) {
         viewModel.searchText = filterName
@@ -88,13 +93,6 @@ struct MainView: View {
     func onLongPress(_ task: SnapPlanTask) {
         self.longPressedTask = task
     }
-    
-    // Add this closure property to MainView
-    //var createTaskClosure: (UIImage) -> Void {
-    //    return { image in
-    //        createTask(withImage: image)
-    //    }
-    //}
     
     var body: some View {
         ZStack {
@@ -201,39 +199,9 @@ struct MainView: View {
                             }
                     case .imagePicker:
                         ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, isEditing: $isEditing, sourceType: sourceType, viewContext: viewContext)
-                        //                        .onDisappear {
-                        //                            viewModel.fetchTasks()
-                        //                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                        //                        }
                     }
                 }
-                //            .sheet(item: $selectedTask) { task in
-                //                ShowAndEditView(task: $selectedTask)
-                //                    .onDisappear {
-                //                        // Reapply the filters based on the current toggles
-                //                        viewModel.fetchTasks()
-                //                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                //                    }
-                //
-                //            }
-                //            .sheet(isPresented: $showStickyNoteView) {
-                //                ShowAndEditView(task: $selectedTask)
-                //                    .onDisappear {
-                //                        // Reapply the filters based on the current toggles
-                //                        viewModel.fetchTasks()
-                //                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                //                    }
-                //            }
-                //            .sheet(isPresented: $isImagePickerPresented) {
-                //                ImagePicker(selectedImage: $selectedImage, showStickyNoteView: $showStickyNoteView, selectedTask: $selectedTask, createTaskClosure: createTaskClosure, sourceType: sourceType, viewContext: viewContext)
-                //                    .onDisappear {
-                //                        // Reapply the filters based on the current toggles
-                //                        viewModel.fetchTasks()
-                //                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                //                    }
-                //            }
-                
-                
+ 
                 // Second Row: Navigation Tabs
                 HStack(spacing: 10) { // Evenly space the buttons
                     Button("Todo") {
@@ -260,75 +228,72 @@ struct MainView: View {
                     .buttonStyle(ToggleButtonStyle(isSelected: viewModel.isFocusMode ? false : showDone))
                 }
                 .padding(.horizontal)
-                //.frame(width: UIScreen.main.bounds.width * 2/3)
-                //Picker("", selection: $viewModel.selectedTab) {
-                //    Text("Todo").tag(0)
-                //    Text("Doing").tag(1)
-                //    Text("Done").tag(2)
-                //    Text("All").tag(3)
-                //}
-                //.pickerStyle(SegmentedPickerStyle())
-                //.onChange(of: viewModel.selectedTab) { _ in
-                //    viewModel.applyFilters()
-                //}
-                
-                // Third Row: Task Display (Placeholder)
-                ScrollView {
-                    if viewModel.isTaskCardView {
-                        let todoTasks = Array(viewModel.filteredTasks.filter { $0.state == "Todo" }.prefix(3))
-                        let doingTasks = Array(viewModel.filteredTasks.filter { $0.state == "Doing" }.prefix(3))
-                        let focusTasks = todoTasks + doingTasks
-                        
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: taskCardWidth - 1), spacing: 0)]) {
-                            ForEach(viewModel.isFocusMode ? focusTasks : viewModel.filteredTasks, id: \.id) { task in
-                                TaskCardView(task: task)
-                                    .frame(width: taskCardWidth - 2) // Set the width for each task card
-                                    .gesture(
-                                        TapGesture(count: 2).onEnded {
-                                            selectedNote = task.note ?? ""
-                                            showNotePopup = true
-                                        }.exclusively(before: TapGesture(count: 1).onEnded {
-                                            selectedTask = task
-                                        })
-                                    )
-                                    .simultaneousGesture(
-                                        LongPressGesture().onEnded { _ in
-                                            self.onLongPress(task)
+                VStack{
+                    GeometryReader { geometry in
+                        if viewModel.isTaskCardView {
+                            let todoTasks = Array(viewModel.filteredTasks.filter { $0.state == "Todo" }.prefix(3))
+                            let doingTasks = Array(viewModel.filteredTasks.filter { $0.state == "Doing" }.prefix(3))
+                            let focusTasks = todoTasks + doingTasks
+                            ScrollView {
+                                LazyVGrid(columns: [GridItem(.adaptive(minimum: taskCardWidth - 1), spacing: 0)]) {
+                                    ForEach(viewModel.isFocusMode ? focusTasks : viewModel.filteredTasks, id: \.id) { task in
+                                        ZStack {
+                                            TaskCardView(task: task)
+                                                .frame(width: taskCardWidth - 2) // Set the width for each task card
+                                                .gesture(
+                                                    TapGesture(count: 2).onEnded {
+                                                        selectedNote = task.note ?? ""
+                                                        showNotePopup = true
+                                                    }.exclusively(before: TapGesture(count: 1).onEnded {
+                                                        selectedTask = task
+                                                    })
+                                                )
+                                                .simultaneousGesture(
+                                                    LongPressGesture().onEnded { _ in
+                                                        self.onLongPress(task)
+                                                    }
+                                                )
+                                                .onChange(of: task) { _ in
+                                                    viewModel.fetchTasks()
+                                                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                                }
                                         }
-                                    )
-                                    .onChange(of: task) { _ in
-                                        viewModel.fetchTasks()
-                                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                        .highPriorityGesture(DragGesture().onChanged { _ in })
                                     }
+                                }
                             }
+                        } else {
+                            let todoTasks = Array(viewModel.filteredTasks.filter { $0.state == "Todo" }.prefix(3))
+                            let doingTasks = Array(viewModel.filteredTasks.filter { $0.state == "Doing" }.prefix(3))
+                            let focusTasks = todoTasks + doingTasks
                             
-                        }
-                    } else {
-                        let todoTasks = Array(viewModel.filteredTasks.filter { $0.state == "Todo" }.prefix(3))
-                        let doingTasks = Array(viewModel.filteredTasks.filter { $0.state == "Doing" }.prefix(3))
-                        let focusTasks = todoTasks + doingTasks
-                        
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: taskListWidth), spacing: 1)]) {
-                            ForEach(viewModel.isFocusMode ? focusTasks : viewModel.filteredTasks, id: \.id) { task in
-                                TaskListView(task: task)
-                                    .frame(maxWidth: .infinity)
-                                    .gesture(
-                                        TapGesture(count: 2).onEnded {
-                                            selectedNote = task.note ?? ""
-                                            showNotePopup = true
-                                        }.exclusively(before: TapGesture(count: 1).onEnded {
-                                            selectedTask = task
-                                        })
-                                    )
-                                    .simultaneousGesture(
-                                        LongPressGesture().onEnded { _ in
-                                            self.onLongPress(task)
+                            ScrollView {
+                                LazyVGrid(columns: [GridItem(.adaptive(minimum: taskListWidth), spacing: 1)]) {
+                                    ForEach(viewModel.isFocusMode ? focusTasks : viewModel.filteredTasks, id: \.id) { task in
+                                        ZStack {
+                                            TaskListView(task: task)
+                                                .frame(maxWidth: .infinity)
+                                                .gesture(
+                                                    TapGesture(count: 2).onEnded {
+                                                        selectedNote = task.note ?? ""
+                                                        showNotePopup = true
+                                                    }.exclusively(before: TapGesture(count: 1).onEnded {
+                                                        selectedTask = task
+                                                    })
+                                                )
+                                                .simultaneousGesture(
+                                                    LongPressGesture().onEnded { _ in
+                                                        self.onLongPress(task)
+                                                    }
+                                                )
+                                                .onChange(of: task) { _ in
+                                                    viewModel.fetchTasks()
+                                                    viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                                }
                                         }
-                                    )
-                                    .onChange(of: task) { _ in
-                                        viewModel.fetchTasks()
-                                        viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                                        .highPriorityGesture(DragGesture().onChanged { _ in })
                                     }
+                                }
                             }
                         }
                     }
@@ -355,18 +320,19 @@ struct MainView: View {
                 // Fifth Row: Priority Slider, Display Toggle, and Settings Gear
                 HStack {
                     ZStack {
-                        Slider(value: $viewModel.priorityFilter, in: 1...10)
-                            .scaleEffect(x: 0.7, y: 0.7, anchor: .center) // Reduce the size of the slider circle
-                            .onChange(of: viewModel.priorityFilter) { _ in
-                                viewModel.fetchTasks()
-                                viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
-                                showCircle = true
-                                timer?.invalidate() // Invalidate the previous timer
-                                timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
-                                    showCircle = false
-                                }
+                        Picker("Priority Filter", selection: $viewModel.priorityFilter) {
+                            ForEach(1...10, id: \.self) { i in
+                                Text("\(i)").tag(Double(i))
+                                    .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                             }
-                            .frame(alignment: .leading)
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(width: 50, height: 75, alignment: .center)
+                        .clipped()
+                        .onChange(of: viewModel.priorityFilter) { _ in
+                            viewModel.fetchTasks()
+                            viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
+                        }
                         
                         if showCircle {
                             Circle()
@@ -381,33 +347,7 @@ struct MainView: View {
                         }
                     }
                     Spacer()
-                    VStack {
-                        if viewModel.isTaskCardView {
-                            Text("TaskCards")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
-                                .opacity(textOpacity)
-                                .onAppear {
-                                    withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
-                                        textOpacity = 0
-                                    }
-                                }
-                        } else {
-                            Text("TaskList")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
-                                .opacity(textOpacity)
-                                .onAppear {
-                                    withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
-                                        textOpacity = 0 // Fade out the text after 1 second
-                                    }
-                                }
-                        }
-                        Toggle("", isOn: $viewModel.isTaskCardView)
-                            .scaleEffect(0.7)
-                            .onChange(of: viewModel.isTaskCardView) { _ in
-                                textOpacity = 1 // Reset text opacity when toggle changes
-                            }
-                    }
-                    .frame(alignment: .trailing)
+
                     VStack {
                         if viewModel.sortByDueDate {
                             Text("Date Sort")
@@ -436,7 +376,33 @@ struct MainView: View {
                                 sortTextOpacity = 1
                             }
                     }
-                    
+                    VStack {
+                        if viewModel.isTaskCardView {
+                            Text("TaskCards")
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
+                                .opacity(textOpacity)
+                                .onAppear {
+                                    withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                        textOpacity = 0
+                                    }
+                                }
+                        } else {
+                            Text("TaskList")
+                                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
+                                .opacity(textOpacity)
+                                .onAppear {
+                                    withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                                        textOpacity = 0 // Fade out the text after 1 second
+                                    }
+                                }
+                        }
+                        Toggle("", isOn: $viewModel.isTaskCardView)
+                            .scaleEffect(0.7)
+                            .onChange(of: viewModel.isTaskCardView) { _ in
+                                textOpacity = 1 // Reset text opacity when toggle changes
+                            }
+                    }
+                    .frame(alignment: .trailing)
                     // Add the Focus toggle button next to the gear button
                     VStack {
                         if viewModel.isFocusMode {
@@ -491,6 +457,25 @@ struct MainView: View {
             .sheet(isPresented: $showSettings) {
                 SettingsView()
             }
+            .onChange(of: viewModel.isTaskDone) { isDone in
+                if isDone {
+                    // Trigger celebration
+                    let randomPhraseIndex = Int.random(in: 0..<viewModel.celebrationPhrases.count)
+                    let randomSymbolIndex = Int.random(in: 0..<viewModel.celebrationSymbols.count)
+                    celebrationPhrase = viewModel.celebrationPhrases[randomPhraseIndex]
+                    celebrationSymbol = viewModel.celebrationSymbols[randomSymbolIndex]
+                    showCelebration = true
+                    
+                    // Reset the isTaskDone flag in the viewModel
+                    viewModel.isTaskDone = false
+                    
+                    // Reset the celebration after 3 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        showCelebration = false
+                    }
+                }
+            }
+
             if let task = longPressedTask {
                 VStack {
                     Text("Change State")
@@ -558,6 +543,17 @@ struct MainView: View {
                     }
                 }
             }
+            
+            if showCelebration {
+                VStack {
+                    Text(celebrationPhrase)
+                        .font(.largeTitle)
+                        .foregroundColor(.green)
+                    Image(systemName: celebrationSymbol)
+                        .font(.largeTitle)
+                        .foregroundColor(.blue)
+                }
+            }
         }
     }
 }
@@ -589,5 +585,3 @@ func requestPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
         completion(status == .authorized)
     }
 }
-
-
