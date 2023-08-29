@@ -21,6 +21,7 @@
 		114C65F82A8BA83600265BE6 /* TaskFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F72A8BA83600265BE6 /* TaskFormatter.swift */; };
 		114C65FA2A8FD84400265BE6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C65F92A8FD84400265BE6 /* ImagePicker.swift */; };
 		11D11EC72A92F3660088E75B /* CustomImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */; };
+		11D11ECB2A9E53960088E75B /* CelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D11ECA2A9E53960088E75B /* CelebrationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		114C65F72A8BA83600265BE6 /* TaskFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFormatter.swift; sourceTree = "<group>"; };
 		114C65F92A8FD84400265BE6 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePickerController.swift; sourceTree = "<group>"; };
+		11D11ECA2A9E53960088E75B /* CelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CelebrationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				114C65F72A8BA83600265BE6 /* TaskFormatter.swift */,
 				114C65F92A8FD84400265BE6 /* ImagePicker.swift */,
 				11D11EC62A92F3660088E75B /* CustomImagePickerController.swift */,
+				11D11ECA2A9E53960088E75B /* CelebrationView.swift */,
 			);
 			path = SnapPlan;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 				114C65F02A8B069300265BE6 /* TaskListView.swift in Sources */,
 				114C65D82A8ABDDC00265BE6 /* SnapPlan.xcdatamodeld in Sources */,
 				114C65EE2A8B05F800265BE6 /* TaskCardView.swift in Sources */,
+				11D11ECB2A9E53960088E75B /* CelebrationView.swift in Sources */,
 				114C65F82A8BA83600265BE6 /* TaskFormatter.swift in Sources */,
 				114C65EA2A8B046C00265BE6 /* TaskViewModel.swift in Sources */,
 				114C65FA2A8FD84400265BE6 /* ImagePicker.swift in Sources */,

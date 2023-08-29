@@ -22,53 +22,69 @@ class TaskViewModel: ObservableObject {
     @Published var showDone: Bool = false
     @Published var sortByDueDate: Bool = true
     @Published var isFocusMode: Bool = false
-    @EnvironmentObject var settings: Settings
-    
     @Published var isTaskDone: Bool = false
-    @Published var celebrationPhrases: [String] = [
-        "Excellent!", "Good Job!", "You Did It!", "Keep up the good work",
-        "Fantastic!", "Outstanding!", "Bravo!", "Well Done!",
-        "Superb!", "Impressive!", "Marvelous!", "Stellar!",
-        "First-rate!", "Top-notch!", "A+ Work!", "Exceptional!",
-        "Splendid!", "Magnificent!", "You're a Star!", "You're a Pro!",
-        "You're a Genius!", "You're a Master!", "You're Unstoppable!", "You're on Fire!",
-        "You're Amazing!", "You're Incredible!", "You're Awesome!", "You're Fantastic!",
-        "You're a Winner!", "You're a Champion!", "You're a Hero!", "You're a Leader!",
-        "You're a Trailblazer!", "You're a Pioneer!", "You're an Innovator!", "You're an Ace!",
-        "You're a Virtuoso!", "You're a Maestro!", "You're a Wizard!", "You're a Guru!",
-        "You're a Dynamo!", "You're a Whiz!", "You're a Prodigy!", "You're a Maven!",
-        "You're a Phenom!", "You're a Legend!", "You're a Titan!", "You're a Giant!",
-        "You're a Conqueror!", "You're a Gladiator!", "You're a Warrior!", "You're a Commander!",
-        "You're a Captain!", "You're a Chief!", "You're a King!", "You're a Queen!",
-        "You're a Boss!", "You're a Mastermind!", "You're a Virtuoso!", "You're a Maestro!",
-        "You're a Genius!", "You're a Pro!", "You're a Star!", "You're a Hero!",
-        "You're a Leader!", "You're a Pioneer!", "You're an Innovator!", "You're an Ace!",
-        "You're a Trailblazer!", "You're a Virtuoso!", "You're a Maestro!", "You're a Wizard!",
-        "You're a Guru!", "You're a Dynamo!", "You're a Whiz!", "You're a Prodigy!",
-        "You're a Maven!", "You're a Phenom!", "You're a Legend!", "You're a Titan!",
-        "You're a Giant!", "You're a Conqueror!", "You're a Gladiator!", "You're a Warrior!",
-        "You're a Commander!", "You're a Captain!", "You're a Chief!", "You're a King!",
-        "You're a Queen!", "You're a Boss!", "You're a Mastermind!"
-    ]
-    
-    @Published var celebrationSymbols: [String] = [
-        "checkmark", "checkmark.circle", "checkmark.circle.fill", "star", "star.fill",
-        "star.circle", "star.circle.fill", "staroflife", "staroflife.fill", "star.lefthalf.fill",
-        "sparkles", "sparkle", "crown", "crown.fill", "rosette",
-        "gift", "gift.fill", "gift.circle", "gift.circle.fill", "tortoise.fill",
-        "hare.fill", "flame", "flame.fill", "bolt", "bolt.fill",
-        "bolt.circle", "bolt.circle.fill", "bolt.badge.a", "bolt.badge.a.fill", "bolt.heart",
-        "bolt.heart.fill", "hand.thumbsup", "hand.thumbsup.fill", "hand.thumbsup.circle", "hand.thumbsup.circle.fill",
-        "smiley", "smiley.fill", "heart", "heart.fill", "heart.circle",
-        "heart.circle.fill", "bell", "bell.fill", "bell.circle", "bell.circle.fill",
-        "flag", "flag.fill", "flag.circle", "flag.circle.fill", "pencil",
-        "pencil.circle", "pencil.circle.fill", "pencil.and.outline", "pencil.tip", "pencil.tip.crop.circle",
-        "pencil.tip.crop.circle.badge.plus", "pencil.tip.crop.circle.badge.minus", "pencil.tip.crop.circle.badge.arrow.forward", "pencil.tip.crop.circle.badge.arrow.backward"
-    ]
+    @EnvironmentObject var settings: Settings
+    @Published var showCelebration: Bool = false
+    @Published var currentCelebrationPhrase: String = ""
+    @Published var currentCelebrationSymbol: String = ""
     
     private var taskObservers: [NSKeyValueObservation] = []
-    
     private var viewContext: NSManagedObjectContext
+    
+    @Published var celebrationSymbols: [String] = [   "checkmark", "checkmark.circle", "checkmark.circle.fill", "star", "star.fill", "star.circle", "star.circle.fill", "staroflife", "staroflife.fill", "star.lefthalf.fill", "sparkles", "sparkle", "crown", "crown.fill", "rosette", "gift", "gift.fill", "gift.circle", "gift.circle.fill", "tortoise.fill", "hare.fill", "flame", "flame.fill", "bolt", "bolt.fill", "bolt.circle", "bolt.circle.fill", "bolt.badge.a", "bolt.badge.a.fill", "bolt.heart","bolt.heart.fill", "hand.thumbsup", "hand.thumbsup.fill", "hand.thumbsup.circle", "hand.thumbsup.circle.fill", "smiley", "smiley.fill", "heart", "heart.fill", "heart.circle","heart.circle.fill", "bell", "bell.fill", "bell.circle", "bell.circle.fill", "flag", "flag.fill", "flag.circle", "flag.circle.fill", "pencil", "pencil.circle", "pencil.circle.fill", "pencil.and.outline", "pencil.tip", "pencil.tip.crop.circle", "pencil.tip.crop.circle.badge.plus", "pencil.tip.crop.circle.badge.minus", "pencil.tip.crop.circle.badge.arrow.forward", "pencil.tip.crop.circle.badge.arrow.backward" ]
+        
+    @Published var celebrationPhrases: [String] = [
+        "Well Done!",
+        "Fantastic Effort!",
+        "You Nailed It!",
+        "Bravo!",
+        "Keep It Up!",
+        "Excellent Execution!",
+        "You're Crushing It!",
+        "Outstanding Work!",
+        "You're on a Roll!",
+        "Superb!",
+        "Impressive!",
+        "You're a Trailblazer!",
+        "You're Unstoppable!",
+        "You're a Dynamo!",
+        "You're a Whiz!",
+        "You're an Ace!",
+        "You're a Virtuoso!",
+        "You're a Maestro!",
+        "You're a Phenom!",
+        "Legendary!",
+        "You're a Titan!",
+        "You're a Prodigy!",
+        "Mastermind Level!",
+        "Go Guru! Go Guru",
+        "A Marvel!",
+        "Genius!",
+        "Pro Level",
+        "Hero Work!",
+        "Spectacular",
+        "Kudos!",
+        "Yes!",
+        "Win!",
+        "Epic!",
+        "Wow!",
+        "Yay!",
+        "A+!",
+        "Top!",
+        "Ace!",
+        "Gold!",
+        "Boom!",
+        "Nice!",
+        "Zing!",
+        "Bingo!",
+        "Woot!",
+        "Hooray!",
+        "Score!",
+        "Nailed it!",
+        "On Point!",
+        "Get It Done."
+    ]
+    
     
     init(context: NSManagedObjectContext) {
         self.viewContext = context
@@ -137,6 +153,16 @@ class TaskViewModel: ObservableObject {
             
             if tasks.contains(where: { $0.state == "Done" }) {
                 isTaskDone = true
+                showCelebration = true
+                
+                // Pick a random celebration phrase and symbol
+                currentCelebrationPhrase = celebrationPhrases.randomElement() ?? "Well Done!"
+                currentCelebrationSymbol = celebrationSymbols.randomElement() ?? "star.fill"
+                
+                // Hide the celebration after 3 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                    self?.showCelebration = false
+                }
             }
             
             return matchesTextFilter && matchesStateFilter && matchesPriorityFilter

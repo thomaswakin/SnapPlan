@@ -457,25 +457,7 @@ struct MainView: View {
             .sheet(isPresented: $showSettings) {
                 SettingsView()
             }
-            .onChange(of: viewModel.isTaskDone) { isDone in
-                if isDone {
-                    // Trigger celebration
-                    let randomPhraseIndex = Int.random(in: 0..<viewModel.celebrationPhrases.count)
-                    let randomSymbolIndex = Int.random(in: 0..<viewModel.celebrationSymbols.count)
-                    celebrationPhrase = viewModel.celebrationPhrases[randomPhraseIndex]
-                    celebrationSymbol = viewModel.celebrationSymbols[randomSymbolIndex]
-                    showCelebration = true
-                    
-                    // Reset the isTaskDone flag in the viewModel
-                    viewModel.isTaskDone = false
-                    
-                    // Reset the celebration after 3 seconds
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        showCelebration = false
-                    }
-                }
-            }
-
+            
             if let task = longPressedTask {
                 VStack {
                     Text("Change State")
@@ -513,6 +495,10 @@ struct MainView: View {
                 .shadow(radius: 10)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 .background(Color.black.opacity(0.4).edgesIgnoringSafeArea(.all))
+            }
+            
+            if viewModel.showCelebration {
+                CelebrationView(phrase: viewModel.currentCelebrationPhrase, symbol: viewModel.currentCelebrationSymbol)
             }
 
             if showNotePopup {
