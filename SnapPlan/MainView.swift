@@ -308,7 +308,7 @@ struct MainView: View {
                                         applyFilter(filterName)
                                     }
                                     .padding(5) // Smaller padding to make it thin
-                                    .font(.system(size: 12)) // Smaller font size
+                                    .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8)) // Smaller font size
                                     .foregroundColor(.blue) // Blue font color
                                     .background(Color.clear) // Clear background
                                 }
