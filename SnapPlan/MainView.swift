@@ -319,7 +319,7 @@ struct MainView: View {
                 
                 // Fifth Row: Priority Slider, Display Toggle, and Settings Gear
                 HStack {
-                    ZStack {
+                    VStack(alignment: .center, spacing: 0) {
                         Picker("Priority Filter", selection: $viewModel.priorityFilter) {
                             ForEach(1...10, id: \.self) { i in
                                 Text("\(i)").tag(Double(i))
@@ -334,21 +334,9 @@ struct MainView: View {
                             viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                         }
                         
-                        if showCircle {
-                            Circle()
-                                .fill(Color(hex: "#af0808")).opacity(0.9)
-                                .frame(width: 20, height: 20)
-                                .overlay(
-                                    Text("\(Int(viewModel.priorityFilter))")
-                                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
-                                        .foregroundColor(.white)
-                                )
-                                .offset(y: -20) // Adjust this value to position the circle above the slider
-                        }
                     }
-                    Spacer()
 
-                    VStack {
+                    VStack(alignment: .center, spacing: 0) {
                         if viewModel.sortByDueDate {
                             Text("Date Sort")
                                 .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
@@ -369,16 +357,19 @@ struct MainView: View {
                                 }
                         }
                         Toggle("", isOn: $viewModel.sortByDueDate)
+                            .labelsHidden()
                             .scaleEffect(0.7)
                             .onChange(of: viewModel.sortByDueDate) { _ in
                                 viewModel.fetchTasks()
                                 viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                                 sortTextOpacity = 1
                             }
+                        Text(" Sort")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
                     }
-                    VStack {
+                    VStack(spacing: 0) {
                         if viewModel.isTaskCardView {
-                            Text("TaskCards")
+                            Text("Cards")
                                 .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(textOpacity)
                                 .onAppear {
@@ -387,7 +378,7 @@ struct MainView: View {
                                     }
                                 }
                         } else {
-                            Text("TaskList")
+                            Text("List")
                                 .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
                                 .opacity(textOpacity)
                                 .onAppear {
@@ -397,14 +388,17 @@ struct MainView: View {
                                 }
                         }
                         Toggle("", isOn: $viewModel.isTaskCardView)
+                            .labelsHidden()
                             .scaleEffect(0.7)
                             .onChange(of: viewModel.isTaskCardView) { _ in
                                 textOpacity = 1 // Reset text opacity when toggle changes
                             }
+                        Text(" View")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
                     }
                     .frame(alignment: .trailing)
                     // Add the Focus toggle button next to the gear button
-                    VStack {
+                    VStack(spacing: 0) {
                         if viewModel.isFocusMode {
                             Text("Focus On")
                                 .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
@@ -425,6 +419,7 @@ struct MainView: View {
                                 }
                         }
                         Toggle("", isOn: $viewModel.isFocusMode)
+                            .labelsHidden()
                             .scaleEffect(0.7)
                             .onChange(of: viewModel.isFocusMode) { newValue in
                                 if newValue {
@@ -436,6 +431,9 @@ struct MainView: View {
                                 viewModel.fetchTasks()
                                 viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                             }
+                        Text(" Focus")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
+                        
                     }
 
                     Button(action: {

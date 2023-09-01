@@ -27,6 +27,8 @@ class TaskViewModel: ObservableObject {
     @Published var showCelebration: Bool = false
     @Published var currentCelebrationPhrase: String = ""
     @Published var currentCelebrationSymbol: String = ""
+    @NSManaged public var previousState: String?
+    @Published var previousTaskStates: [UUID: String] = [:]
     
     private var taskObservers: [NSKeyValueObservation] = []
     private var viewContext: NSManagedObjectContext
@@ -123,6 +125,10 @@ class TaskViewModel: ObservableObject {
                                        showDone: self?.showDone ?? false)
                 }
             }
+            
+            for task in tasks {
+                previousTaskStates[task.id!] = task.state
+            }
 
             applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
         } catch {
@@ -151,18 +157,23 @@ class TaskViewModel: ObservableObject {
             // Apply priority filter
             let matchesPriorityFilter = task.priorityScore >= Int16(priorityFilter)
             
-            if tasks.contains(where: { $0.state == "Done" }) {
-                isTaskDone = true
-                showCelebration = true
-                
-                // Pick a random celebration phrase and symbol
-                currentCelebrationPhrase = celebrationPhrases.randomElement() ?? "Well Done!"
-                currentCelebrationSymbol = celebrationSymbols.randomElement() ?? "star.fill"
-                
-                // Hide the celebration after 3 seconds
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-                    self?.showCelebration = false
+            for task in tasks {
+                let previousState = previousTaskStates[task.id!]
+                if task.state == "Done" && previousState != "Done" {
+                    isTaskDone = true
+                    showCelebration = true
+
+                    // Pick a random celebration phrase and symbol
+                    currentCelebrationPhrase = celebrationPhrases.randomElement() ?? "Well Done!"
+                    currentCelebrationSymbol = celebrationSymbols.randomElement() ?? "star.fill"
+
+                    // Hide the celebration after 3 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                        self?.showCelebration = false
+                    }
                 }
+                // Update the previous state for this task
+                previousTaskStates[task.id!] = task.state
             }
             
             return matchesTextFilter && matchesStateFilter && matchesPriorityFilter
