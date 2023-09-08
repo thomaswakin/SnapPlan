@@ -34,6 +34,28 @@ struct SettingsView: View {
     @State private var showingDeleteAlert = false  // New State variable
     
     let dueDateDisplayOptions = ["Show Due Dates", "Show Days Until Due"]
+        
+    private func addDefaultTodayFilter() {
+        let newFilterEntity = FilterEntity(context: viewContext)
+        newFilterEntity.name = "Today"
+        newFilterEntity.order = Int16(filterEntities.count)
+        do {
+            try viewContext.save()
+        } catch {
+            print("Failed to save new filter:", error)
+        }
+    }
+    
+    private func addDefaultHomeworkFilter() {
+        let newFilterEntity = FilterEntity(context: viewContext)
+        newFilterEntity.name = "Homework"
+        newFilterEntity.order = Int16(filterEntities.count)
+        do {
+            try viewContext.save()
+        } catch {
+            print("Failed to save new filter:", error)
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -98,6 +120,13 @@ struct SettingsView: View {
                 Image(systemName: "xmark")
             })
         }
+        .onAppear {
+            if UserDefaults.standard.object(forKey: "isFirstRun") == nil {
+                addDefaultTodayFilter()
+                addDefaultHomeworkFilter()
+                UserDefaults.standard.set(false, forKey: "isFirstRun")
+            }
+        }
     }
     
     private func moveFilter(from source: IndexSet, to destination: Int) {
@@ -141,6 +170,7 @@ struct SettingsView: View {
             print("Failed to delete Done tasks: \(error)")
         }
     }
-
-    
 }
+
+
+

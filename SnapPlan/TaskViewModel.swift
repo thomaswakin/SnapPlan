@@ -142,6 +142,9 @@ class TaskViewModel: ObservableObject {
     }
     
     func applyFilters(showTodo: Bool, showDoing: Bool, showDone: Bool) {
+        let isTodayFilterActive = searchText == "Today"
+        let currentDate = Date()
+        
         filteredTasks = tasks.filter { task in
             // Apply text filter
             print("TaskViewModel:applyFilters")
@@ -175,6 +178,7 @@ class TaskViewModel: ObservableObject {
                 // Update the previous state for this task
                 previousTaskStates[task.id!] = task.state
             }
+            let isDueToday = Calendar.current.isDate((task.dueDate ?? currentDate) as Date, inSameDayAs: currentDate)
             
             return matchesTextFilter && matchesStateFilter && matchesPriorityFilter
         }

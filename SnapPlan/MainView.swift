@@ -53,7 +53,14 @@ struct MainView: View {
     
     @State private var showCelebration = false
     @State private var celebrationPhrase = ""
-    @State private var celebrationSymbol = "" 
+    @State private var celebrationSymbol = ""
+    
+    // Add these new state variables to your MainView struct
+    @State private var showSimpleAnimation = false
+    @State private var showComplexAnimation = false
+    @State private var simpleAnimationType = 0 // 0 for slide, 1 for rotate, etc.
+    @State private var complexAnimationType = 0 // 0 for Fireworks, 1 for Screen Sparkle, etc.
+
     
     let taskCardWidth = (UIScreen.main.bounds.width / 3) - 10
     let taskListHeight = (UIScreen.main.bounds.height / 13)
@@ -66,12 +73,20 @@ struct MainView: View {
         }
     }
     
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
     
     func applyFilter(_ filterName: String) {
-        viewModel.searchText = filterName
+        if filterName == "Today" {
+            viewModel.searchText = "Today"
+        } else {
+            viewModel.searchText = filterName
+        }
         viewModel.fetchTasks()
         viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
     }
+
     
     func createTask(withImage image: UIImage) -> SnapPlanTask? {
         let newTask = SnapPlanTask(context: viewContext)
@@ -315,6 +330,7 @@ struct MainView: View {
                             }
                         }
                     }
+                    .scrollDismissesKeyboard(.interactively)
                 }
                 
                 // Fifth Row: Priority Slider, Display Toggle, and Settings Gear
@@ -495,8 +511,76 @@ struct MainView: View {
                 .background(Color.black.opacity(0.4).edgesIgnoringSafeArea(.all))
             }
             
+            // This part is for the celebration and animations
             if viewModel.showCelebration {
-                CelebrationView(phrase: viewModel.currentCelebrationPhrase, symbol: viewModel.currentCelebrationSymbol)
+                VStack {
+                    // Check for simple animation
+                    if showSimpleAnimation {
+                        if simpleAnimationType == 0 {
+                            // Slide animation
+                            Text(viewModel.currentCelebrationPhrase)
+                                .font(.largeTitle)
+                                .foregroundColor(.green)
+                                .offset(x: showSimpleAnimation ? 0 : -100)
+                                .animation(.easeInOut)
+                        } else {
+                            // Rotate animation
+                            Text(viewModel.currentCelebrationPhrase)
+                                .font(.largeTitle)
+                                .foregroundColor(.green)
+                                .rotationEffect(.degrees(showSimpleAnimation ? 0 : 180))
+                                .animation(.easeInOut)
+                        }
+                    } else {
+                        Text(viewModel.currentCelebrationPhrase)
+                            .font(.largeTitle)
+                            .foregroundColor(.green)
+                    }
+                    
+                    // Check for complex animation
+                    if showComplexAnimation {
+                        switch complexAnimationType {
+                        case 0:
+                            Firework() // Your Firework animation
+                        case 1:
+                            ForEach(0..<20) { _ in
+                                Sparkle()
+                            }
+                        case 2:
+                            Confetti() // Your Confetti animation
+                        case 3:
+                            AnimatedText(viewModel: viewModel) // Your Animated Text
+                        default:
+                            EmptyView()
+                        }
+                    }
+                }
+                .onAppear() {
+                    // Reset all flags
+                    viewModel.showCelebration = false
+                    showSimpleAnimation = false
+                    showComplexAnimation = false
+                    
+                    // Check for celebration
+                    let celebrationChance = Int.random(in: 1...100)
+                    if celebrationChance <= 50 {
+                        viewModel.showCelebration = true
+                        
+                        // Check for simple animation
+                        let simpleAnimationChance = Int.random(in: 1...100)
+                        if simpleAnimationChance <= 50 {
+                            showSimpleAnimation = true
+                            simpleAnimationType = Int.random(in: 0...1)
+                            
+                            // Check for complex animation
+                            let complexAnimationChance = Int.random(in: 1...100)
+                            if complexAnimationChance <= 50 {
+                                showComplexAnimation = true
+                                complexAnimationType = Int.random(in: 0...3)
+                            }
+                        }
+                    }
+                }
             }
 
             if showNotePopup {
@@ -569,3 +653,94 @@ func requestPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
         completion(status == .authorized)
     }
 }
+
+func randomColor() -> Color {
+    let red = Double.random(in: 0...1)
+    let green = Double.random(in: 0...1)
+    let blue = Double.random(in: 0...1)
+    return Color(red: red, green: green, blue: blue)
+}
+
+struct Firework: View {
+    @State private var expand = false
+    var body: some View {
+        ZStack {
+            ForEach(0..<8) { i in
+                Circle()
+                    .frame(width: expand ? 100 : 10, height: expand ? 100 : 10)
+                    .foregroundColor(.red)
+                    .opacity(expand ? 0 : 1)
+                    .offset(x: expand ? CGFloat(cos(Double.pi / 4 * Double(i)) * 50) : 0,
+                            y: expand ? CGFloat(sin(Double.pi / 4 * Double(i)) * 50) : 0)
+            }
+        }
+        .onAppear() {
+            withAnimation(Animation.easeOut(duration: 1).repeatForever(autoreverses: false)) {
+                expand.toggle()
+            }
+        }
+    }
+}
+
+struct Sparkle: View {
+    @State private var opacity = 0.0
+    let x: CGFloat
+    let y: CGFloat
+    
+    init() {
+        self.x = CGFloat.random(in: -100...100)
+        self.y = CGFloat.random(in: -100...100)
+    }
+    
+    var body: some View {
+        Image(systemName: "star.fill")
+            .resizable()
+            .frame(width: 10, height: 10)
+            .foregroundColor(.yellow)
+            .opacity(opacity)
+            .offset(x: x, y: y)
+            .onAppear() {
+                withAnimation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true)) {
+                    opacity = 1
+                }
+            }
+    }
+}
+
+struct Confetti: View {
+    @State private var offset = CGSize.zero
+    var body: some View {
+        Rectangle()
+            .frame(width: 10, height: 10)
+            .foregroundColor(randomColor())
+            .offset(offset)
+            .onAppear() {
+                withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)) {
+                    offset = CGSize(width: CGFloat.random(in: -50...50), height: 600)
+                }
+            }
+    }
+}
+
+struct AnimatedText: View {
+    @State private var scale: CGFloat = 1.0
+    @State private var selectedPhrase: String
+    let viewModel: TaskViewModel
+    
+    init(viewModel: TaskViewModel) {
+        self.viewModel = viewModel
+        self._selectedPhrase = State(initialValue: viewModel.celebrationPhrases.randomElement() ?? "Awesome!")
+    }
+    
+    var body: some View {
+        Text(selectedPhrase)
+            .font(.largeTitle)
+            .scaleEffect(scale)
+            .onAppear() {
+                withAnimation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true)) {
+                    scale = 1.5
+                }
+            }
+    }
+}
+
