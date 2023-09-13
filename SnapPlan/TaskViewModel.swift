@@ -161,22 +161,24 @@ class TaskViewModel: ObservableObject {
             let matchesPriorityFilter = task.priorityScore >= Int16(priorityFilter)
             
             for task in tasks {
-                let previousState = previousTaskStates[task.id!]
-                if task.state == "Done" && previousState != "Done" {
-                    isTaskDone = true
-                    showCelebration = true
-
-                    // Pick a random celebration phrase and symbol
-                    currentCelebrationPhrase = celebrationPhrases.randomElement() ?? "Well Done!"
-                    currentCelebrationSymbol = celebrationSymbols.randomElement() ?? "star.fill"
-
-                    // Hide the celebration after 3 seconds
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-                        self?.showCelebration = false
+                if let taskId = task.id {
+                    let previousState = previousTaskStates[taskId]
+                    if task.state == "Done" && previousState != "Done" {
+                        isTaskDone = true
+                        showCelebration = true
+                        
+                        // Pick a random celebration phrase and symbol
+                        currentCelebrationPhrase = celebrationPhrases.randomElement() ?? "Well Done!"
+                        currentCelebrationSymbol = celebrationSymbols.randomElement() ?? "star.fill"
+                        
+                        // Hide the celebration after 3 seconds
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                            self?.showCelebration = false
+                        }
                     }
+                    // Update the previous state for this task
+                    previousTaskStates[taskId] = task.state
                 }
-                // Update the previous state for this task
-                previousTaskStates[task.id!] = task.state
             }
             let isDueToday = Calendar.current.isDate((task.dueDate ?? currentDate) as Date, inSameDayAs: currentDate)
             
