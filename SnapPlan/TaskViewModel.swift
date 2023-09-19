@@ -23,6 +23,7 @@ class TaskViewModel: ObservableObject {
     @Published var sortByDueDate: Bool = true
     @Published var isFocusMode: Bool = false
     @Published var isTaskDone: Bool = false
+    
     @EnvironmentObject var settings: Settings
     @Published var showCelebration: Bool = false
     @Published var currentCelebrationPhrase: String = ""
@@ -193,7 +194,7 @@ class TaskViewModel: ObservableObject {
         newTask.id = UUID()
         newTask.state = "Todo"
         newTask.dueDate = Date()
-        newTask.priorityScore = 5
+        newTask.priorityScore = 2
         newTask.note = ""
         
         do {

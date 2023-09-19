@@ -67,7 +67,8 @@ struct TaskListView: View {
                         .fill(Color(hex: "#af0808")).opacity(0.9)
                         .frame(width: 18, height: 18) // Adjust the size of the circle as needed
                     
-                    Text("\(task.priorityScore)") // Converts Int16 to String
+                    //Text("\(task.priorityScore)") // Converts Int16 to String
+                    Text(String(repeating: "⭐", count: Int(task.priorityScore)))
                         .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 7))
                         .foregroundColor(.white)
                 }

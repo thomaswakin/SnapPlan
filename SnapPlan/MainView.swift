@@ -94,7 +94,7 @@ struct MainView: View {
         newTask.rawPhotoData = image.pngData()
         newTask.note = ""  // Initialize to empty
         newTask.dueDate = nil  // Initialize to nil
-        newTask.priorityScore = Int16(5)
+        newTask.priorityScore = Int16(2)
         // Initialize other properties...
         do {
             try viewContext.save()
@@ -336,13 +336,19 @@ struct MainView: View {
                 // Fifth Row: Priority Slider, Display Toggle, and Settings Gear
                 HStack {
                     VStack(alignment: .center, spacing: 0) {
-                        Picker("Priority Filter", selection: $viewModel.priorityFilter) {
-                            ForEach(1...10, id: \.self) { i in
-                                Text("\(i)").tag(Double(i))
-                                    .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
-                            }
+//                        Picker("Priority Filter", selection: $viewModel.priorityFilter) {
+//                            ForEach(1...10, id: \.self) { i in
+//                                Text("\(i)").tag(Double(i))
+//                                    .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
+//                            }
+//                        }
+//                        .pickerStyle(WheelPickerStyle())
+                        Picker("Priority", selection: $viewModel.priorityFilter) {
+                            Image(systemName: "star.fill").tag(1)
+                            Image(systemName: "star.fill").tag(2)
+                            Image(systemName: "star.fill").tag(3)
                         }
-                        .pickerStyle(WheelPickerStyle())
+                        .pickerStyle(SegmentedPickerStyle())
                         .frame(width: 50, height: 75, alignment: .center)
                         .clipped()
                         .onChange(of: viewModel.priorityFilter) { _ in

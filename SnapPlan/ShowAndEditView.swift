@@ -13,7 +13,7 @@ struct ShowAndEditView: View {
     @Binding var task: SnapPlanTask?
     
     @State private var selectedState: String = "Todo"
-    @State private var selectedPriorityScore: Int16 = Int16(5)
+    @State private var selectedPriorityScore: Int16 = Int16(2)
     @State private var selectedDueDate: Date = Date()
     @State private var editedNote: String = ""
     @State private var isEditing: Bool = false
@@ -105,12 +105,17 @@ struct ShowAndEditView: View {
                             }
                         // Priority Score Wheel Picker
                         
+//                        Picker("Priority Score", selection: $selectedPriorityScore) {
+//                            ForEach(Int16(0)..<Int16(11), id: \.self) { value in
+//                                Text("\(value)").tag(value)
+//                            }
+//                        }
+//                        .pickerStyle(.wheel)
                         Picker("Priority Score", selection: $selectedPriorityScore) {
-                            ForEach(Int16(0)..<Int16(11), id: \.self) { value in
-                                Text("\(value)").tag(value)
-                            }
+                            Image(systemName: "star.fill").tag(1)
+                            Image(systemName: "star.fill").tag(2)
+                            Image(systemName: "star.fill").tag(3)
                         }
-                        .pickerStyle(.wheel)
                         .onChange(of: selectedPriorityScore) { newValue in
                             print(type(of: newValue), newValue)
                             print(type(of: selectedPriorityScore), selectedPriorityScore)
@@ -132,7 +137,7 @@ struct ShowAndEditView: View {
                         
                         
                         // Done Button
-                        Button("Done") {
+                        Button("Save") {
                             if let uiImage = uiImage {
                                 let rotatedImage = uiImage.rotate(radians: rotationAngle.radians)
                                 task.rawPhotoData = rotatedImage?.jpegData(compressionQuality: 1.0)
