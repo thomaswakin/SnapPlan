@@ -345,13 +345,14 @@ struct MainView: View {
                                 .font(.system(size: 12))
                         }
                         .pickerStyle(WheelPickerStyle())
-                        .frame(width: 75, height: 75, alignment: .center)
+                        .frame(width: 75, height: 50, alignment: .center)
                         .clipped()
                         .onChange(of: viewModel.priorityFilter) { _ in
                             viewModel.fetchTasks()
                             viewModel.applyFilters(showTodo: showTodo, showDoing: showDoing, showDone: showDone)
                         }
-                        
+                        Text("Urgency")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 8))
                     }
 
                     VStack(alignment: .center, spacing: 0) {

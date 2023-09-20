@@ -104,13 +104,7 @@ struct ShowAndEditView: View {
                                 saveContext()
                             }
                         // Priority Score Wheel Picker
-                        
-//                        Picker("Priority Score", selection: $selectedPriorityScore) {
-//                            ForEach(Int16(0)..<Int16(11), id: \.self) { value in
-//                                Text("\(value)").tag(value)
-//                            }
-//                        }
-//                        .pickerStyle(.wheel)
+
                         Picker("Priority Score", selection: $selectedPriorityScore) {
                             Text("⭐").tag(Int16(1))
                                 .font(.system(size: 12))
