@@ -25,8 +25,16 @@ struct SnapPlanApp: App {
     func migrateTaskPriorities() {
         let viewContext = persistenceController.container.viewContext
         let fetchRequest: NSFetchRequest<SnapPlanTask> = SnapPlanTask.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "priorityScore > 3")
+        
         do {
             let tasks = try viewContext.fetch(fetchRequest)
+            
+            // Only proceed if there are tasks with priority greater than 3
+            if tasks.isEmpty {
+                return
+            }
+            
             for task in tasks {
                 let priority = task.priorityScore
                 if priority >= 1 && priority <= 15 {
@@ -42,6 +50,7 @@ struct SnapPlanApp: App {
             print("Failed to fetch tasks: \(error)")
         }
     }
+
     
     var body: some Scene {
         WindowGroup {

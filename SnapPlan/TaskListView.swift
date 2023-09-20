@@ -42,17 +42,25 @@ struct TaskListView: View {
                         .cornerRadius(5)
                 }
                 // Show Todo
-                Text(task.state ?? "Todo")
-                    .foregroundColor(TaskFormatter.shared.dueDateColor(for: task.dueDate ?? Date(), task: task))
-                    .font(.system(size: 12)) // Adjust the font size as needed
-                    .bold()
-                    .padding(.horizontal, 4) // Adjust the horizontal padding as needed
-                    .frame(width: taskListHeight - 5, height: 16, alignment: .top) // Set the height of the capsule
+                VStack {
+                    Text(task.state ?? "Todo")
+                        .foregroundColor(TaskFormatter.shared.dueDateColor(for: task.dueDate ?? Date(), task: task))
+                        .font(.system(size: 12)) // Adjust the font size as needed
+                        .bold()
+                        .padding(.horizontal, 4) // Adjust the horizontal padding as needed
+                        .frame(width: taskListHeight - 5, height: 16, alignment: .top) // Set the height of the capsule
                     //.background(TaskFormatter.shared.stateColor(task: task).opacity(0.7))
-                    .background(TaskFormatter.shared.stateColor(task: task))
-                    .clipShape(Capsule())
-                    .padding(.top, 5) // Adjust as needed
+                        .background(TaskFormatter.shared.stateColor(task: task))
+                        .clipShape(Capsule())
+                        .padding(.top, 5) // Adjust as needed
                     //.frame(width: taskCardWidth - 5, alignment: .top)
+                    Spacer()
+                    Text(String(repeating: "⭐", count: Int(task.priorityScore)))
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 12))
+                        .foregroundColor(.white)
+                        .padding(.bottom, 5)
+                }
+                
             }
             .frame(alignment: .top)
             // Show Due Date
@@ -61,19 +69,6 @@ struct TaskListView: View {
                     .foregroundColor(TaskFormatter.shared.dueDateColor(for: task.dueDate ?? Date(), task: task))
                     .font(.system(size: 16)) // Adjust the font size as needed
                     .bold()
-                // Show Priority
-                ZStack {
-                    Circle()
-                        .fill(Color(hex: "#af0808")).opacity(0.9)
-                        .frame(width: 18, height: 18) // Adjust the size of the circle as needed
-                    
-                    //Text("\(task.priorityScore)") // Converts Int16 to String
-                    Text(String(repeating: "⭐", count: Int(task.priorityScore)))
-                        .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 7))
-                        .foregroundColor(.white)
-                }
-                .frame(alignment: .topLeading)
-                // Show Note
 
             }
 

@@ -336,20 +336,16 @@ struct MainView: View {
                 // Fifth Row: Priority Slider, Display Toggle, and Settings Gear
                 HStack {
                     VStack(alignment: .center, spacing: 0) {
-//                        Picker("Priority Filter", selection: $viewModel.priorityFilter) {
-//                            ForEach(1...10, id: \.self) { i in
-//                                Text("\(i)").tag(Double(i))
-//                                    .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize - 6))
-//                            }
-//                        }
-//                        .pickerStyle(WheelPickerStyle())
                         Picker("Priority", selection: $viewModel.priorityFilter) {
-                            Image(systemName: "star.fill").tag(1)
-                            Image(systemName: "star.fill").tag(2)
-                            Image(systemName: "star.fill").tag(3)
+                            Text("⭐").tag(Double(1))
+                                .font(.system(size: 12))
+                            Text("⭐⭐").tag(Double(2))
+                                .font(.system(size: 12))
+                            Text("⭐⭐⭐").tag(Double(3))
+                                .font(.system(size: 12))
                         }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .frame(width: 50, height: 75, alignment: .center)
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(width: 75, height: 75, alignment: .center)
                         .clipped()
                         .onChange(of: viewModel.priorityFilter) { _ in
                             viewModel.fetchTasks()

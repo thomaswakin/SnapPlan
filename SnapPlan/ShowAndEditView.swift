@@ -112,10 +112,14 @@ struct ShowAndEditView: View {
 //                        }
 //                        .pickerStyle(.wheel)
                         Picker("Priority Score", selection: $selectedPriorityScore) {
-                            Image(systemName: "star.fill").tag(1)
-                            Image(systemName: "star.fill").tag(2)
-                            Image(systemName: "star.fill").tag(3)
+                            Text("⭐").tag(Int16(1))
+                                .font(.system(size: 12))
+                            Text("⭐⭐").tag(Int16(2))
+                                .font(.system(size: 12))
+                            Text("⭐⭐⭐").tag(Int16(3))
+                                .font(.system(size: 12))
                         }
+                        .pickerStyle(WheelPickerStyle())
                         .onChange(of: selectedPriorityScore) { newValue in
                             print(type(of: newValue), newValue)
                             print(type(of: selectedPriorityScore), selectedPriorityScore)
