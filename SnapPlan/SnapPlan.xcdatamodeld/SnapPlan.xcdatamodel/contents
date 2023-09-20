@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G91" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="22G91" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="FilterEntity" representedClassName="FilterEntity" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -9,7 +9,7 @@
         <attribute name="filterEntity" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="UUID" defaultValueString="12345678-1234-5678-1234-567812345678" usesScalarValueType="NO"/>
         <attribute name="note" optional="YES" attributeType="String"/>
-        <attribute name="priorityScore" attributeType="Integer 16" defaultValueString="5" usesScalarValueType="YES"/>
+        <attribute name="priorityScore" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="rawPhotoData" optional="YES" attributeType="Binary"/>
         <attribute name="state" optional="YES" attributeType="String" defaultValueString="Todo"/>
     </entity>

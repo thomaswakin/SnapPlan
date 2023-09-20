@@ -16,5 +16,16 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+    <key>UIApplicationShortcutItems</key>
+    <array>
+        <dict>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Add Task via Camera</string>
+            <key>UIApplicationShortcutItemType</key>
+            <string>addTaskViaCamera</string>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypeCapturePhoto</string>
+        </dict>
+    </array>
 </dict>
 </plist>

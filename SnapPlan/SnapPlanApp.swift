@@ -12,9 +12,8 @@ import CoreData
 struct SnapPlanApp: App {
     @StateObject var settings = Settings()
     @StateObject var taskFormatter = TaskFormatter()
-    
+
     let persistenceController = PersistenceController.shared
-    
     let viewModel = TaskViewModel(context: PersistenceController.shared.container.viewContext)
 
     init() {
@@ -57,6 +56,22 @@ struct SnapPlanApp: App {
             MainView(viewModel: viewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(Settings.shared)
+                .onOpenURL { url in
+                    handleQuickAction(url: url)
+                }
+        }
+    }
+    
+    private func handleQuickAction(url: URL) {
+        guard let quickAction = url.host else { return }
+
+        switch quickAction {
+        case "addTaskViaCamera":
+            // Handle the quick action to add a task via camera
+            // You can use NotificationCenter or any other method to notify MainView
+            NotificationCenter.default.post(name: NSNotification.Name("addTaskViaCamera"), object: nil)
+        default:
+            break
         }
     }
 }

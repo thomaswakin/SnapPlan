@@ -13,7 +13,7 @@ struct ShowAndEditView: View {
     @Binding var task: SnapPlanTask?
     
     @State private var selectedState: String = "Todo"
-    @State private var selectedPriorityScore: Int16 = Int16(2)
+    @State private var selectedPriorityScore: Int16 = Int16(1)
     @State private var selectedDueDate: Date = Date()
     @State private var editedNote: String = ""
     @State private var isEditing: Bool = false
